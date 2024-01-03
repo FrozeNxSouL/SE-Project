@@ -17,6 +17,7 @@
 }
 
 body {
+  height: 100%;
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
       to bottom,
@@ -24,4 +25,46 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+}
+
+.parallax {
+  /* The image used */
+  background-image: url('https://scontent.fkkc4-1.fna.fbcdn.net/v/t39.30808-6/415498463_1078650550145705_1341288852553633566_n.jpg?stp=dst-jpg_p843x403&_nc_cat=109&ccb=1-7&_nc_sid=3635dc&_nc_eui2=AeH8MXzZL-GTkkUBb6oD4LJOuxcET3eUpS27FwRPd5SlLX_HffSOT3uhDw5Vg_uqs0s-aU-eGmAT4eE655Ej2mWa&_nc_ohc=_Csfg_jg9kMAX_CgEL6&_nc_ht=scontent.fkkc4-1.fna&oh=00_AfDlRYEFAbLML4Fv9nyer7JIzr65H9K0szX5M2uvkTIfSA&oe=6596E569');
+
+  /* Full height */
+  height: 100%; 
+  width: 100%;
+  /* Create the parallax scrolling effect */
+  background-attachment: fixed;
+  /* background-position: center; */
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* Turn off parallax scrolling for tablets and phones. Increase the pixels if needed */
+@media only screen and (max-device-width: 1366px) {
+  .parallax {
+    background-attachment: scroll;
+  }
+}
+
+.parallax2 {
+  /* The image used */
+  background-image: url('https://scontent.fkkc4-1.fna.fbcdn.net/v/t39.30808-6/415483166_875555650937893_1942345815293904336_n.jpg?stp=dst-jpg_s960x960&_nc_cat=111&ccb=1-7&_nc_sid=3635dc&_nc_eui2=AeECgPc2_bo9FUwJA1rhhARPfMAt9sSsBUd8wC32xKwFRwBXhROc9I0RNK2f7qAbPqWAogKEHTLBp7SUwaRKLQS7&_nc_ohc=G-mcadJ2Zn0AX9u6q5m&_nc_ht=scontent.fkkc4-1.fna&oh=00_AfD3kPvOTMx06Ru5HOjgvVSVBIQl_g0OzOi3a9x5D8RjDg&oe=6596FC8B');
+
+  /* Full height */
+  height: 100%; 
+  width: 100%;
+  /* Create the parallax scrolling effect */
+  background-attachment: fixed;
+  /* background-position: center; */
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* Turn off parallax scrolling for tablets and phones. Increase the pixels if needed */
+@media only screen and (max-device-width: 1366px) {
+  .parallax2 {
+    background-attachment: scroll;
+  }
 }
