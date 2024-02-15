@@ -12,7 +12,7 @@ export default function NavBar() {
     //       }
     // }
     return (
-        <div className="navbar bg-base-100 fixed">
+        <div className="navbar bg-base-100 sticky top-0">
             <div className="navbar-start">
                 <div className="dropdown">
                     <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
@@ -20,13 +20,11 @@ export default function NavBar() {
                     </div>
                     <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
                         <li><Link href="/homepage">HomepLinkge</Link></li>
-                        <li>
-
-                            <Link href="/homePage">Portfolio</Link></li>
+                        <li><Link href="/homePage">Portfolio</Link></li>
                         <li><Link href="/homePage">Linkbout</Link></li>
                     </ul>
                 </div>
-                <Link href="/" className=" btn btn-ghost text-xl">SECOND HAND'S PRODUCTS</Link>
+                <Link href="/" className=" btn btn-ghost text-xl">NiTid Second-Hand Industry</Link>
             </div>
             <div className="navbar-center">
                 <Link href="/shop" className=" btn btn-ghost text-base">
