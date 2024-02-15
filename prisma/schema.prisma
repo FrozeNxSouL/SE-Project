@@ -7,12 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Productt {
-  id    String @id @default(auto()) @map("_id") @db.ObjectId
-  email String @map("_email")
-  name  String @map("_name")
-}
-
 model User {
   id                String   @id @map("_id") @default(uuid()) @db.ObjectId
   name              String
