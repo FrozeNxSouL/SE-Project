@@ -21,7 +21,7 @@ export default function homePage() {
       <div className="parallax py-96"></div>
       <div className="flex flex-col justify-center h-96 text-center">
         <p>This div is just here to enable scrolling.
-          Tip: Try to remove the background-attachment property to remove the scrolling effect.</p>
+          KUy poon</p>
       </div>
     </div>
   )
