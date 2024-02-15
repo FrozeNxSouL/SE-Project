@@ -13,9 +13,6 @@ model Productt {
   name  String @map("_name")
 }
 
-model USS {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-}
 
 model User {
   id     String  @id @default(auto()) @map("_id") @db.ObjectId
