@@ -9,9 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@auth/prisma-adapter": "^1.4.0",
+    "@next-auth/prisma-adapter": "^0.4.4-canary.81",
     "@prisma/client": "^5.9.1",
     "material-icons": "^1.13.12",
     "next": "14.0.4",
+    "next-auth": "^4.24.6",
     "react": "^18",
     "react-dom": "^18"
   },
