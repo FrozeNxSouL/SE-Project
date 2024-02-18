@@ -5,17 +5,17 @@ import React from 'react'
 async function name(formData: FormData) {
     "use server"
     console.log(formData)
-    // const a = await prisma.user.create({
-    //     data: {
-    //         name: "dadaw",
-    //         email: "wawd",
-    //         hashedPassword: "dawd",
-    //         address: "dawd",
-    //         phone: "dawdw",
-    //         score: 32,
-    //         picture: "dawd",
-    //     }
-    // })
+    const a = await prisma.user.create({
+        data: {
+            name: "dadaw",
+            email: "wawd",
+            hashedPassword: "dawd",
+            address: "dawd",
+            phone: "dawdw",
+            score: 32,
+            picture: "dawd",
+        }
+    })
 }
 function AddProductPage() {
     return (
