@@ -1,4 +1,3 @@
-
 import  prisma  from '@/lib/db/prisma';
 import React from 'react'
 
@@ -8,7 +7,7 @@ async function name(formData: FormData) {
     const a = await prisma.user.create({
         data: {
             name: "dadaw",
-            email: "wawd",
+            email: "wawd@gmail.com",
             hashedPassword: "dawd",
             address: "dawd",
             phone: "dawdw",
