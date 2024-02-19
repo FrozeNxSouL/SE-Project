@@ -15,14 +15,14 @@ model Products {
   price       Float
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  user        Users?    @relation(fields: [useremail], references: [email])
+  user        User?    @relation(fields: [useremail], references: [email])
   useremail   String?   
   
   @@map("products")
 }
 
-model Users {
-  id             String @id @default(auto()) @map("_id") @db.ObjectId
+model User {
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
   address        String
   email          String @unique
   hashedPassword String
