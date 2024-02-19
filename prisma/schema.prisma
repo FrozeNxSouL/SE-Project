@@ -7,15 +7,28 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id                String   @id @map("_id") @default(auto()) @db.ObjectId
-  name              String
-  email             String   @unique
-  hashedPassword    String
-  address           String
-  phone             String
-  score             Int
-  picture           String?
+model Product {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  description String
+  imageUrl    String
+  name        String
+  price       Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        users?    @relation(fields: [useremail], references: [email])
+  useremail   String?   
+  
+  @@map("products")
+}
 
-  @@map("users")
+model users {
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  address        String
+  email          String    @unique
+  hashedPassword String
+  name           String
+  phone          String
+  picture        String
+  score          BigInt
+  products       Product[]
 }
