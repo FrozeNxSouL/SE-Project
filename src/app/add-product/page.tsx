@@ -35,28 +35,6 @@ function AddProductPage() {
           type="number"
           className="input-bordered input mb-2 w-full"
         />
-        <div className="form-control">
-          <label className="label cursor-pointer">
-            <span className="label-text">Normal product</span>
-            <input
-              type="radio"
-              name="radio-10"
-              className="radio checked:bg-red-500"
-              checked
-            />
-          </label>
-        </div>
-        <div className="form-control">
-          <label className="label cursor-pointer">
-            <span className="label-text">Auction product</span>
-            <input
-              type="radio"
-              name="radio-10"
-              className="radio checked:bg-blue-500"
-              checked
-            />
-          </label>
-        </div>
         <button
           className="btn btn-primary btn-block mt-3 min-w-[300px]"
           type="submit"
