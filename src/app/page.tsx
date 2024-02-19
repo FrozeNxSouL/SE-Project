@@ -16,7 +16,7 @@ function HomePage() {
       <div className="carousel w-full">
         <div id="slide1" className="carousel-item relative w-full">
           {/* <img src="https://daisyui.com/images/stock/photo-1625726411847-8cbb60cc71e6.jpg" className="w-full" /> */}
-          <div className='flex flex-row justify-evenly my-6 w-2/5'>
+          <div className='flex flex-row justify-evenly my-6 w-full'>
             <img className='flex size-32' src="https://scontent.fbkk6-1.fna.fbcdn.net/v/t39.30808-6/428615837_944079027072799_675545480892552765_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=dd5e9f&_nc_eui2=AeGSH6AltvlTali6lGpxPxQVJwJZdwJOM2InAll3Ak4zYh4Fas1ROKJT_nfUolU1CvEH5as5njdHa9UeM1m-scfT&_nc_ohc=Rv0tpJYVLusAX-qt2p1&_nc_ht=scontent.fbkk6-1.fna&oh=00_AfCrIdsUiXe5PtEaTv6fPH30GykqCSCMfBGa-00tBdp9jg&oe=65D6CB63" />
             <div className='flex flex-col'>
               <p className='flex text-2xl'>ไอเหี้ยนี่แม่งเกย์</p>
@@ -59,8 +59,7 @@ function HomePage() {
           </div>
         </div>
         <div id="slide2" className="carousel-item relative w-full">
-          {/* <img src="https://daisyui.com/images/stock/photo-1609621838510-5ad474b7d25d.jpg" className="w-full" /> */}
-          <div className='flex flex-row justify-evenly my-6 w-2/5'>
+          <div className='flex flex-row justify-evenly my-6 w-full'>
             <img className='flex size-32' src="https://scontent.fbkk6-1.fna.fbcdn.net/v/t39.30808-6/428615837_944079027072799_675545480892552765_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=dd5e9f&_nc_eui2=AeGSH6AltvlTali6lGpxPxQVJwJZdwJOM2InAll3Ak4zYh4Fas1ROKJT_nfUolU1CvEH5as5njdHa9UeM1m-scfT&_nc_ohc=Rv0tpJYVLusAX-qt2p1&_nc_ht=scontent.fbkk6-1.fna&oh=00_AfCrIdsUiXe5PtEaTv6fPH30GykqCSCMfBGa-00tBdp9jg&oe=65D6CB63" />
             <div className='flex flex-col'>
               <p className='flex text-2xl'>ไอเหี้ยนี่แม่งเกย์</p>
