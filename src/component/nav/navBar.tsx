@@ -69,11 +69,9 @@ export default function NavBar() {
                 
                 <button className="btn btn-ghost btn-circle">
                 <Link href="/login" className=" btn btn-ghost text-base">
-                <Link href="/login" className=" btn btn-ghost text-base">
                     <span className="material-icons">
                         account_circle
                     </span>
-                </Link>
                 </Link>
                 </button>
             </div>
