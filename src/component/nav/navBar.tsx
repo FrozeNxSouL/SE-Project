@@ -62,10 +62,14 @@ export default function NavBar() {
                         wallet
                     </span>
                 </button>
+
+                
                 <button className="btn btn-ghost btn-circle">
+                <Link href="/login" className=" btn btn-ghost text-base">
                     <span className="material-icons">
                         account_circle
                     </span>
+                </Link>
                 </button>
             </div>
         </div>
