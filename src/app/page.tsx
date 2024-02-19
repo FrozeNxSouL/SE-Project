@@ -3,12 +3,6 @@ import React from 'react'
 function HomePage() {
 
 
-  
-  const getYear = () => {
-    // const d = new Date();
-    // return d.getFullYear();
-  }
-
   return (
     <div className='flex justify-center flex-col w-full bg-black px-32'>
       <h1 className='flex my-7 text-5xl'>HomePage</h1>
