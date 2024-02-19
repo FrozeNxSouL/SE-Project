@@ -8,17 +8,25 @@ export async function signup(prevState: any, formData: FormData) {
     const pass = formData.get("password")?.toString() || "";
     const rePass = formData.get("re-password")?.toString() || "";
     
+    const filters = ["admin", "user", "test"]
+
     if (!email.toString().includes("@") || !email.toString().includes(".")) {
         return {
             id: 1,
-            label: "invalid mail"
         }
     }
 
-    if (pass.toString()!= rePass.toString()) {
+    for (const word of filters) {
+        if (name.toString().includes(word)) {
+            return {
+                id: 2,
+            }
+        }
+    }
+
+    if (pass !== rePass) {
         return {
-            id: 2,
-            label: "not match"
+            id: 3,
         }
     }
 
