@@ -26,7 +26,6 @@ export default function NavBar() {
                     </ul>
                 </div>
                 <Link href="/" className=" btn btn-ghost text-xl">NiTid Second-Hand Industry</Link>
-                <Link href="/" className=" btn btn-ghost text-xl">NiTid Second-Hand Industry</Link>
             </div>
             <div className="navbar-center">
                 <Link href="/shop" className=" btn btn-ghost text-base">

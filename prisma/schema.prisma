@@ -7,7 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model products {
+model Products {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   description String
   imageUrl    String
@@ -15,13 +15,13 @@ model products {
   price       Float
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  user        users?    @relation(fields: [useremail], references: [email])
+  user        Users?    @relation(fields: [useremail], references: [email])
   useremail   String?   
   
   @@map("products")
 }
 
-model users {
+model Users {
   id             String @id @default(auto()) @map("_id") @db.ObjectId
   address        String
   email          String @unique
@@ -30,5 +30,5 @@ model users {
   phone          String
   picture        String
   score          Float
-  products       Product[]
+  products       Products[]
 }
