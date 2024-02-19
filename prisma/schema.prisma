@@ -31,4 +31,6 @@ model User {
   picture        String
   score          Float
   products       Product[]
+  
+  @@map("users")
 }
