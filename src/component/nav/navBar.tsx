@@ -21,9 +21,11 @@ export default function NavBar() {
                     <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
                         <li><Link href="/homepage">HomepLinkge</Link></li>
                         <li><Link href="/homePage">Portfolio</Link></li>
+                        <li><Link href="/homePage">Portfolio</Link></li>
                         <li><Link href="/homePage">Linkbout</Link></li>
                     </ul>
                 </div>
+                <Link href="/" className=" btn btn-ghost text-xl">NiTid Second-Hand Industry</Link>
                 <Link href="/" className=" btn btn-ghost text-xl">NiTid Second-Hand Industry</Link>
             </div>
             <div className="navbar-center">
@@ -64,11 +66,15 @@ export default function NavBar() {
                 </button>
 
                 
+
+                
                 <button className="btn btn-ghost btn-circle">
+                <Link href="/login" className=" btn btn-ghost text-base">
                 <Link href="/login" className=" btn btn-ghost text-base">
                     <span className="material-icons">
                         account_circle
                     </span>
+                </Link>
                 </Link>
                 </button>
             </div>

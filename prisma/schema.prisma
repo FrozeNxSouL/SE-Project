@@ -14,7 +14,12 @@ model products {
   imageUrl    String
   name        String
   price       Float
-  updatedAt   DateTime @db.Date
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        users?    @relation(fields: [useremail], references: [email])
+  useremail   String?   
+  
+  @@map("products")
 }
 
 model users {
@@ -25,5 +30,6 @@ model users {
   name           String
   phone          String
   picture        String
-  score          BigInt
+  score          Float
+  products       Product[]
 }
