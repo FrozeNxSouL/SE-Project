@@ -15,6 +15,7 @@ model Product {
   price       Int
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  
 
   @@map("products")
 }
