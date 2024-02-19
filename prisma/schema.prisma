@@ -13,10 +13,10 @@ model Product {
   imageUrl    String
   name        String
   price       Int
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  user        users     @relation(fields: [userId], references: [id])
-  userId      String   // Foreign key reference to the User model
+  createdAt   DateTime? @default(now())
+  updatedAt   DateTime? @updatedAt
+  user        users?     @relation(fields: [userId], references: [id])
+  userId      String?   // Foreign key reference to the User model
   
 
   @@map("products")
