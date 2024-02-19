@@ -13,9 +13,13 @@ model products {
   description String
   imageUrl    String
   name        String
-  /// Multiple data types found: Int: 16.7%, BigInt: 83.3% out of 6 sampled entries
-  price       Json
-  updatedAt   DateTime? @db.Date
+  price       Float
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        users?    @relation(fields: [useremail], references: [email])
+  useremail   String?   
+  
+  @@map("products")
 }
 
 model users {
@@ -26,5 +30,6 @@ model users {
   name           String
   phone          String
   picture        String
-  score          BigInt
+  score          Float
+  products       Product[]
 }
