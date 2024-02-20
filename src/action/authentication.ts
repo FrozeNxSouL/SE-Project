@@ -15,7 +15,7 @@ export async function signin(prevState: any, formData: FormData) {
         }
     }
     try {
-        const list = await prisma.users.findMany();
+        const list = await prisma.user.findMany();
         let emailFound = false;
     
         for (const user of list) {
@@ -54,11 +54,20 @@ export async function signup(prevState: any, formData: FormData) {
     const pass = formData.get("password")?.toString() || "";
     const rePass = formData.get("re-password")?.toString() || "";
     
-    const filters = ["admin", "user", "test"]
+    const filters = ["admin", "user", "test", "nu", " "]
+    const list = await prisma.user.findMany();
 
     if (!email.toString().includes("@") || !email.toString().includes(".")) {
         return {
             id: 1,
+        }
+    }
+
+    for (const user of list) {
+        if (user.email.toString() == email) {
+            return {
+                id: 4,
+            }
         }
     }
 
@@ -76,11 +85,13 @@ export async function signup(prevState: any, formData: FormData) {
         }
     }
 
+
+
     const hashPass: string = hashSync(pass, 10);
 
     let passed: boolean = true
     try {
-        const a = await prisma.users.create({
+        const a = await prisma.user.create({
             data: {
                 name,
                 email,
