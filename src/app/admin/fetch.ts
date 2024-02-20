@@ -1,7 +1,24 @@
 "use server"
 import prisma from "@/lib/db/prisma";
-async function getUser(){
+export async function getUser() {
     const list = await prisma.user.findMany()
     return list
 }
-export default getUser
+export async function deleteUser(userid: string) {
+    const list = await prisma.user.delete({
+        where: {
+            id: userid
+        }
+    })
+}
+
+export async function searchUser(usersearch: string) {
+    const list = await prisma.user.findMany({
+        where: {
+            OR: [
+                {name: usersearch},
+                {id: usersearch}
+            ]
+        }
+    })
+}

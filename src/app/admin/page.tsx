@@ -1,4 +1,5 @@
-import getUser from "./fetch";
+import {DeleteButton} from "./DeleteButton";
+import {getUser} from "./fetch";
 export default async function admin(){ 
   const users = await getUser()
   return (
@@ -25,10 +26,12 @@ export default async function admin(){
           </thead>
           <tbody>
             {users.map((users, index) => (
-              < tr >
+              <tr key={index}>
               <th>
                 <label>
-                  <input type="checkbox" className="checkbox" />
+                  {/* <input type="checkbox" className="checkbox" /> */}
+                  {/* <button className="btn btn-error text-primary">Delete</button> */}
+                  <DeleteButton userid={users.id}></DeleteButton>
                 </label>
               </th>
               <td>
