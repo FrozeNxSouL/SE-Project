@@ -22,6 +22,7 @@ export default async function admin(){
               <th>Email</th>
               <th>UserID</th>
               <th>Score</th>
+              <th>Report</th>
               <th></th>
             </tr>
           </thead>
@@ -62,6 +63,7 @@ export default async function admin(){
             <th>Email</th>
             <th>UserID</th>
             <th>Score</th>
+            <th>Report</th>
             <th></th>
           </tr>
         </tfoot>
