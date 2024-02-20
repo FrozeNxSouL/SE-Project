@@ -1,4 +1,3 @@
-
 import getUser from "./fetch";
 export default async function admin(){ 
   const users = await getUser()
