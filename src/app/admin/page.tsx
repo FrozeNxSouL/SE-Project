@@ -1,4 +1,4 @@
-import {DeleteButton} from "./DeleteButton";
+import {DeleteButton} from "./commandadmin"
 import {getUser} from "./fetch";
 export default async function admin(){ 
   const users = await getUser()
@@ -20,35 +20,34 @@ export default async function admin(){
               <th></th>
               <th>Name</th>
               <th>Email</th>
+              <th>UserID</th>
               <th>Score</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
-            {users.map((users, index) => (
+            {users.map((user, index) => (
               <tr key={index}>
               <th>
                 <label>
-                  {/* <input type="checkbox" className="checkbox" /> */}
-                  {/* <button className="btn btn-error text-primary">Delete</button> */}
-                  <DeleteButton userid={users.id}></DeleteButton>
+                  <DeleteButton userid={user.id} username={user.name}></DeleteButton>
                 </label>
               </th>
               <td>
                 <div className="flex items-center gap-3">
                   <div className="avatar">
                     <div className="mask mask-squircle w-12 h-12">
-                      <img src={users.picture} alt="Avatar Tailwind CSS Component" />
+                      <img src={user.picture} alt="Avatar Tailwind CSS Component" />
                     </div>
                   </div>
                   <div>
-                    <div className="font-bold">{users.name}</div>
-              
+                    <div className="font-bold">{user.name}</div>
                   </div>
                 </div>
               </td>
-              <td>{users.email}</td>
-              <td>{users.score}</td>
+              <td>{user.email}</td>
+              <td>{user.id}</td>
+              <td>{user.score}</td>
               <th>
                 <button className="btn btn-ghost btn-xs">details</button>
               </th>
