@@ -20,7 +20,7 @@ export default function RootLayout({
     <html lang="en" data-theme="corporate">
       <body className={inter.className}>
         <NavBar />
-        <main className="my-8">
+        <main className="h-full">
           {children}
         </main>
       </body>
