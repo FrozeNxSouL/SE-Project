@@ -60,6 +60,7 @@ export default async function admin(){
             <th></th>
             <th>Name</th>
             <th>Email</th>
+            <th>UserID</th>
             <th>Score</th>
             <th></th>
           </tr>

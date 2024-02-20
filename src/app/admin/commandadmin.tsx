@@ -19,7 +19,7 @@ export function DeleteButton({ userid, username }: deleteButtonProps) {
         <>
             <button onClick={handleToggle} className="btn btn-error text-white rounded-lg">Delete</button>
             <Modal open={showModal}>
-                <h3 className="font-bold text-lg">Are you sure to delete this {username} ?</h3>
+                <h3 className="font-bold text-lg">Are you sure to delete user {username} ?</h3>
                 <div className="modal-action">
                     <button onClick={() => {
                         deleteUser(userid)
