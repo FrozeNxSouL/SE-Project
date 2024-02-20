@@ -1,7 +1,8 @@
 import React from 'react'
 import Link from "next/link";
+import getProducts from '@/action/fetch';
 
-function HomePage() {
+export default async function HomePage() {
   const categories = [
     {
       id: "/shop",
@@ -55,6 +56,8 @@ function HomePage() {
     },
   ]
 
+  const products = await getProducts();
+  console.log(products)
 
 
 
@@ -119,6 +122,29 @@ function HomePage() {
             </div>
           </div>
 
+    <div className="bg-base-100 max-w-6xl mx-auto my-3">
+      <h1 className="p-6 text-xl font-bold">สินค้าล่าสุด</h1>
+      <div className="w-full flex flex-wrap gap-2 justify-center">
+        {products.map((item, idx)=> (
+          <div className="card w-64 h-60 bg-base-100 shadow-lg transition duration-150 ease-in-out hover:scale-105 cursor-pointer">
+          <figure><img src={item.imageUrl} alt={item.name} /></figure>
+          <div className="card-body p-3">
+            <h2 className="card-title">
+              {item.name}
+              {/* <div className="badge badge-secondary">NEW</div> */}
+            </h2>
+            <p className="text-primary">฿{item.price}</p>
+            {/* <div className="card-actions justify-end">
+              <div className="badge badge-outline">Fashion</div> 
+              <div className="badge badge-outline">Products</div>
+            </div> */}
+          </div>
+        </div>
+        ))}
+      </div>
+      
+    </div>
+    </>
           <div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
             <a href="#slide1" className="btn btn-circle">❮</a>
             <a href="#slide3" className="btn btn-circle">❯</a>
@@ -299,5 +325,3 @@ function HomePage() {
     
   )
 }
-
-export default HomePage

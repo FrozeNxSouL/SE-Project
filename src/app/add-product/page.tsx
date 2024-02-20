@@ -3,6 +3,7 @@ import prisma from "@/lib/db/prisma";
 import { redirect } from "next/navigation";
 import React from "react";
 import addProduct from "./add";
+import FormSubmitButton from "@/component/nav/FormSubmitButton";
 
 function AddProductPage() {
   return (
@@ -35,12 +36,11 @@ function AddProductPage() {
           type="number"
           className="input-bordered input mb-2 w-full"
         />
-        <button
-          className="btn btn-primary btn-block mt-3 min-w-[300px]"
-          type="submit"
+        <FormSubmitButton
+          className="btn-block"
         >
-          Submit
-        </button>
+          Add Product
+        </FormSubmitButton>
       </form>
     </div>
   );

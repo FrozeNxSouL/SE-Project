@@ -99,7 +99,7 @@ export async function signup(prevState: any, formData: FormData) {
                 address: "",
                 phone: "",
                 score: 0,
-                picture: "",
+                picture: "https://mpics.mgronline.com/pics/Images/557000005527401.JPEG",
             }
         })
     } catch (e){
