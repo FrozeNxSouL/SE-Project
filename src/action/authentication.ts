@@ -15,7 +15,8 @@ export async function signin(prevState: any, formData: FormData) {
         }
     }
     try {
-        const list = await prisma.users.findMany();
+        const list = await prisma.user.findMany();
+        console.log(list)
         let emailFound = false;
     
         for (const user of list) {
@@ -80,7 +81,7 @@ export async function signup(prevState: any, formData: FormData) {
 
     let passed: boolean = true
     try {
-        const a = await prisma.users.create({
+        const a = await prisma.user.create({
             data: {
                 name,
                 email,

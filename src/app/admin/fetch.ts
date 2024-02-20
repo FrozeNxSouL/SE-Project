@@ -1,6 +1,7 @@
 "use server"
 import prisma from "@/lib/db/prisma";
 async function getUser(){
-    console.log(await prisma.user.findMany())
+    const list = await prisma.user.findMany()
+    return list
 }
 export default getUser

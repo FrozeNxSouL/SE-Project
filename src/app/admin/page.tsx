@@ -1,9 +1,7 @@
-"use client"
-import { useState } from "react"
 
-
-export default function admin() {
-  const [users, setusers] = useState([]);
+import getUser from "./fetch";
+export default async function admin(){ 
+  const users = await getUser()
   return (
     <><div className="flex justify-center text-2xl font-bold mb-4">
       <h1>USER-MANAGE</h1>
@@ -38,7 +36,7 @@ export default function admin() {
                 <div className="flex items-center gap-3">
                   <div className="avatar">
                     <div className="mask mask-squircle w-12 h-12">
-                      <img src="/tailwind-css-component-profile-2@56w.png" alt="Avatar Tailwind CSS Component" />
+                      <img src={users.picture} alt="Avatar Tailwind CSS Component" />
                     </div>
                   </div>
                   <div>
