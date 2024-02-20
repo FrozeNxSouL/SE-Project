@@ -16,8 +16,8 @@ export async function searchUser(usersearch: string) {
     const list = await prisma.user.findMany({
         where: {
             OR: [
-                {name: usersearch},
-                {id: usersearch}
+                {name: {contains: usersearch}},
+                {id: {contains: usersearch}}
             ]
         }
     })
