@@ -297,7 +297,6 @@ function HomePage() {
       </div>
     </div>
     
-    </>
   )
 }
 
