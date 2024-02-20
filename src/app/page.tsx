@@ -1,6 +1,61 @@
 import React from 'react'
+import Link from "next/link";
 
 function HomePage() {
+  const categories = [
+    {
+      id: "/shop",
+      label: "Shop",
+      icon: "shopping_bag",
+    },
+    {
+      id: "/shop",
+      label: "Shop",
+      icon: "shopping_bag",
+    },
+    {
+      id: "/shop",
+      label: "Shop",
+      icon: "shopping_bag",
+    },
+    {
+      id: "/shop",
+      label: "Shop",
+      icon: "shopping_bag",
+    },
+    {
+      id: "/shop",
+      label: "Shop",
+      icon: "shopping_bag",
+    },
+    {
+      id: "/shop",
+      label: "Shop",
+      icon: "shopping_bag",
+    },
+    {
+      id: "/shop",
+      label: "Shop",
+      icon: "shopping_bag",
+    },
+    {
+      id: "/shop",
+      label: "Shop",
+      icon: "shopping_bag",
+    },
+    {
+      id: "/shop",
+      label: "Shop",
+      icon: "shopping_bag",
+    },
+    {
+      id: "/shop",
+      label: "Shop",
+      icon: "shopping_bag",
+    },
+  ]
+
+
 
 
   return (
@@ -241,7 +296,8 @@ function HomePage() {
         </div>
       </div>
     </div>
-
+    
+    </>
   )
 }
 
