@@ -19,8 +19,10 @@ export default function RootLayout({
   return (
     <html lang="en" data-theme="corporate">
       <body className={inter.className}>
-        <NavBar />
-        <main className="h-full">
+        <div className="sticky top-0">
+          <NavBar />
+        </div>
+        <main className="h-full bg-base-200 min-h-screen">
           {children}
         </main>
       </body>
