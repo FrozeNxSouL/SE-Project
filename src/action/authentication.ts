@@ -96,9 +96,10 @@ export async function signup(prevState: any, formData: FormData) {
                 name,
                 email,
                 hashedPassword: hashPass,
-                address: "",
+                address: ["bangbon"],
                 phone: "",
                 score: 0,
+                role : "manager",
                 picture: "https://mpics.mgronline.com/pics/Images/557000005527401.JPEG",
             }
         })

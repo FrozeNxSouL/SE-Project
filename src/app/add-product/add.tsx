@@ -17,7 +17,14 @@ async function addProduct(formData: FormData) {
     console.log(p)
     try {
         const a = await prisma.product.create({
-            data: { name, description, imageUrl, price },
+            data: { 
+                name, 
+                description, 
+                imageUrl, 
+                price,
+                tag:"figure:1-1",
+                status:"onsale" 
+            },
         });
         console.log(a);
     } catch (error) {
