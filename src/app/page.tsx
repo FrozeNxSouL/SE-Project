@@ -79,14 +79,14 @@ export default async function HomePage() {
             <div className="card w-96 bg-base-100 shadow-xl basis-72 m-2" key={idx}>
               <figure><img src={item.imageUrl} alt={item.name} className='w-64 h-48' /></figure>
               <div className="card-body bg-slate-800">
-                <div className="badge badge-outline">Products</div>
+                <div className="badge badge-outline">{item.tag}</div>
                 <h2 className="card-title">
                   {item.name}
                 </h2>
                 <p>{item.description}</p>
                 <div className="card-actions justify-end">
                   <div>
-                    <p className="text-primary text-3xl">฿{item.price}</p>
+                    <p className="text-primary text-3xl">฿ {item.price}</p>
                   </div>
                 </div>
                 <button className="btn">Buy</button>
