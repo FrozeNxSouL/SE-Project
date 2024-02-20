@@ -95,8 +95,6 @@ export default function AuthForm() {
                 </form>
             </div>
             )}
-            
-
         </div>
 
     );
