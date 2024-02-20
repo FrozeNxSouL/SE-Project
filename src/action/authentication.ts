@@ -15,7 +15,7 @@ export async function signin(prevState: any, formData: FormData) {
         }
     }
     try {
-        const list = await prisma.users.findMany();
+        const list = await prisma.user.findMany();
         let emailFound = false;
     
         for (const user of list) {
@@ -80,7 +80,7 @@ export async function signup(prevState: any, formData: FormData) {
 
     let passed: boolean = true
     try {
-        const a = await prisma.users.create({
+        const a = await prisma.user.create({
             data: {
                 name,
                 email,
@@ -88,7 +88,7 @@ export async function signup(prevState: any, formData: FormData) {
                 address: "",
                 phone: "",
                 score: 0,
-                picture: "",
+                picture: "https://scontent.fbkk2-8.fna.fbcdn.net/v/t1.18169-9/22045716_525116641171808_8708115264426013339_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=7a1959&_nc_eui2=AeFunU_x5DT9CSv26GvfPkGRcSivN4Q4dpFxKK83hDh2kdRTCcqU7InWR1ub1MoK-9o90v2oo6WMAOqo3EKj8I4t&_nc_ohc=QNm2M0uKRlsAX9n_vlb&_nc_oc=AQm7TB1aDD3WF3ujGQSDKCzJPDd0qUQAh-qqqKH6kbJDS8Zrt8ODBW1RdpUScdhvRcgnZBSU2WmWTpGdnahEpEV6&_nc_ht=scontent.fbkk2-8.fna&oh=00_AfBDgGWosMOLSZ15F9c7wOvVzQYP0uIk7TbJu0HxzSIO9Q&oe=65FBCEDA",
             }
         })
     } catch (e){
