@@ -77,14 +77,14 @@ export default async function HomePage() {
       <h1 className="p-6 text-xl font-bold">สินค้าล่าสุด</h1>
       <div className="w-full flex flex-wrap gap-2 justify-center">
         {products.map((item, idx)=> (
-          <div className="card w-60 bg-base-100 shadow-xl transition duration-150 ease-in-out hover:scale-105 cursor-pointer">
+          <div className="card w-64 h-60 bg-base-100 shadow-lg transition duration-150 ease-in-out hover:scale-105 cursor-pointer">
           <figure><img src={item.imageUrl} alt={item.name} /></figure>
-          <div className="card-body">
+          <div className="card-body p-3">
             <h2 className="card-title">
               {item.name}
               {/* <div className="badge badge-secondary">NEW</div> */}
             </h2>
-            <p>{item.description}</p>
+            <p className="text-primary">฿{item.price}</p>
             {/* <div className="card-actions justify-end">
               <div className="badge badge-outline">Fashion</div> 
               <div className="badge badge-outline">Products</div>
