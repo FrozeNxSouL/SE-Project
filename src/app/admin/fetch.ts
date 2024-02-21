@@ -1,5 +1,6 @@
 "use server"
 import prisma from "@/lib/db/prisma";
+import { revalidatePath } from "next/cache";
 
 export async function getUser(usersearch: string) {
     try {
@@ -10,6 +11,7 @@ export async function getUser(usersearch: string) {
                 ]
             }
         })
+        revalidatePath("/admin")
         return list
     } catch (error) {
         return []

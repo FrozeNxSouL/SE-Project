@@ -17,7 +17,7 @@ export function SearchButton({ search }: searchButtonProps) {
         e.preventDefault()
         const params  = new URLSearchParams(searchParams)
         if(searchstr) {
-            params.set("search ",searchstr)
+            params.set("search",searchstr)
         }else {
             params.delete("search")
         }
