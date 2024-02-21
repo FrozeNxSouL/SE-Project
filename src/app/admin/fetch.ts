@@ -6,7 +6,7 @@ export async function getUser() {
 }
 export async function deleteUser(userid: string) {
     console.log(userid)
-    const list = await prisma.user.delete({
+    await prisma.user.delete({
         where: {
             id: userid
         }
@@ -22,4 +22,5 @@ export async function searchUser(usersearch: string) {
             ]
         }
     })
+    return list
 }
