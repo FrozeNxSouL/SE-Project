@@ -10,10 +10,10 @@ datasource db {
 model Product {
   id            String       @id @default(auto()) @map("_id") @db.ObjectId
   description   String
-  imageUrl      String
+  imageUrl      String[]
   name          String
   price         Float
-  tag           String
+  tag           String[]
   status        String
   auction       Auction?
   Transaction   Transaction? @relation(fields: [transactionId], references: [id])
