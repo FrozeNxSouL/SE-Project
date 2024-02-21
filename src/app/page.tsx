@@ -2,12 +2,10 @@ import React from 'react'
 import Link from "next/link";
 import {getProducts,getAuctionProduct} from '@/api/action/fetch';
 import { categories } from '../component/variables'
-// import getAuctionProduct from '@/api/action/getAuctionProduct';
 
 export default async function HomePage() {
 
   const products = await getProducts();
-  console.log(products)
 
   const auctionProduct = await getAuctionProduct();
 
