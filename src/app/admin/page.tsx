@@ -1,7 +1,8 @@
-import {DeleteButton} from "./commandadmin"
+import {DeleteButton, SearchButton} from "./commandadmin"
 import {getUser} from "./fetch";
-export default async function admin(){ 
-  const users = await getUser()
+export default async function admin({ searchParams }: { searchParams: { search?: string }}){ 
+  const search = searchParams.search || "";
+  const users = await getUser(search)
   return (
     <div className="mx-auto w-2/3 bg-base-300">
       <div className="mx-auto w-full bg-base-100 shadow-lg">
@@ -15,10 +16,11 @@ export default async function admin(){
       <div className="mx-auto w-full bg-base-100 shadow-lg mt-3">
         <div className="flex justify-between font-semibold p-5 border-b-2">
           <span>Manage user</span>
-          <label className="input input-bordered input-sm flex items-center gap-2">
+          <SearchButton search={search}></SearchButton>
+          {/* <label className="input input-bordered input-sm flex items-center gap-2">
             <input type="text" className="grow bg-transparent" placeholder="Search" />
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="w-4 h-4 opacity-70"><path fillRule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clipRule="evenodd" /></svg>
-          </label>
+          </label> */}
         </div>
         <div className="p-5">
           <div className="overflow-x-auto ">

@@ -1,8 +1,20 @@
 "use server"
 import prisma from "@/lib/db/prisma";
-export async function getUser() {
-    const list = await prisma.user.findMany()
-    return list
+
+export async function getUser(usersearch: string) {
+    try {
+        const list = await prisma.user.findMany({
+            where: {
+                OR: [
+                    { name: { contains: usersearch } },
+                ]
+            }
+        })
+        return list
+    } catch (error) {
+        return []
+    }
+    
 }
 export async function deleteUser(userid: string) {
     console.log(userid)
@@ -13,14 +25,3 @@ export async function deleteUser(userid: string) {
     })
 }
 
-export async function searchUser(usersearch: string) {
-    const list = await prisma.user.findMany({
-        where: {
-            OR: [
-                {name: {contains: usersearch}},
-                {id: {contains: usersearch}}
-            ]
-        }
-    })
-    return list
-}
