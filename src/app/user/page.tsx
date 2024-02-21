@@ -27,14 +27,25 @@ export default function user() {
                         คะแนน : 0
                     </h1>
 
-                    <div className="text-2xl font-extrabold ... mt-6">
-                        <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
-                        กระเป๋าเงิน
-                        </span>
+                    <div className="rating rating-md">
+                        <input type="radio" name="rating-7" className="mask mask-star-2 bg-orange-400" />
+                        <input type="radio" name="rating-7" className="mask mask-star-2 bg-orange-400" />
+                        <input type="radio" name="rating-7" className="mask mask-star-2 bg-orange-400" />
+                        <input type="radio" name="rating-7" className="mask mask-star-2 bg-orange-400" />
+                        <input type="radio" name="rating-7" className="mask mask-star-2 bg-orange-400" checked />
                     </div>
 
+                    <div className="stats bg-primary text-primary-content mt-3">
+                        <div className="stat">
+                            <div className="stat-title ">Current balance</div>
+                            <div className="stat-value">89,400 บาท</div>
+                            <div className="stat-actions">
+                                <button className="btn btn-sm">Withdrawal</button>
+                                <button className="btn btn-sm ml-3">deposit</button>
+                            </div>
+                        </div>
 
-                    <button className="w-32 mt-4 btn btn-outline btn-primary mx-auto">$100</button>
+                    </div>
 
                 </div>
 
