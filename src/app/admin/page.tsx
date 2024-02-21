@@ -4,7 +4,7 @@ export default async function admin(){
   const users = await getUser()
   return (
     <div className="mx-auto w-2/3 bg-base-300">
-      <div className="mx-auto w-full bg-base-100 shadow-lg mt-10">
+      <div className="mx-auto w-full bg-base-100 shadow-lg">
         <div className="font-semibold p-5 border-b-2">
           <span>Manage user</span>
         </div>
