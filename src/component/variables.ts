@@ -1,13 +1,15 @@
 export const categories = [
     {
-        id: "/shop",
-        label: "Shop",
+        id: "/",
+        label: "figure:1-1",
         icon: "shopping_bag",
+        data : "figure:1-1"
     },
     {
-        id: "/shop",
-        label: "Shop",
+        id: "/",
+        label: "cum",
         icon: "shopping_bag",
+        data: "cum"
     },
     {
         id: "/shop",
