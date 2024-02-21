@@ -51,4 +51,14 @@ export const categories = [
         label: "Shop",
         icon: "shopping_bag",
     },
+    {
+        id: "/shop",
+        label: "Shop",
+        icon: "shopping_bag",
+    },
+    {
+        id: "/shop",
+        label: "Shop",
+        icon: "shopping_bag",
+    },
 ]
