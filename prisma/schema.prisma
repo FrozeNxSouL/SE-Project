@@ -7,15 +7,86 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Product {
+  id            String       @id @default(auto()) @map("_id") @db.ObjectId
+  description   String
+  imageUrl      String[]
+  name          String
+  price         Float
+  tag           String[]
+  status        String
+  auction       Auction?
+  Transaction   Transaction? @relation(fields: [transactionId], references: [id])
+  transactionId String?      @db.ObjectId
+  User          User?        @relation(fields: [userId], references: [id])
+  userId        String?      @db.ObjectId
+
+  @@map("products")
+}
+
 model User {
-  id                String   @id @map("_id") @default(auto()) @db.ObjectId
-  name              String
-  email             String   @unique
-  hashedPassword    String
-  address           String
-  phone             String
-  score             Int
-  picture           String?
+  id             String        @id @default(auto()) @map("_id") @db.ObjectId
+  name           String
+  address        String[]
+  email          String        @unique
+  hashedPassword String
+  phone          String
+  picture        String
+  score          Float
+  role           String
+  auction        Auction[]
+  product        Product[]
+  transaction    Transaction[]
+  report         Report[]
+  wallet         Wallet?
 
   @@map("users")
+}
+
+model Auction {
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  productId   String       @unique @db.ObjectId
+  product     Product      @relation(fields: [productId], references: [id])
+  currentBid  Float
+  bidderId    String       @db.ObjectId
+  user        User         @relation(fields: [bidderId], references: [id])
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  auction_log Auction_log?
+}
+
+model Auction_log {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  auctionId      String   @unique @db.ObjectId
+  auction        Auction  @relation(fields: [auctionId], references: [id])
+  bidding_amount String[]
+  bidder_id      String[]
+}
+
+model Transaction {
+  id               String    @id @default(auto()) @map("_id") @db.ObjectId
+  totalPrice       Float
+  transaction_date DateTime
+  status           String
+  userId           String?   @db.ObjectId
+  User             User?     @relation(fields: [userId], references: [id])
+  product          Product[]
+}
+
+model Wallet {
+  id         String  @id @default(auto()) @map("_id") @db.ObjectId
+  creditCard String
+  cash       Float
+  userId     String? @unique @db.ObjectId
+  User       User?   @relation(fields: [userId], references: [id])
+}
+
+model Report {
+  id                String   @id @default(auto()) @map("_id") @db.ObjectId
+  reportPicture     String[]
+  reportingUserID   String
+  reportDescription String
+  reportStatus      String
+  userId            String?  @db.ObjectId
+  reportedUser      User?    @relation(fields: [userId], references: [id])
 }
