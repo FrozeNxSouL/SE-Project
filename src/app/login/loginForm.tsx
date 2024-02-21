@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { useFormState } from 'react-dom';
-import { signup, signin } from '@/action/authentication';
+import { signup, signin } from '@/api/action/authentication';
 
 const initialState = {
     id: 0,

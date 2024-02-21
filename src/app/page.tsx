@@ -1,8 +1,8 @@
 import React from 'react'
 import Link from "next/link";
-import getProducts from '@/action/fetch';
+import {getProducts,getAuctionProduct} from '@/api/action/fetch';
 import { categories } from '../component/variables'
-import getAuctionProduct from '@/action/getAuctionProduct';
+// import getAuctionProduct from '@/api/action/getAuctionProduct';
 
 export default async function HomePage() {
 
