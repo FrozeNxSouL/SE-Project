@@ -37,6 +37,8 @@ model User {
   auction        Auction[]
   product        Product[]
   transaction    Transaction[]
+  report         Report[]
+  wallet         Wallet?
 
   @@map("users")
 }
@@ -69,4 +71,22 @@ model Transaction {
   userId           String?   @db.ObjectId
   User             User?     @relation(fields: [userId], references: [id])
   product          Product[]
+}
+
+model Wallet {
+  id         String  @id @default(auto()) @map("_id") @db.ObjectId
+  creditCard String
+  cash       Float
+  userId     String? @unique @db.ObjectId
+  User       User?   @relation(fields: [userId], references: [id])
+}
+
+model Report {
+  id                String   @id @default(auto()) @map("_id") @db.ObjectId
+  reportPicture     String[]
+  reportingUserID   String
+  reportDescription String
+  reportStatus      String
+  userId            String?  @db.ObjectId
+  reportedUser      User?    @relation(fields: [userId], references: [id])
 }
