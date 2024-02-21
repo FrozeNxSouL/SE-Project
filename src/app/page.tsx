@@ -15,7 +15,7 @@ export default async function HomePage() {
     <div className='flex justify-center flex-col w-full bg-black px-32'>
       {auctionProduct.map((value, idx) => (
         <div className="card lg:card-side bg-base-100 shadow-xl my-3" key={idx}>
-          <figure><img src={value.imageUrl} className='h-72 w-72' /></figure>
+          <figure><img src={value.imageUrl[0]} className='h-72 w-72' /></figure>
           <div className="card-body flex flex-row justify-between items-center">
             <div className='basis-1/3'>
               <h2 className="card-title text-5xl font-bold my-9">{value.name}</h2>
@@ -77,7 +77,7 @@ export default async function HomePage() {
         <div className='flex flex-wrap justify-center'>
           {products.map((item, idx) => (
             <div className="card w-96 bg-base-100 shadow-xl basis-72 m-2" key={idx}>
-              <figure><img src={item.imageUrl} alt={item.name} className='w-64 h-48' /></figure>
+              <figure><img src={item.imageUrl[0]} alt={item.name} className='w-64 h-48' /></figure>
               <div className="card-body bg-slate-800">
                 <div className="badge badge-outline">{item.tag}</div>
                 <h2 className="card-title">
