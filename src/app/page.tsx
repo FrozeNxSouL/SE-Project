@@ -17,7 +17,7 @@ export default async function HomePage() {
   const auctionProduct = await getAuctionProduct();
 
   return (
-    <div className='mx-auto flex justify-center flex-col bg-base-100 w-2/3 px-32'>
+    <div className='mx-auto flex justify-center flex-col bg-base-100 max-w-screen-xl px-32'>
       {/* {auctionProduct.map((value, idx) => (
         <div className="card lg:card-side bg-base-100 shadow-xl my-3" key={idx}>
           <figure><img src={value.imageUrl[0]} className='h-72 w-72' /></figure>
