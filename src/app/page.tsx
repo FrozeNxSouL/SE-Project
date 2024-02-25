@@ -7,7 +7,7 @@ import { categories } from '../component/variables'
 export default async function HomePage() {
 
   const products = await getProducts();
-  console.log(products)
+  // console.log(products)
 
   const auctionProduct = await getAuctionProduct();
 
