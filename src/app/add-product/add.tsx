@@ -16,7 +16,7 @@ async function addProduct(formData: FormData) {
     }
 
     try {
-        const a = await prisma.product.create({
+        const productOutput = await prisma.product.create({
             data: {
                 name,
                 description,
@@ -26,7 +26,18 @@ async function addProduct(formData: FormData) {
                 status,
             },
         });
-        console.log(a);
+        console.log(productOutput);
+        if (status == "auction") {
+            // const auctionOutput = await prisma.auction.create({
+            //     data: {
+            //         currentBid : price,
+            //         product: {
+                        
+            //         }
+            //     },
+            // });
+            console.log("get auction !")
+        }
     } catch (error) {
         console.log(error)
     }
