@@ -17,7 +17,7 @@ export default function LatestProducts(props: any) {
                         <div className="badge badge-primary">NEW</div>
                         <div className="badge badge-outline">{item.tag}</div>
                         </div>
-                        <div className="card-title overflow-hidden whitespace-nowrap max-w-60">{item.name}</div>
+                        <div className="card-title truncate overflow-hidden max-w-60">{item.name}</div>
                         <div className="card-actions justify-end">
                         <div>
                             <p className="text-primary text-xl">฿ {item.price}</p>
