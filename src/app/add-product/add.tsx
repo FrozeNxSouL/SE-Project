@@ -35,10 +35,10 @@ async function addProduct(formData: FormData) {
                     product: { connect: { id: productOutput.id } },
                     currentBid: price,
                     // bidderId: productOutput.id,
-                    user: { connect: { id: productOutput.id } },
+                    user: { connect: { id: "65d581b7f9ee9189e1b19051" } },
                 },
             });
-
+            console.log(auctionOutput)
             const auctionLogOutput = await prisma.auction_log.create({
                 data: {
                     // auctionId: auctionOutput.id,
