@@ -1,8 +1,12 @@
 "use client"
 
+import Button from "@/component/Button";
 import ProductCarousel from "./carousel"
 import Link from "next/link";
 
+interface ProductDetailsProps{
+    product: any
+}
 export default function ProductInfo(props: any) {
     const productDetails = props.data;
     return (
@@ -33,7 +37,10 @@ export default function ProductInfo(props: any) {
                     </div>
                 </div>
                 <div className="flex flex-row gap-3">
-                    <button className="btn btn-wide btn-outline btn-primary">Add To Cart</button>
+                    <Button
+                    label="Add to cart"
+                    onClick={()=>{}}
+                    />
                     <button className="btn btn-wide btn-primary">Buy Now</button>
                 </div>
 

@@ -1,11 +1,30 @@
 import ProductInfo from "./productInfo";
 import prisma from "@/lib/prismaDB";
-import { userData } from "@/component/variables";
+import { productDetails, userData } from "@/component/variables";
+import { notFound } from "next/navigation";
+import not from "./not-found";
 
-export default async function payment() {
-    const productDetails = await prisma.product.findFirst();
+async function getProductDetail(productId:string){
+    try {
+        const productDetails = await prisma.product.findUnique({
+            where: {
+                id : productId,
+            }
+        });
+        if(!productDetails){
+            notFound();
+        }
+        return productDetails;
+    } catch (error) {
+        console.log(error);
+        notFound()
+    }
+}
+
+export default async function payment({params}: {params: {productId:string}}) {
+    const productDetails = await getProductDetail(params.productId);
     return (
-    <div className="max-w-screen-xl mx-auto">
+    <div className="max-w-screen-xl mx-auto" >
         <div className="text-sm breadcrumbs">
             <ul>
                 <li><a>Nitid</a></li> 
@@ -29,7 +48,7 @@ export default async function payment() {
                 </div>
                 <div className="divider lg:divider-horizontal"></div>
                 <div>
-                    <p>selled 8 products</p>
+                    <p>selled 8 products {params.productId}</p>
                     <p>joined for 8 sec</p>
                     <p>score 1.2</p>
                 </div>
