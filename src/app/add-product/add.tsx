@@ -6,7 +6,8 @@ async function addProduct(formData: FormData) {
 
     const name = formData.get("name")?.toString();
     const description = formData.get("description")?.toString();
-    const image = formData.get("imageUrl")?.toString();
+    const image = formData.get("imageUrl");
+    console.log(image);
     const price = Number(formData.get("price") || 0)
     const tag = formData.get("tag")?.toString();
     const status = formData.get("status")?.toString();

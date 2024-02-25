@@ -26,9 +26,11 @@ function AddProductPage() {
         <input
           required
           name="imageUrl"
-          type="url"
+          type="file" // Change type to "file" to allow multiple file selection
+          multiple // Add the multiple attribute
           placeholder="Image URL"
           className="input-bordered input mb-2 w-full"
+          
         />
         <input
           required
