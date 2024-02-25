@@ -28,14 +28,22 @@ async function addProduct(formData: FormData) {
         });
         console.log(productOutput);
         if (status == "auction") {
-            // const auctionOutput = await prisma.auction.create({
-            //     data: {
-            //         currentBid : price,
-            //         product: {
-                        
-            //         }
-            //     },
-            // });
+            const auctionOutput = await prisma.auction.create({
+                data: {
+                    // productId: productOutput.id,
+                    product: { connect: { id: productOutput.id } },
+                    currentBid: price, 
+                    // bidderId: productOutput.id,
+                    user: { connect: { id: productOutput.id } },
+                },
+            });
+
+            const auctionLogOutput = await prisma.auction_log.create({
+                data: {
+                    // auctionId: auctionOutput.id,
+                    auction: { connect: { id: auctionOutput.id } },
+                },
+            });
             console.log("get auction !")
         }
     } catch (error) {
