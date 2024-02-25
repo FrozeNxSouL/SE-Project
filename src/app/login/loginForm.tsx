@@ -26,7 +26,7 @@ export default function AuthForm() {
     return (
         <div className="py-10">
             {showLogin && (
-                <div className="w-1/4 mx-auto p-12 shadow-xl bg-base-100">
+                <div className="max-w-lg mx-auto p-12 shadow-xl bg-base-100">
                     <h1 className="text-2xl text-primary font-extrabold pb-6 text-center">Sign in</h1>
                     <form action={formActionSignIn}>
                     <label className="input input-bordered flex items-center gap-2 my-2">
@@ -39,15 +39,14 @@ export default function AuthForm() {
                     </label>
                     <div className="flex flex-col justify-center">
                         <button className="btn btn-primary btn-block my-2">sign in</button>
-                        <hr className="m-3"></hr>
-                        <span className="text-center">Don't have an account?</span>
+                        <div className="divider">Don't have an account?</div>
                         <button className="btn btn-block my-2" onClick={toggleForm}>sign up</button>
                     </div>
                     </form>
                 </div>
             )}
             {!showLogin && (
-                <div className="w-1/4 mx-auto p-12 shadow-xl bg-base-100">
+                <div className="max-w-lg mx-auto p-12 shadow-xl bg-base-100">
                 <h1 className="text-2xl text-primary font-extrabold pb-6 text-center">Sign up</h1>
                 <form action={formActionSignUp}>
                 <label className="input input-bordered flex items-center gap-2 my-2">
