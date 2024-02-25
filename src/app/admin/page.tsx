@@ -1,20 +1,22 @@
-import { DeleteButton, SearchButton, Taxchange} from "./commandadmin"
-import { getUser } from "./fetch";
+import { DeleteButton, SearchButton, Taxchange } from "./commandadmin"
+import { getManage, getUser } from "./fetch";
 export default async function admin({ searchParams }: { searchParams: { search?: string } }) {
   const search = searchParams.search || "";
   const users = await getUser(search)
+  const admin = await getManage()
   return (
     <div className="mx-auto w-2/3 bg-base-300">
       <div className="mx-auto w-full bg-base-100 shadow-lg">
         <div className="font-semibold p-5 border-b-2">
-          <span>Manage user</span>
+          <span>Manage</span>
         </div>
         {/* <div className="p-5">
           <span>Tax :</span>
           <Taxchange></Taxchange>
         </div> */}
-        <div className="p-5 flex items-center"> 
-  
+        <div className="p-5">
+          <p>Tax : {admin?.tax}%</p>
+          <p>catagory :</p>
           <Taxchange></Taxchange>
         </div>
       </div>

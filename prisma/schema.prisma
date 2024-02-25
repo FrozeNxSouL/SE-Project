@@ -92,3 +92,11 @@ model Report {
 
   @@map("reports")
 }
+
+model Management {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  tax      Float
+  category Json
+
+  @@map("managements")
+}
