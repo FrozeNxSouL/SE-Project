@@ -13,6 +13,7 @@ export async function getAuctionProduct() {
 
 export async function getProducts() {
     const products = await prisma.product.findMany({
+        take: 6,
         orderBy: {
             id: 'desc'
         }
