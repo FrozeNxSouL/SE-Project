@@ -6,7 +6,8 @@ async function addProduct(formData: FormData) {
 
     const name = formData.get("name")?.toString();
     const description = formData.get("description")?.toString();
-    const image = formData.get("imageUrl")?.toString();
+    const image = formData.get("imageUrl");
+    console.log(image);
     const price = Number(formData.get("price") || 0)
 
     if (!name || !description || !image || !price) {
@@ -18,13 +19,13 @@ async function addProduct(formData: FormData) {
             data: { 
                 name, 
                 description, 
-                imageUrl:[image], 
+                imageUrl:["dawdw","dawdawd"], 
                 price,
                 tag:["figure:1-1"],
                 status:"onsale" 
             },
         });
-        console.log(a);
+        // console.log(a);
     } catch (error) {
         console.log(error)
     }
