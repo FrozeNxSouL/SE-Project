@@ -1,7 +1,8 @@
 import Link from "next/link";
 
+
 export default function NavBar() {
-  // window.onscroll = function() {scrollFunction()};
+    // window.onscroll = function() {scrollFunction()};
 
     // const scrollFunction = () => {
     //     if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
@@ -51,27 +52,6 @@ export default function NavBar() {
                 </div>
                 <Link href="/login" className="btn btn-primary btn-outline">sign in</Link>
             </div>
-            <ul
-              tabIndex={0}
-              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
-            >
-              <li>
-                <Link href="/homepage">HomepLinkge</Link>
-              </li>
-              <li>
-                <Link href="/homePage">Portfolio</Link>
-              </li>
-              <li>
-                <Link href="/homePage">Portfolio</Link>
-              </li>
-              <li>
-                <Link href="/homePage">Linkbout</Link>
-              </li>
-            </ul>
-          </div>
-          <Link href="/" className=" btn btn-ghost text-xl">
-            NiTid Second-Hand Industry
-          </Link>
         </div>
         <div className="navbar bg-base-100 flex justify-center gap-3">
             <div className="dropdown dropdown-hover">
@@ -99,9 +79,5 @@ export default function NavBar() {
         </div>
         </>
 
-          {/* </div> */}
-        </div>
-      </div>
-    </div>
-  );
+    )
 }
