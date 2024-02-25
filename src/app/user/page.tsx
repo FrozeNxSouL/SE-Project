@@ -37,7 +37,7 @@ export default function user() {
 
                     <div className="stats bg-primary text-primary-content mt-3">
                         <div className="stat">
-                            <div className="stat-title ">Current balance</div>
+                            <div className="stat-title  ">Current balance</div>
                             <div className="stat-value">89,400 บาท</div>
                             <div className="stat-actions">
                                 <button className="btn btn-sm">Withdrawal</button>
