@@ -1,27 +1,22 @@
 export const categories = [
     {
         id: "/",
-        label: "figure:1-1",
-        icon: "shopping_bag",
-    },
-    {
-        id: "/",
         label: "cum",
         icon: "shopping_bag",
     },
     {
-        id: "/shop",
-        label: "Shop",
+        id: "/",
+        label: "Poon",
         icon: "shopping_bag",
     },
     {
-        id: "/shop",
-        label: "Shop",
+        id: "/",
+        label: "Boss",
         icon: "shopping_bag",
     },
     {
-        id: "/shop",
-        label: "Shop",
+        id: "/",
+        label: "First",
         icon: "shopping_bag",
     },
     {
