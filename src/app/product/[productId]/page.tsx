@@ -1,14 +1,28 @@
 import ProductInfo from "./productInfo";
 import prisma from "@/lib/prismaDB";
-import { userData } from "@/component/variables";
+import { productDetails, userData } from "@/component/variables";
+import { notFound } from "next/navigation";
+import not from "./not-found";
 
+async function getProductDetail(productId:string){
+    try {
+        const productDetails = await prisma.product.findUnique({
+            where: {
+                id : productId,
+            }
+        });
+        if(!productDetails){
+            notFound();
+        }
+        return productDetails;
+    } catch (error) {
+        console.log(error);
+        notFound()
+    }
+}
 
 export default async function payment({params}: {params: {productId:string}}) {
-    const productDetails = await prisma.product.findUnique({
-        where: {
-            id : params.productId,
-        }
-    });
+    const productDetails = await getProductDetail(params.productId);
     return (
     <div className="max-w-screen-xl mx-auto" >
         <div className="text-sm breadcrumbs">
