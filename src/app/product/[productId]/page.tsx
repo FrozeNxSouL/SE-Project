@@ -2,7 +2,6 @@ import ProductInfo from "./productInfo";
 import prisma from "@/lib/prismaDB";
 import { productDetails, userData } from "@/component/variables";
 import { notFound } from "next/navigation";
-import not from "./not-found";
 
 async function getProductDetail(productId:string){
     try {

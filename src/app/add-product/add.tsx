@@ -48,6 +48,6 @@ async function addProduct(formData: FormData) {
         console.log(error)
     }
 
-    // redirect("/");
+    redirect("/");
 }
 export default addProduct

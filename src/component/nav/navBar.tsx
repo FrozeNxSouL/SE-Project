@@ -1,3 +1,4 @@
+
 import Link from "next/link";
 import { categories } from "../variables";
 
@@ -61,7 +62,7 @@ export default function NavBar() {
                     </div>
                     <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
                         {categories.map((value, idx) => (
-                            <li><a key={idx}>{value.label}</a></li>
+                            <li><Link href={`/${value.label}`} key={idx}>{value.label}</Link></li>
                         ))}
                     </ul>
                 </div>
