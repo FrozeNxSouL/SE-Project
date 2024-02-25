@@ -3,10 +3,14 @@ import prisma from "@/lib/prismaDB";
 import { userData } from "@/component/variables";
 
 
-export default async function payment() {
-    const productDetails = await prisma.product.findFirst();
+export default async function payment({params}: {params: {productId:string}}) {
+    const productDetails = await prisma.product.findUnique({
+        where: {
+            id : params.productId,
+        }
+    });
     return (
-    <div className="max-w-screen-xl mx-auto">
+    <div className="max-w-screen-xl mx-auto" >
         <div className="text-sm breadcrumbs">
             <ul>
                 <li><a>Nitid</a></li> 
@@ -30,7 +34,7 @@ export default async function payment() {
                 </div>
                 <div className="divider lg:divider-horizontal"></div>
                 <div>
-                    <p>selled 8 products</p>
+                    <p>selled 8 products {params.productId}</p>
                     <p>joined for 8 sec</p>
                     <p>score 1.2</p>
                 </div>
