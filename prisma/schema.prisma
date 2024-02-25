@@ -89,4 +89,14 @@ model Report {
   reportStatus      String
   userId            String?  @db.ObjectId
   reportedUser      User?    @relation(fields: [userId], references: [id])
+
+  @@map("reports")
+}
+
+model Management {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  tax      Float
+  category Json
+
+  @@map("managements")
 }
