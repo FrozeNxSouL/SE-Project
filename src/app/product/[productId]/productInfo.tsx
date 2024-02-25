@@ -1,50 +1,109 @@
-"use client"
+"use client";
 
 import Button from "@/component/Button";
-import ProductCarousel from "./carousel"
+import ProductCarousel from "./carousel";
 import Link from "next/link";
+import { useCart } from "@/hooks/useCart";
+import { useEffect, useReducer, useState } from "react";
+import { MdCheckCircle } from "react-icons/md";
+import { useRouter } from "next/navigation";
 
-interface ProductDetailsProps{
-    product: any
+interface ProductDetailsProps {
+  product: any;
 }
+
+export type CartProductType = {
+  id: string;
+  name: string;
+  description: string;
+  quantity: number;
+  price: number;
+};
+
 export default function ProductInfo(props: any) {
-    const productDetails = props.data;
-    return (
-        <div className="w-full bg-base-100 flex justify-center flex-row gap-5 px-20 py-10">
-            <ProductCarousel data={productDetails} />
-            <div className="flex flex-col justify-between w-2/3">
-                <div>
-                    <h1 className="text-xl mb-3 text-wrap break-words">{productDetails?.name}</h1>
-                    <div className="bg-base-200 p-3">
-                        <h2 className="text-2xl text-primary">฿{productDetails.price}</h2>
-                    </div>
-                </div>
+  const { handleAddProductToCart, cartProducts } = useCart();
+  const [isProductInCart, setIsProductInCart] = useState(false);
+  const { cartTotalQty } = useCart();
+  const productDetails = props.data;
+  const [cartProduct, setCartProduct] = useState<CartProductType>({
+    id: productDetails.id,
+    name: productDetails.name,
+    description: productDetails.description,
+    quantity: 1,
+    price: productDetails.price,
+  });
+  const router = useRouter()
+  console.log(cartProducts);
 
-                <div className="flex flex-col gap-6">
-                    <div className="flex gap-2">
-                        <h3 className="w-1/12 font-bold">Tag</h3>
-                        <div className="flex gap-2">
-                            {productDetails.tag.map((item: any, index: number)=> (
-                                <Link className="badge badge-primary" href="/">{item}</Link>
-                            ))}
-                        </div>
-                    </div>
-                    <div className="flex gap-2">
-                        <h3 className="w-1/12 font-bold">Detail</h3>
-                        <div className="flex gap-2 w-11/12 min-h-40 text-wrap break-words">
-                        <p className="w-full">{productDetails.detail}</p>
-                        </div>
-                    </div>
-                </div>
-                <div className="flex flex-row gap-3">
-                    <Button
-                    label="Add to cart"
-                    onClick={()=>{}}
-                    />
-                    <button className="btn btn-wide btn-primary">Buy Now</button>
-                </div>
+  useEffect(() => {
+    setIsProductInCart(false);
 
-            </div>
+    if (cartProducts) {
+      const existingIndex = cartProducts.findIndex(
+        (item) => item.id === productDetails.id
+      );
+
+      if (existingIndex > -1) {
+        setIsProductInCart(true);
+      }
+    }
+  }, [cartProducts]);
+
+  return (
+    <div className="w-full bg-base-100 flex justify-center flex-row gap-5 px-20 py-10">
+      <ProductCarousel data={productDetails} />
+      <div className="flex flex-col justify-between w-2/3">
+        <div>
+          <h1 className="text-xl mb-3 text-wrap break-words">
+            {productDetails?.name}
+          </h1>
+          <div className="bg-base-200 p-3">
+            <h2 className="text-2xl text-primary">฿{productDetails.price}</h2>
+          </div>
         </div>
-    )
+
+        <div className="flex flex-col gap-6">
+          <div className="flex gap-2">
+            <h3 className="w-1/12 font-bold">Tag</h3>
+            <div className="flex gap-2">
+              {productDetails.tag.map((item: any, index: number) => (
+                <Link className="badge badge-primary" href="/">
+                  {item}
+                </Link>
+              ))}
+            </div>
+          </div>
+          <div className="flex gap-2">
+            <h3 className="w-1/12 font-bold">Detail</h3>
+            <div className="flex gap-2 w-11/12 min-h-40 text-wrap break-words">
+              <p className="w-full">{productDetails.detail}</p>
+            </div>
+          </div>
+        </div>
+        {isProductInCart ? (
+          <>
+            <p className="mb-2 text-slate-500 flex items-enter gap-1">
+                <MdCheckCircle className= "text-teal-400"size = {20}/>
+                <span>Product added to cart</span>
+            </p>
+            <div className="max-w-[300px]">
+                <Button label="View Cart" outline onClick={() =>{
+                    router.push('/cart');
+                }} />
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="flex flex-row gap-3">
+              <Button
+                label="Add to cart"
+                onClick={() => handleAddProductToCart(cartProduct)}
+              />
+              <button className="btn btn-wide btn-primary">Buy Now</button>
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
 }
