@@ -6,7 +6,7 @@ async function addProduct(formData: FormData) {
 
     const name = formData.get("name")?.toString();
     const description = formData.get("description")?.toString();
-    const image = formData.get("imageUrl");
+    const image = formData.get("imageUrl")?.toString();
     console.log(image);
     const price = Number(formData.get("price") || 0)
     const tag = formData.get("tag")?.toString();
@@ -33,7 +33,7 @@ async function addProduct(formData: FormData) {
                 data: {
                     // productId: productOutput.id,
                     product: { connect: { id: productOutput.id } },
-                    currentBid: price, 
+                    currentBid: price,
                     // bidderId: productOutput.id,
                     user: { connect: { id: productOutput.id } },
                 },
