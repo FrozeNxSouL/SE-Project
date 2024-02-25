@@ -58,9 +58,18 @@ export default function report() {
                         <span className="label-text">ใช้คำพูดไม่เหมาะสม</span>
                         <input type="checkbox" className="checkbox checkbox-primary" />
                     </label>
+                    <label className="label cursor-pointer">
+                        <span className="label-text">ความไม่ชัดเจนในการให้ข้อมูลสินค้า</span>
+                        <input type="checkbox" className="checkbox checkbox-primary" />
+                    </label>
 
                     <label className="label cursor-pointer">
-                        <span className="label-text">พูดจาไม่เข้าหู</span>
+                        <span className="label-text">การแก้ไขปัญหาและการคืนสินค้า</span>
+                        <input type="checkbox" className="checkbox checkbox-primary" />
+                    </label>
+
+                    <label className="label cursor-pointer">
+                        <span className="label-text">การให้บริการหลังการขายที่ไม่มีประสิทธิภาพ</span>
                         <input type="checkbox" className="checkbox checkbox-primary" />
                     </label>
 
