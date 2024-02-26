@@ -1,11 +1,70 @@
 "use client"
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { deleteUser } from "./fetch";
+import { changeTax, deleteUser, } from "./fetch";
 import { useState } from "react"
 import admin from "./page";
 interface deleteButtonProps { userid: string, username: string }
 interface searchButtonProps { search: string }
 
+
+export function Taxchange() {
+    const [tax, setTax] = useState<number>(3);
+    const [showModal, setShowModal] = useState<boolean>(false);
+    const router = useRouter()
+
+    const handleTaxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newTax = parseFloat(e.target.value);
+        setTax(newTax);
+    }
+
+    const handleToggle = () => {
+        setShowModal((prev) => !prev)
+    };
+
+    // return (
+    //     <>
+    //         <label className="input input-bordered input-sm flex items-center gap-2">
+    //             <form onSubmit={(e) => {
+    //                 changeTax(tax)
+    //                 router.refresh()
+    //             }}>
+    //                 <input
+    //                     type="number"
+    //                     className="grow bg-transparent"
+    //                     onChange={(e) => handleTaxChange(e)} // Update tax when input changes
+    //                 />
+    //             </form>
+    //         </label></>
+    // )
+
+    return (
+        <>
+            <button onClick={handleToggle} className="btn btn-error text-white rounded-lg">Edit</button>
+            <Modal open={showModal}>
+                <div className="flex justify-between">
+                    <div>
+                        <span className="font-bold text-lg">tax :</span>
+                    </div>
+                    <label className="input input-bordered input-sm items-center gap-2">
+                        <input type="number" className="grow bg-transparent" onChange={(e) => handleTaxChange(e)} />
+                    </label>
+                </div>
+
+                <p className="font-bold text-lg">catagory :</p>
+
+                <div className="modal-action">
+                    <button onClick={() => {
+                        changeTax(tax)
+
+                        handleToggle()
+                        router.refresh()
+                    }} className="btn btn-success text-white rounded-lg mr-4">yes</button>
+                    <button className="btn btn-error text-white rounded-lg" onClick={handleToggle}>no</button>
+                </div>
+            </Modal>
+        </>
+    )
+}
 
 export function SearchButton({ search }: searchButtonProps) {
     const [searchstr, setsearchstr] = useState(search);
@@ -15,26 +74,27 @@ export function SearchButton({ search }: searchButtonProps) {
 
     const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        const params  = new URLSearchParams(searchParams)
-        if(searchstr) {
-            params.set("search",searchstr)
-        }else {
+        const params = new URLSearchParams(searchParams)
+        if (searchstr) {
+            params.set("search", searchstr)
+        } else {
             params.delete("search")
         }
         router.replace(`${pathname}?${params.toString()}`);
     }
     return (
         <label className="input input-bordered input-sm flex items-center gap-2">
-            <form onSubmit={(e)=>{
+            <form onSubmit={(e) => {
                 handleSearch(e)
             }}>
-            <input type="text" value={searchstr} onChange={(e) => setsearchstr(e.target.value)} className="grow bg-transparent" placeholder="Search" />
+                <input type="text" value={searchstr} onChange={(e) => setsearchstr(e.target.value)} className="grow bg-transparent" placeholder="Search" />
             </form>
-            
+
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="w-4 h-4 opacity-70"><path fillRule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clipRule="evenodd" /></svg>
         </label>
     )
 }
+
 export function DeleteButton({ userid, username }: deleteButtonProps) {
     const [showModal, setShowModal] = useState<boolean>(false);
     const router = useRouter()
