@@ -33,9 +33,10 @@ export default function ProductInfo(props: any) {
     price: productDetails.price,
   });
   const router = useRouter()
-  console.log(cartProducts);
+  
 
   useEffect(() => {
+    console.log(cartProducts);
     setIsProductInCart(false);
 
     if (cartProducts) {
@@ -67,7 +68,7 @@ export default function ProductInfo(props: any) {
             <h3 className="w-1/12 font-bold">Tag</h3>
             <div className="flex gap-2">
               {productDetails.tag.map((item: any, index: number) => (
-                <Link className="badge badge-primary" href="/">
+                <Link className="badge badge-primary" href="/" key={index}>
                   {item}
                 </Link>
               ))}
