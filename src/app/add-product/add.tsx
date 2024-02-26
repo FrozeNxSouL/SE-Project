@@ -1,5 +1,6 @@
 "use server"
 import prisma from "@/lib/db/prisma";
+import { Auction } from "@prisma/client";
 import { redirect } from "next/navigation";
 async function addProduct(formData: FormData) {
     // "use server";
@@ -29,11 +30,13 @@ async function addProduct(formData: FormData) {
         });
         console.log(productOutput);
         if (status == "auction") {
-            const auctionOutput = await prisma.auction.create({
+            const auctionOutput: Auction = await prisma.auction.create({
                 data: {
                     product: { connect: { id: productOutput.id } },
-                    currentBid: price,
-                    user: { connect: { id: "65d581b7f9ee9189e1b19051" } },
+                    currentBid: price, 
+                    // bidderId: productOutput.id,
+                    user: {connect: {id: "65d581b7f9ee9189e1b19051"}},
+
                 },
             });
             console.log(auctionOutput)
