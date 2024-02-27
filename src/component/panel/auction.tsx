@@ -11,8 +11,8 @@ export default function AuctionProducts(props: any) {
           <div className="card bg-base-100 shadow-xl basis-72 m-2 transition cursor-pointer hover:scale-[1.01]" key={idx}>
             <div className='absolute w-full m-2'>
               <div className='flex flex-col gap-2'>
-                <div className="badge badge-neutral">{format(item.updatedAt, 'yyyy-MM-dd')}</div>
-                <div className="badge badge-neutral">{format(item.updatedAt, 'HH:mm:ss')}</div>
+                <div className="badge badge-neutral badge-sm">{format(item.updatedAt, 'yyyy-MM-dd')}</div>
+                <div className="badge badge-primary badge-lg">{format(item.updatedAt, 'HH:mm:ss')}</div>
               </div>
             </div>
             <figure>

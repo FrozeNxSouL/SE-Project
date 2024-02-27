@@ -53,6 +53,7 @@ function AddProductPage() {
             required
             name="price"
             type="number"
+            step={0.01}
             className="grow bg-transparent text-right"
           />
           <kbd className="kbd kbd-sm">฿</kbd>
