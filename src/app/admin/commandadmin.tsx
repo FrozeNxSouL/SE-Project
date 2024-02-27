@@ -1,6 +1,6 @@
 "use client"
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { changeTax, deleteUser, } from "./fetch";
+import { deleteUser, } from "./fetch";
 import { useState } from "react"
 import admin from "./page";
 interface deleteButtonProps { userid: string, username: string }
@@ -54,7 +54,7 @@ export function Taxchange() {
 
                 <div className="modal-action">
                     <button onClick={() => {
-                        changeTax(tax)
+
 
                         handleToggle()
                         router.refresh()
