@@ -31,11 +31,14 @@ async function addProduct(formData: FormData) {
         });
         console.log(productOutput);
         if (status == "auction") {
+            const specificDate = new Date(time);
+            const updatedAt = specificDate.toISOString();
+
             const auctionOutput: Auction = await prisma.auction.create({
                 data: {
                     product: { connect: { id: productOutput.id } },
                     currentBid: price,
-                    updatedAt : time,
+                    updatedAt,
                     user: { connect: { id: "65d581b7f9ee9189e1b19051" } },
                 },
             });

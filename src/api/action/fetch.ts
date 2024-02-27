@@ -4,18 +4,19 @@ import { notFound } from "next/navigation"
 
 export async function getAuctionProductbyTag(tagInput: string) {
     try {
-        const output = await prisma.product.findMany({
-            include : {
-                auction : true
+        const output = await prisma.auction.findMany({
+            include: {
+                product: true
             },
             where: {
                 AND: [
                     {
-                        tag: {
-                            hasSome: [tagInput]
-                        }
-                    },
-                    { status: "auction" },
+                        product: {
+                            tag: {
+                                hasSome: [tagInput]
+                            }
+                        },
+                    }
                 ],
             },
             // take: 3,
@@ -23,10 +24,10 @@ export async function getAuctionProductbyTag(tagInput: string) {
                 id: 'desc'
             }
         });
-        // console.log(output)
         if (!output) {
             notFound();
         }
+        console.log(output)
         return output;
     } catch (error) {
         console.log(error);
@@ -48,7 +49,7 @@ export async function getProductbyTag(tagInput: string) {
                 ],
             }
         });
-        console.log(tagInput)
+        console.log(output)
         if (!output) {
             notFound();
         }
@@ -60,13 +61,15 @@ export async function getProductbyTag(tagInput: string) {
 }
 
 export async function getAuctionProduct() {
-    const products = await prisma.product.findMany({
+    const products = await prisma.auction.findMany({
         take: 3,
-        include : {
-            auction : true
+        include: {
+            product: true
         },
         where: {
-            status: "auction",
+            product : {
+                status: "auction"
+            },
         },
         orderBy: {
             id: 'desc'
