@@ -51,7 +51,7 @@ model Auction {
   bidderId    String       @db.ObjectId
   user        User         @relation(fields: [bidderId], references: [id])
   createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  updatedAt   DateTime     
   auction_log Auction_log?
 }
 

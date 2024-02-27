@@ -8,7 +8,7 @@ export default function AuctionProducts(props: any) {
       <div className='flex flex-wrap justify-center'>
           {props.data.map((item: any, idx: number) => (
               <div className="card bg-base-100 shadow-xl basis-72 m-2 transition cursor-pointer hover:scale-[1.01]" key={idx}>
-              <div className="badge badge-neutral absolute m-2">12:00:00</div>
+              <div className="badge badge-neutral absolute m-2">12:00:00 {item.currentBid}</div>
               <figure>
                   <img className="object-cover w-full h-40" src={item.imageUrl[0]} alt={item.name} />
               </figure>

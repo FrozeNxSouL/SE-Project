@@ -11,8 +11,9 @@ async function addProduct(formData: FormData) {
     const price = Number(formData.get("price") || 0)
     const tag = formData.get("tag")?.toString();
     const status = formData.get("status")?.toString();
+    const time = formData.get("Time")?.toString();
 
-    if (!name || !description || !image || !price || !tag || !status) {
+    if (!name || !description || !image || !price || !tag || !status || !time) {
         throw Error("Missing required fields or price = 0");
     }
 
@@ -33,6 +34,7 @@ async function addProduct(formData: FormData) {
                 data: {
                     product: { connect: { id: productOutput.id } },
                     currentBid: price,
+                    updatedAt : time,
                     user: { connect: { id: "65d581b7f9ee9189e1b19051" } },
                 },
             });
