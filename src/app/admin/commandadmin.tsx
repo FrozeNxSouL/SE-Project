@@ -1,14 +1,15 @@
 "use client"
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { deleteUser, } from "./fetch";
+import { changeTax, deleteUser, } from "./fetch";
 import { useState } from "react"
 import admin from "./page";
 interface deleteButtonProps { userid: string, username: string }
 interface searchButtonProps { search: string }
+interface TaxchangeProps {taxhandle: number|undefined}
 
 
-export function Taxchange() {
-    const [tax, setTax] = useState<number>(3);
+export function Taxchange({taxhandle}: TaxchangeProps) {
+    const [tax, setTax] = useState<number|undefined>(taxhandle);
     const [showModal, setShowModal] = useState<boolean>(false);
     const router = useRouter()
 
@@ -46,7 +47,7 @@ export function Taxchange() {
                         <span className="font-bold text-lg">tax :</span>
                     </div>
                     <label className="input input-bordered input-sm items-center gap-2">
-                        <input type="number" className="grow bg-transparent" onChange={(e) => handleTaxChange(e)} />
+                        <input type="number" value={tax} className="grow bg-transparent" onChange={(e) => handleTaxChange(e)} />
                     </label>
                 </div>
 
@@ -54,8 +55,7 @@ export function Taxchange() {
 
                 <div className="modal-action">
                     <button onClick={() => {
-
-
+                        changeTax(tax)
                         handleToggle()
                         router.refresh()
                     }} className="btn btn-success text-white rounded-lg mr-4">yes</button>
