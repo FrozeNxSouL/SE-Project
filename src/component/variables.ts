@@ -99,3 +99,9 @@ export const userData = {
     tel: "087-0202-0202",
     image: "https://cdn.i-scmp.com/sites/default/files/styles/portrait/public/d8/images/2020/09/25/roblox_2.jpg?itok=i0cW5ezZ"
 }
+
+export const secondsInAMinute: number = 60;
+export const minutesInAnHour: number = 60;
+export const hoursInADay: number = 24;
+export const daysInAMonth: number = 30;
+export const daysInAYear: number = 365;
