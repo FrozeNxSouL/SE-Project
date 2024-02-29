@@ -18,6 +18,7 @@ export type CartProductType = {
   description: string;
   quantity: number;
   price: number;
+  img: string[],
 };
 
 export default function ProductInfo(props: any) {
@@ -31,6 +32,7 @@ export default function ProductInfo(props: any) {
     description: productDetails.description,
     quantity: 1,
     price: productDetails.price,
+    img: productDetails.imageUrl,
   });
   const router = useRouter()
   
