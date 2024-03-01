@@ -7,10 +7,10 @@ import { useCart } from "@/hooks/useCart";
 import { useEffect, useReducer, useState } from "react";
 import { MdCheckCircle } from "react-icons/md";
 import { useRouter } from "next/navigation";
-import { productDetails } from "./page";
+import { productObject } from "./page";
 
 interface ProductDetailsProps {
-  productDetails: productDetails;
+  productDetails: productObject;
 }
 
 export type CartProductType = {
