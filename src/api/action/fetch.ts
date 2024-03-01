@@ -4,21 +4,30 @@ import { notFound } from "next/navigation"
 
 export async function getAuctionProductbyTag(tagInput: string) {
     try {
-        const output = await prisma.product.findMany({
+        const output = await prisma.auction.findMany({
+            include: {
+                product: true
+            },
             where: {
-                tag: {
-                    hasSome: [tagInput]
-                }
+                AND: [
+                    {
+                        product: {
+                            tag: {
+                                hasSome: [tagInput]
+                            }
+                        },
+                    }
+                ],
             },
             // take: 3,
             orderBy: {
                 id: 'desc'
             }
         });
-        // console.log(output)
         if (!output) {
             notFound();
         }
+        console.log(output)
         return output;
     } catch (error) {
         console.log(error);
@@ -30,12 +39,17 @@ export async function getProductbyTag(tagInput: string) {
     try {
         const output = await prisma.product.findMany({
             where: {
-                tag: {
-                    hasSome: [tagInput]
-                }
+                AND: [
+                    {
+                        tag: {
+                            hasSome: [tagInput]
+                        }
+                    },
+                    { status: "sell" },
+                ],
             }
         });
-        console.log(tagInput)
+        console.log(output)
         if (!output) {
             notFound();
         }
@@ -47,8 +61,16 @@ export async function getProductbyTag(tagInput: string) {
 }
 
 export async function getAuctionProduct() {
-    const products = await prisma.product.findMany({
-        // take: 3,
+    const products = await prisma.auction.findMany({
+        take: 3,
+        include: {
+            product: true
+        },
+        where: {
+            product : {
+                status: "auction"
+            },
+        },
         orderBy: {
             id: 'desc'
         }
@@ -58,7 +80,10 @@ export async function getAuctionProduct() {
 
 export async function getProducts() {
     const products = await prisma.product.findMany({
-        // take: 6,
+        take: 6,
+        where: {
+            status: "sell",
+        },
         orderBy: {
             id: 'desc'
         }

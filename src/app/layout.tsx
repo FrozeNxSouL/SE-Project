@@ -4,8 +4,7 @@ import "./globals.css";
 import NavBar from "../component/nav/navBar";
 import Footer from "@/component/footer/footer";
 import "material-icons/iconfont/material-icons.css";
-import CartProvider from "@/providers/CartProvider";
-import { Toaster } from "react-hot-toast";
+import SessionProvider from '@/app/SessionProvider'
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,25 +19,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <Toaster toastOptions={{
-          style:{
-            background: 'rgb(51 65 85)',
-            color: '#fff',
-          }
-        }}
-        />
-        <CartProvider>
-          <div className="sticky top-0 z-50">
-            <NavBar />
-          </div>
-          <main className="h-full bg-base-200 min-h-screen pt-5">
-            {children}
-          </main>
-          <Footer />
-        </CartProvider>
-      </body>
-    </html>
+
+      <html lang="en">
+        <body className={inter.className}>
+          <SessionProvider>
+            <div className="sticky top-0 z-50">
+              <NavBar />
+            </div>
+            <main className="h-full bg-base-200 min-h-screen pt-5">
+              {children}
+            </main>
+            <Footer />
+          </SessionProvider>
+        </body>
+      </html>
   );
 }
