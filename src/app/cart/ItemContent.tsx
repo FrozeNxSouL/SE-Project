@@ -2,13 +2,16 @@
 import { formatPrice } from "@/utils/formatPrice";
 import { CartProductType } from "../product/[productId]/productInfo";
 import Link from "next/link";
+import Image from 'next/image'
 import { truncateText } from "@/utils/truncateText";
+import { useCart } from "@/hooks/useCart";
 
 interface ItemContentProps {
   item: CartProductType;
 }
-
 const ItemContent: React.FC<ItemContentProps> = ({ item }) => {
+  console.log(item)
+  const {handleRemoveProductFromCart} = useCart()
   return (
     <div
       className="
@@ -33,15 +36,26 @@ const ItemContent: React.FC<ItemContentProps> = ({ item }) => {
             "
       >
         <Link href={`/product/${item.id}`}>
-          <div></div>
+          <div className="relative w-[70px] aspect-square">
+    
+            <img src={item.img[0]} alt={item.name} className="object-contain"/>
+          </div>
         </Link>
-        <div className="flex flex-col justify-between">
-          <Link href={`/product/${item.id}`}>{item.name}</Link>
+        <div className="flex flex-col">
+          <Link className ="font-bold"href={`/product/${item.id}`}>{item.name}</Link>
+          <div >{truncateText(item.description)}</div>
+          
+          {/* <div className="w-[70px]">
+            <button className="text-slate-500 underline" onClick={()=>{}}>Remove</button>
+          </div> */}
         </div>
+        
       </div>
 
-      <div>{formatPrice(item.price)}</div>
-      <div></div>
+      <div className="col-span-2 justify-self-end font-semibold">{formatPrice(item.price)}</div>
+      <button className="btn btn-error w-[70px] justify-self-end" onClick={()=>{handleRemoveProductFromCart(item)}}>Remove</button>
+      
+      
     </div>
   );
 };

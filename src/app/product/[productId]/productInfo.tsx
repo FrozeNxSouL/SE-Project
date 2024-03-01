@@ -7,9 +7,10 @@ import { useCart } from "@/hooks/useCart";
 import { useEffect, useReducer, useState } from "react";
 import { MdCheckCircle } from "react-icons/md";
 import { useRouter } from "next/navigation";
+import { productDetails } from "./page";
 
 interface ProductDetailsProps {
-  product: any;
+  productDetails: productDetails;
 }
 
 export type CartProductType = {
@@ -18,19 +19,24 @@ export type CartProductType = {
   description: string;
   quantity: number;
   price: number;
+  img: string[];
+  tag : string[];
 };
 
-export default function ProductInfo(props: any) {
+export default function ProductInfo({productDetails} : ProductDetailsProps) {
   const { handleAddProductToCart, cartProducts } = useCart();
   const [isProductInCart, setIsProductInCart] = useState(false);
   const { cartTotalQty } = useCart();
-  const productDetails = props.data;
+  // const productDetails = props.data;
+  console.log(productDetails)
   const [cartProduct, setCartProduct] = useState<CartProductType>({
-    id: productDetails.id,
-    name: productDetails.name,
-    description: productDetails.description,
     quantity: 1,
+    id: productDetails.id,
+    description: productDetails.description,
+    img: productDetails.imageUrl,
+    name: productDetails.name,
     price: productDetails.price,
+    tag : productDetails.tag,
   });
   const router = useRouter()
   
@@ -77,7 +83,7 @@ export default function ProductInfo(props: any) {
           <div className="flex gap-2">
             <h3 className="w-1/12 font-bold">Detail</h3>
             <div className="flex gap-2 w-11/12 min-h-40 text-wrap break-words">
-              <p className="w-full">{productDetails.detail}</p>
+              <p className="w-full">{productDetails.description}</p>
             </div>
           </div>
         </div>

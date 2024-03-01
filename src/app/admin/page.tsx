@@ -17,7 +17,7 @@ export default async function admin({ searchParams }: { searchParams: { search?:
         <div className="p-5">
           <p>Tax : {admin?.tax}%</p>
           <p>catagory :</p>
-          <Taxchange></Taxchange>
+          <Taxchange taxhandle={admin?.tax}></Taxchange>
         </div>
       </div>
 

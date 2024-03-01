@@ -7,16 +7,16 @@ export async function getManage() {
     return list
 }
 
-// export async function changeTax(newtax: number){
-//     const list = await prisma.management.update({
-//         where: {
-//             id: 
-//         },
-//         data: {
-//             tax: newtax
-//         }
-//     })
-// }
+export async function changeTax(newtax: number){
+    const list = await prisma.management.update({
+        where: {
+            id: "65decc90137f28b543937afb"
+        },
+        data: {
+            tax: newtax
+        }
+    })
+}
 
 export async function getUser(usersearch: string) {
     try {
