@@ -8,7 +8,6 @@ import AuctionProducts from '@/component/panel/auction';
 
 
 export default async function HomePage() {
-  
   const auctionProduct = await getAuctionProduct();
   const products = await getProducts();
 
