@@ -1,8 +1,11 @@
 
 import Link from "next/link";
 import { categories } from "../variables";
+import { getCurrentSession } from "@/lib/getCurrentSession";
+import SignOutButton from "./signOut";
 
-export default function NavBar() {
+export default async function NavBar() {
+    const session = await getCurrentSession();
     // window.onscroll = function() {scrollFunction()};
 
     // const scrollFunction = () => {
@@ -29,29 +32,32 @@ export default function NavBar() {
                         <div className="badge badge-primary">+99</div>
                         <span className="material-icons">shopping_cart</span>
                     </button>
-                    <div className="dropdown dropdown-hover dropdown-end">
-                        <div tabIndex={0} role="button" className="btn m-1">
-                            <span className="material-icons">person</span>
-                        </div>
-                        <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                            <div className="mx-auto flex flex-col">
-                                <div className="avatar mx-auto">
-                                    <div className="w-16 rounded-full">
-                                        <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
-                                    </div>
-                                </div>
-                                <span className="text-center">username</span>
+                    {session ? (
+                        <div className="dropdown dropdown-hover dropdown-end">
+                            <div tabIndex={0} role="button" className="btn m-1">
+                                <span className="material-icons">person</span>
                             </div>
-                            <div className="divider"></div>
-                            <li><a href="/user">Account</a></li>
-                            <li><a href="sell">Selling</a></li>
-                            <li><a>My purchase</a></li>
-                            <div className="divider"></div>
-                            <li><a href="/admin">Admin</a></li>
-                            <li><a className="text-error">Logout</a></li>
-                        </ul>
-                    </div>
-                    <Link href="/login" className="btn btn-primary btn-outline">sign in</Link>
+                            <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                                <div className="mx-auto flex flex-col">
+                                    <div className="avatar mx-auto">
+                                        <div className="w-16 rounded-full">
+                                            <img src={session.user?.image || "https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"} />
+                                        </div>
+                                    </div>
+                                    <span className="text-center">{session.user?.name}</span>
+                                </div>
+                                <div className="divider"></div>
+                                <li><a>Account</a></li>
+                                <li><a>Selling</a></li>
+                                <li><a>My purchase</a></li>
+                                <div className="divider"></div>
+                                <li><a href="/admin">Admin</a></li>
+                                <SignOutButton />
+                            </ul>
+                        </div>
+                    ) : (
+                        <Link href="/auth/login" className="btn btn-primary btn-outline">sign in</Link>
+                    )}
                 </div>
             </div>
             <div className="navbar bg-base-100 flex justify-center gap-3">
