@@ -5,6 +5,7 @@ import NavBar from "../component/nav/navBar";
 import Footer from "@/component/footer/footer";
 import "material-icons/iconfont/material-icons.css";
 import SessionProvider from '@/app/SessionProvider'
+import CartProvider from "@/providers/CartProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,9 +27,11 @@ export default function RootLayout({
             <div className="sticky top-0 z-50">
               <NavBar />
             </div>
+            <CartProvider>
             <main className="h-full bg-base-200 min-h-screen pt-5">
               {children}
             </main>
+            </CartProvider>
             <Footer />
           </SessionProvider>
         </body>
