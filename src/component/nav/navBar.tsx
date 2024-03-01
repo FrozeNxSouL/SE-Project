@@ -43,8 +43,8 @@ export default function NavBar() {
                                 <span className="text-center">username</span>
                             </div>
                             <div className="divider"></div>
-                            <li><a>Account</a></li>
-                            <li><a>Selling</a></li>
+                            <li><a href="/user">Account</a></li>
+                            <li><a href="sell">Selling</a></li>
                             <li><a>My purchase</a></li>
                             <div className="divider"></div>
                             <li><a href="/admin">Admin</a></li>
@@ -62,15 +62,15 @@ export default function NavBar() {
                     </div>
                     <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
                         {categories.map((value, idx) => (
-                            <li><Link href={`/${value.label}`} key={idx}>{value.label}</Link></li>
+                            <li key={idx}><Link href={`/${value.label}`}>{value.label}</Link></li>
                         ))}
                     </ul>
                 </div>
-                <Link href="/shop" className=" btn btn-ghost text-base">
+                <Link href="/" className=" btn btn-ghost text-base">
                     <span className="material-icons">shopping_bag</span>
                     <span>Buy</span>
                 </Link>
-                <Link href="/shop" className=" btn btn-ghost text-base">
+                <Link href="/add-product" className=" btn btn-ghost text-base">
                     <span className="material-icons">shopping_bag</span>
                     <span>Sell</span>
                 </Link>

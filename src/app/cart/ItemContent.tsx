@@ -10,7 +10,7 @@ interface ItemContentProps {
   item: CartProductType;
 }
 const ItemContent: React.FC<ItemContentProps> = ({ item }) => {
-  console.log(item.img)
+  console.log(item)
   const {handleRemoveProductFromCart} = useCart()
   return (
     <div
