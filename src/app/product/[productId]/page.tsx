@@ -3,7 +3,7 @@ import prisma from "@/lib/prismaDB";
 import { productDetails, userData } from "@/component/variables";
 import { notFound } from "next/navigation";
 
-export interface productDetails {
+export interface productObject {
     id: string;
     description: string;
     imageUrl: string[];
