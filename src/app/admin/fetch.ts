@@ -7,13 +7,14 @@ export async function getManage() {
     return list
 }
 
-export async function changeTax(newtax: number){
+export async function changeTax(newtax: number|undefined,newcategory: JSON|null){
     const list = await prisma.management.update({
         where: {
             id: "65decc90137f28b543937afb"
         },
         data: {
-            tax: newtax
+            tax: newtax,
+            category: newcategory
         }
     })
 }
