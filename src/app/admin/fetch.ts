@@ -18,7 +18,14 @@ export async function changeTax(newtax: number|undefined,newcategory: JSON|null)
         }
     })
 }
-
+export async function tagAdd(addname: string,addurl: string) {
+    const list = await prisma.category.create({
+        data:{
+            name: addname,
+            url: addurl
+        }
+    })
+}
 export async function editTag(newcategory: JSON|null) {
     const list = await prisma.management.update({
         where: {

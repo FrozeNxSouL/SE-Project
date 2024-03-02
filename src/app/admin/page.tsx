@@ -1,4 +1,4 @@
-import { DeleteButton, SearchButton, Taxchange, EditTag } from "./commandadmin"
+import { DeleteButton, SearchButton, Taxchange, EditTag, AddTag } from "./commandadmin"
 import { getManage, getUser } from "./fetch";
 export default async function admin({ searchParams }: { searchParams: { search?: string } }) {
   const search = searchParams.search || "";
@@ -25,9 +25,10 @@ export default async function admin({ searchParams }: { searchParams: { search?:
             {admin.category.map((cat: any, index: number) => (
               <EditTag index={index} categoryHandle={admin?.category} />
             ))}
-            <button className="btn btn-success">
+            {/* <button className="btn btn-success">
               <span className="material-icons">add</span>
-            </button>
+            </button> */}
+            <AddTag></AddTag>
           </div>
 
         <Taxchange taxhandle={admin?.tax} categoryhandle={admin?.category}></Taxchange>
