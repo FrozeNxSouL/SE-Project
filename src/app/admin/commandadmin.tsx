@@ -1,9 +1,10 @@
 "use client"
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { changeTax, deleteUser, } from "./fetch";
+import { changeTax, deleteUser, editTag } from "./fetch";
 import { useState } from "react"
 import admin from "./page";
 interface deleteButtonProps { userid: string, username: string }
+interface editTagProps { index: number, categoryHandle :JSON|null }
 interface searchButtonProps { search: string }
 interface managechangeProps {taxhandle: number|undefined,categoryhandle :JSON|null}
 
@@ -140,6 +141,66 @@ export function DeleteButton({ userid, username }: deleteButtonProps) {
         </>
     )
 }
+
+export function EditTag({ index, categoryHandle }: editTagProps) {
+    const [showModal, setShowModal] = useState<boolean>(false);
+    const [category, setCategory] = useState<JSON|null>(categoryHandle)
+
+    const [name, setName] = useState(categoryHandle[index].name)
+    const [url, setUrl] = useState(categoryHandle[index].url)
+
+    const router = useRouter()
+    const handleToggle = () => {
+        setShowModal((prev) => !prev)
+    };
+
+    const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setName(e.target.value)
+    }
+    const handleChangeUrl = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setUrl(e.target.value)
+    }
+
+    const handleSubmit = (index: number) => {
+        const newCategory = category
+        newCategory[index].name = name
+        newCategory[index].url = url
+        editTag(newCategory)
+    }
+
+
+    return (
+        <>
+            <button key={index} onClick={handleToggle} className="btn btn-primary btn-outline">
+                {categoryHandle[index].name}
+            </button>
+            <Modal open={showModal}>
+                <div className="modal-top mb-5">
+                    <h3 className="font-bold text-lg">Edit</h3>
+                </div>
+                <div className="modal-middle space-y-2">
+                    <label className="input input-bordered flex items-center gap-2">
+                        Label
+                    <input type="text" className="grow bg-transparent" value={categoryHandle[index].name} onChange={(e) => handleChangeName(e)}/>
+                    </label>
+                    <label className="input input-bordered flex items-center gap-2">
+                        URL
+                    <input type="text" className="grow bg-transparent" value={categoryHandle[index].url} onChange={(e) => handleChangeUrl(e)}/>
+                    </label>
+                </div>
+                <div className="modal-action">
+                    <button onClick={() => {
+                        handleSubmit(index)
+                        handleToggle()
+                        router.refresh()
+                    }} className="btn btn-success text-white rounded-lg mr-4">Confirm</button>
+                    <button className="btn btn-error text-white rounded-lg" onClick={handleToggle}>Cancel</button>
+                </div>
+            </Modal>
+        </>
+    )
+}
+
 
 
 export function Modal({ children, open }: { children: React.ReactNode, open: boolean }) {

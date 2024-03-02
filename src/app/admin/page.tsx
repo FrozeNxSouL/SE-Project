@@ -1,9 +1,12 @@
-import { DeleteButton, SearchButton, Taxchange } from "./commandadmin"
+import { DeleteButton, SearchButton, Taxchange, EditTag } from "./commandadmin"
 import { getManage, getUser } from "./fetch";
 export default async function admin({ searchParams }: { searchParams: { search?: string } }) {
   const search = searchParams.search || "";
   const users = await getUser(search)
   const admin = await getManage()
+  if (!admin) {
+    return (<div>poon</div>)
+  }
   console.log(admin)
   return (
     <div className="mx-auto w-2/3 bg-base-300">
@@ -17,24 +20,16 @@ export default async function admin({ searchParams }: { searchParams: { search?:
         </div> */}
         <div className="p-5">
           <p>Tax : {admin?.tax}%</p>
-          <p>catagory : {JSON.stringify(admin?.category)}</p>
-          {admin?.category?.map((cat, index) => (
-            <tr key={index}>
-              <td>
-                <div className="flex items-center gap-3">
+          <p>catagory :</p>
+          <div className="flex flex-row flex-wrap gap-2 m-3">
+            {admin.category.map((cat: any, index: number) => (
+              <EditTag index={index} categoryHandle={admin?.category} />
+            ))}
+            <button className="btn btn-success">
+              <span className="material-icons">add</span>
+            </button>
+          </div>
 
-                  {/* <div className="mask mask-squircle w-12 h-12">
-                      <img src={admin.category.icon} alt="Avatar Tailwind CSS Component" />
-                    </div> */}
-                  <span className="material-symbols-outlined">{cat.icon}</span>
-
-                <div>
-                  <div className="font-bold">{cat.name}</div>
-                </div>
-              </div>
-            </td>
-            </tr>
-          ))}
         <Taxchange taxhandle={admin?.tax} categoryhandle={admin?.category}></Taxchange>
       </div>
     </div>

@@ -19,6 +19,17 @@ export async function changeTax(newtax: number|undefined,newcategory: JSON|null)
     })
 }
 
+export async function editTag(newcategory: JSON|null) {
+    const list = await prisma.management.update({
+        where: {
+            id: "65decc90137f28b543937afb"
+        },
+        data: {
+            category: newcategory
+        }
+    })
+}
+
 export async function getUser(usersearch: string) {
     try {
         const list = await prisma.user.findMany({
