@@ -58,8 +58,8 @@ export function Taxchange({taxhandle}: TaxchangeProps) {
                         changeTax(tax)
                         handleToggle()
                         router.refresh()
-                    }} className="btn btn-success text-white rounded-lg mr-4">yes</button>
-                    <button className="btn btn-error text-white rounded-lg" onClick={handleToggle}>no</button>
+                    }} className="btn btn-success text-white rounded-lg mr-4">Confirm</button>
+                    <button className="btn btn-error text-white rounded-lg" onClick={handleToggle}>Cancel</button>
                 </div>
             </Modal>
         </>
@@ -104,7 +104,9 @@ export function DeleteButton({ userid, username }: deleteButtonProps) {
 
     return (
         <>
-            <button onClick={handleToggle} className="btn btn-error text-white rounded-lg">Delete</button>
+            <button onClick={handleToggle} className="btn btn-error ">
+                <span className="material-icons-outlined">delete_forever</span>
+            </button>
             <Modal open={showModal}>
                 <h3 className="font-bold text-lg">Are you sure to delete user {username} ?</h3>
                 <div className="modal-action">
@@ -112,8 +114,8 @@ export function DeleteButton({ userid, username }: deleteButtonProps) {
                         deleteUser(userid)
                         handleToggle()
                         router.refresh()
-                    }} className="btn btn-success text-white rounded-lg mr-4">yes</button>
-                    <button className="btn btn-error text-white rounded-lg" onClick={handleToggle}>no</button>
+                    }} className="btn btn-success text-white rounded-lg mr-4">Confirm</button>
+                    <button className="btn btn-error text-white rounded-lg" onClick={handleToggle}>Cancel</button>
                 </div>
                 {/* <button onClick={() => {
                     deleteUser(userid)
