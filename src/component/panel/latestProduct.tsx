@@ -10,7 +10,7 @@ export default function LatestProducts(props: any) {
                 <div className='flex flex-wrap justify-center'>
                     {props.data.map((item: any, idx: number) => (
                         // <Link href={`/product/${item.id}`}>
-                        <div onClick={() => router.push(`/product/${item.id}`)} className="card bg-base-100 shadow-xl basis-72 m-2 transition cursor-pointer hover:scale-[1.01]" key={idx}>
+                        <div onClick={() => router.push(`/product/${item.id}`)} className="bg-base-100 shadow-xl basis-72 m-2 transition cursor-pointer hover:ring-1 ring-primary" key={idx}>
                             <figure>
                                 <img className="object-cover w-full h-40" src={item.imageUrl[0]} alt={item.name} />
                             </figure>
@@ -30,10 +30,7 @@ export default function LatestProducts(props: any) {
                                 </div>
                             </div>
                         </div>
-                        // </Link>
                     ))}
-
-
                 </div>
                 <Link href="/shop" className="btn btn-primary m-10">View more</Link>
             </div>
