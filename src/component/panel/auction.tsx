@@ -33,7 +33,7 @@ export default function AuctionProducts(props: any) {
         const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
-        // newAuction[index].countdown = `${hours}h ${minutes}m ${seconds}s`
+
         const newAuction: auction[] = [...auction]
         if (hours <= 0) {
             newAuction[index].countdown = `${minutes}m ${seconds}s`

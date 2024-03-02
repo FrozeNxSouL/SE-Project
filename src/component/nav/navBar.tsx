@@ -28,10 +28,10 @@ export default async function NavBar() {
                     </label>
                 </div>
                 <div className="navbar-end">
-                    <button className="btn">
+                    <Link href="/cart" className="btn">
                         <div className="badge badge-primary">+99</div>
                         <span className="material-icons">shopping_cart</span>
-                    </button>
+                    </Link>
                     {session ? (
                         <div className="dropdown dropdown-hover dropdown-end">
                             <div tabIndex={0} role="button" className="btn m-1">
