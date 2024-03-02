@@ -6,6 +6,7 @@ import Footer from "@/component/footer/footer";
 import "material-icons/iconfont/material-icons.css";
 import SessionProvider from '@/app/SessionProvider'
 import { CartContextProvider } from "@/hooks/useCart";
+import "material-symbols";
 
 const inter = Inter({ subsets: ["latin"] });
 

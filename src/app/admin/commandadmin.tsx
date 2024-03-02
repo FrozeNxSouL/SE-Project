@@ -5,17 +5,23 @@ import { useState } from "react"
 import admin from "./page";
 interface deleteButtonProps { userid: string, username: string }
 interface searchButtonProps { search: string }
-interface TaxchangeProps {taxhandle: number|undefined}
+interface managechangeProps {taxhandle: number|undefined,categoryhandle :JSON|null}
 
 
-export function Taxchange({taxhandle}: TaxchangeProps) {
+export function Taxchange({taxhandle,categoryhandle}: managechangeProps) {
     const [tax, setTax] = useState<number|undefined>(taxhandle);
+    const [category, setCategory] = useState<JSON|null>(categoryhandle);
     const [showModal, setShowModal] = useState<boolean>(false);
     const router = useRouter()
 
     const handleTaxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newTax = parseFloat(e.target.value);
         setTax(newTax);
+    }
+
+    const handleCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newCategory = JSON.parse(e.target.value);
+        setCategory(newCategory);
     }
 
     const handleToggle = () => {
@@ -51,11 +57,18 @@ export function Taxchange({taxhandle}: TaxchangeProps) {
                     </label>
                 </div>
 
-                <p className="font-bold text-lg">catagory :</p>
+                <div className="flex justify-between">
+                    <div>
+                        <span className="font-bold text-lg">category :</span>
+                    </div>
+                    <label className="input input-bordered input-sm items-center gap-2">
+                        <input type="text" value={JSON.stringify(category)} className="grow bg-transparent" onChange={(e) => handleCategoryChange(e)} />
+                    </label>
+                </div>
 
                 <div className="modal-action">
                     <button onClick={() => {
-                        changeTax(tax)
+                        changeTax(tax,category)
                         handleToggle()
                         router.refresh()
                     }} className="btn btn-success text-white rounded-lg mr-4">yes</button>
