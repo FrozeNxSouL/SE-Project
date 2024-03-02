@@ -1,3 +1,4 @@
+"use client";
 import { CartProductType } from "@/app/product/[productId]/productInfo";
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import {toast} from 'react-hot-toast'
@@ -17,8 +18,12 @@ interface Props{
 }
 
 export const CartContextProvider = (props: Props) =>{
-    const [cartTotalQty, setCartTotalQty] = useState(1);
+    const [cartTotalQty, setCartTotalQty] = useState(0);
+    const [cartTotalAmount, setCartTotalAmount] = useState(1)
     const [cartProducts, setCartProducts] = useState<CartProductType[] | null>(null);
+
+    console.log('qty', cartTotalQty);
+    console.log('amount', cartTotalAmount);
     
     useEffect(()=>{
         const cartItems: any = localStorage.getItem('eShopCartItems')
@@ -26,6 +31,27 @@ export const CartContextProvider = (props: Props) =>{
 
         setCartProducts(cProducts)
     }, [])
+
+    useEffect(()=>{
+        const getTotals = () =>{
+            
+            if(cartProducts){
+                const {total, qty} = cartProducts?.reduce((acc, item)=>{
+                    const itemTotal = item.price
+    
+                    acc.total += itemTotal
+                    return acc
+                }, {
+                    total: 0,
+                    qty: 0
+                })
+                setCartTotalAmount(total)
+            }
+
+        };
+
+        getTotals();
+    }, [cartProducts])
 
     const handleAddProductToCart = useCallback((product: CartProductType)=>{
         console.log("1")

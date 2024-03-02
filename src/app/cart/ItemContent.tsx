@@ -11,7 +11,7 @@ interface ItemContentProps {
 }
 const ItemContent: React.FC<ItemContentProps> = ({ item }) => {
   console.log(item.img)
-  const {handleRemoveProductFromCart} = useCart()
+  const { handleRemoveProductFromCart } = useCart()
   return (
     <div
       className="
@@ -52,7 +52,7 @@ const ItemContent: React.FC<ItemContentProps> = ({ item }) => {
         
       </div>
 
-      <div className="col-span-2 justify-self-end font-semibold">{formatPrice(item.price)}</div>
+      <div className="col-span-2 justify-self-end font-semibold">{formatPrice(item.price * item.quantity)}</div>
       <button className="btn btn-error w-[70px] justify-self-end" onClick={()=>{handleRemoveProductFromCart(item)}}>Remove</button>
       
       
