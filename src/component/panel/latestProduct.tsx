@@ -17,10 +17,10 @@ export default function LatestProducts(props: any) {
                             <div className="card-body p-5 bg-base-100">
                                 <div className="flex flex-wrap gap-2">
                                     <div className="badge badge-primary">NEW</div>
-                                    {item.tag.map((element: string, i: number) => {
+                                    {/* <div className="badge badge-outline">{item.tag[0]}</div> */}
+                                    {item.tag.slice().reverse().map((element: string, i: number) => (
                                         <div className="badge badge-outline" key={i}>{element}</div>
-                                    })}
-
+                                    ))}
                                 </div>
                                 <div className="card-title truncate overflow-hidden max-w-60">{item.name}</div>
                                 <div className="card-actions justify-end">
