@@ -3,6 +3,15 @@ import prisma from "@/lib/prismaDB";
 import { productDetails, userData } from "@/component/variables";
 import { notFound } from "next/navigation";
 
+export interface productObject {
+    id: string;
+    description: string;
+    imageUrl: string[];
+    name: string;
+    price: number;
+    tag : string[];
+}
+
 async function getProductDetail(productId:string){
     try {
         const productDetails = await prisma.product.findUnique({
@@ -31,7 +40,7 @@ export default async function payment({params}: {params: {productId:string}}) {
                 <li>{productDetails?.name}</li>
             </ul>
         </div>
-        <ProductInfo data={productDetails} />
+        <ProductInfo productDetails={productDetails} />
         <div className="bg-base-100 w-full mt-5 p-5 flex flex-row justify-between">
             <div className="flex flex-row gap-5">
                 <div className="avatar">

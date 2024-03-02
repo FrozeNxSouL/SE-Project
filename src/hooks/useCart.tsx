@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import { CartProductType } from "@/app/product/[productId]/productInfo";
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import {toast} from 'react-hot-toast'

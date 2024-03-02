@@ -72,11 +72,11 @@ export default async function NavBar() {
                         ))}
                     </ul>
                 </div>
-                <Link href="/shop" className=" btn btn-ghost text-base">
+                <Link href="/" className=" btn btn-ghost text-base">
                     <span className="material-icons">shopping_bag</span>
                     <span>Buy</span>
                 </Link>
-                <Link href="/shop" className=" btn btn-ghost text-base">
+                <Link href="/add-product" className=" btn btn-ghost text-base">
                     <span className="material-icons">shopping_bag</span>
                     <span>Sell</span>
                 </Link>
