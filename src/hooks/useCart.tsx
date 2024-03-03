@@ -1,10 +1,11 @@
-'use client'
+"use client"
 import { CartProductType } from "@/app/product/[productId]/productInfo";
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import {toast} from 'react-hot-toast'
 
 type CartContextType = {
     cartTotalQty: number;
+    cartTotalAmount: number;
     cartProducts: CartProductType[] | null;
     handleAddProductToCart: (product: CartProductType) => void;
     handleRemoveProductFromCart: (product: CartProductType) => void;
@@ -18,8 +19,13 @@ interface Props{
 }
 
 export const CartContextProvider = (props: Props) =>{
-    const [cartTotalQty, setCartTotalQty] = useState(1);
+    
+    const [cartTotalQty, setCartTotalQty] = useState(0);
+    const [cartTotalAmount, setCartTotalAmount] = useState(1)
     const [cartProducts, setCartProducts] = useState<CartProductType[] | null>(null);
+
+    console.log('qty', cartTotalQty);
+    console.log('amount', cartTotalAmount);
     
     useEffect(()=>{
         const cartItems: any = localStorage.getItem('eShopCartItems')
@@ -28,6 +34,29 @@ export const CartContextProvider = (props: Props) =>{
         setCartProducts(cProducts)
     }, [])
 
+    useEffect(()=>{
+        const getTotals = () =>{
+            
+            if(cartProducts){
+                const {total, qty} = cartProducts?.reduce((acc, item)=>{
+                    const itemTotal = item.price
+    
+                    acc.total += itemTotal
+                    acc.qty += item.quantity
+                    return acc
+                }, {
+                    total: 0,
+                    qty: 0
+                })
+                setCartTotalAmount(total)
+                setCartTotalQty(qty)
+            }
+
+        };
+
+        getTotals();
+    }, [cartProducts])
+    
     const handleAddProductToCart = useCallback((product: CartProductType)=>{
         console.log("1")
         setCartProducts((prev)=>{
@@ -68,6 +97,7 @@ export const CartContextProvider = (props: Props) =>{
 
     const value = {
         cartTotalQty,
+        cartTotalAmount,
         cartProducts,
         handleAddProductToCart,
         handleRemoveProductFromCart,

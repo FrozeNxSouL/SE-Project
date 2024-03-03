@@ -3,9 +3,13 @@ import Link from "next/link";
 import { categories } from "../variables";
 import { getCurrentSession } from "@/lib/getCurrentSession";
 import SignOutButton from "./signOut";
+import CartCount from "./CartCount";
+import getCurrentUser from "@/app/action/getCurentUser";
+
 
 export default async function NavBar() {
     const session = await getCurrentSession();
+    const a = await getCurrentUser();
     // window.onscroll = function() {scrollFunction()};
 
     // const scrollFunction = () => {
@@ -29,8 +33,7 @@ export default async function NavBar() {
                 </div>
                 <div className="navbar-end">
                     <button className="btn">
-                        <div className="badge badge-primary">+99</div>
-                        <span className="material-icons">shopping_cart</span>
+                        <CartCount />
                     </button>
                     {session ? (
                         <div className="dropdown dropdown-hover dropdown-end">
