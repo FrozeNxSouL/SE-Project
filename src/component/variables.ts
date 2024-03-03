@@ -105,3 +105,12 @@ export const minutesInAnHour: number = 60;
 export const hoursInADay: number = 24;
 export const daysInAMonth: number = 30;
 export const daysInAYear: number = 365;
+
+export interface auction {
+    id : string,
+    title: string,
+    image: string,
+    price: number,
+    targetTime: string,
+    countdown: string
+}
