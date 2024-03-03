@@ -8,6 +8,7 @@ import { useEffect, useReducer, useState } from "react";
 import { MdCheckCircle } from "react-icons/md";
 import { useRouter } from "next/navigation";
 import { productObject } from "./page";
+import { useSession } from "next-auth/react";
 
 interface ProductDetailsProps {
   productDetails: productObject;
@@ -24,6 +25,7 @@ export type CartProductType = {
 };
 
 export default function ProductInfo({productDetails} : ProductDetailsProps) {
+  const session = useSession()
   const { handleAddProductToCart, cartProducts } = useCart();
   const [isProductInCart, setIsProductInCart] = useState(false);
   const { cartTotalQty } = useCart();
