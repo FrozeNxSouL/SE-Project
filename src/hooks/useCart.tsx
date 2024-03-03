@@ -5,6 +5,7 @@ import {toast} from 'react-hot-toast'
 
 type CartContextType = {
     cartTotalQty: number;
+    cartTotalAmount: number;
     cartProducts: CartProductType[] | null;
     handleAddProductToCart: (product: CartProductType) => void;
     handleRemoveProductFromCart: (product: CartProductType) => void;
@@ -18,6 +19,7 @@ interface Props{
 }
 
 export const CartContextProvider = (props: Props) =>{
+    
     const [cartTotalQty, setCartTotalQty] = useState(0);
     const [cartTotalAmount, setCartTotalAmount] = useState(1)
     const [cartProducts, setCartProducts] = useState<CartProductType[] | null>(null);
@@ -40,19 +42,21 @@ export const CartContextProvider = (props: Props) =>{
                     const itemTotal = item.price
     
                     acc.total += itemTotal
+                    acc.qty += item.quantity
                     return acc
                 }, {
                     total: 0,
                     qty: 0
                 })
                 setCartTotalAmount(total)
+                setCartTotalQty(qty)
             }
 
         };
 
         getTotals();
     }, [cartProducts])
-
+    
     const handleAddProductToCart = useCallback((product: CartProductType)=>{
         console.log("1")
         setCartProducts((prev)=>{
@@ -93,6 +97,7 @@ export const CartContextProvider = (props: Props) =>{
 
     const value = {
         cartTotalQty,
+        cartTotalAmount,
         cartProducts,
         handleAddProductToCart,
         handleRemoveProductFromCart,

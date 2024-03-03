@@ -1,9 +1,10 @@
 "use client"
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import getCurrentUser from '@/app/action/getCurentUser';
 
-export default function AuthForm() {
+export default async function AuthForm() {
     const showLogin = true;
     const router = useRouter()
     const email = useRef<HTMLInputElement>(null)
