@@ -294,11 +294,11 @@ export function EditTag({catid, catname, caturl}: editTagProps) {
                 </div>
                 <div className="modal-middle space-y-2">
                     <label className="input input-bordered flex items-center gap-2">
-                        Label
+                        Label :
                         <input type="text" className="grow bg-transparent" value={name} onChange={(e) => handleChangeName(e)} />
                     </label>
                     <label className="input input-bordered flex items-center gap-2">
-                        URL
+                        URL :
                         <input type="text" className="grow bg-transparent" value={url} onChange={(e) => handleChangeUrl(e)} />
                     </label>
                 </div>
