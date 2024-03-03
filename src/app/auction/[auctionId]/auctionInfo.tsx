@@ -10,6 +10,7 @@ import { auctionObject } from "./page";
 import ProductCarousel from "@/app/product/[productId]/carousel";
 import { auction } from "@/component/variables";
 import { calculateTime, stringSpliter } from "@/component/panel/auction";
+import CountdownTimer from "@/component/panel/countdown";
 
 
 interface auctionProps {
@@ -129,33 +130,8 @@ export default function ProductInfo(props: any) {
           </div>
         </div>
 
-        <div className="grid grid-flow-col gap-5 text-center auto-cols-max">
-          <div className="flex flex-col">
-            <span className="countdown font-mono text-5xl">
-              <span style={{ "--value": stringSpliter(auct[0], 0) }}></span>
-            </span>
-            days
-          </div>
-          <div className="flex flex-col">
-            <span className="countdown font-mono text-5xl">
-              <span style={{ "--value": stringSpliter(auct[0], 1) }}></span>
-            </span>
-            hours
-          </div>
-          <div className="flex flex-col">
-            <span className="countdown font-mono text-5xl">
-              <span style={{ "--value": stringSpliter(auct[0], 2) }}></span>
-            </span>
-            min
-          </div>
-          <div className="flex flex-col">
-            <span className="countdown font-mono text-5xl">
-              <span style={{ "--value": stringSpliter(auct[0], 3) }}></span>
-            </span>
-            sec
-          </div>
-        </div>
-        
+        <CountdownTimer data={auct} />
+
         {isProductInCart ? (
           <>
             <p className="mb-2 text-slate-500 flex items-enter gap-1">
