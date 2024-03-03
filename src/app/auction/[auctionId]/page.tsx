@@ -1,22 +1,26 @@
-import ProductInfo from "./productInfo";
+import ProductInfo from "./auctionInfo";
 import prisma from "@/lib/prismaDB";
 import { productDetails, userData } from "@/component/variables";
 import { notFound } from "next/navigation";
-import { getProductDetail } from "@/api/action/fetch";
+import { getAuctionDetail } from "@/api/action/fetch";
 
-export interface productObject {
+export interface auctionObject {
     id: string;
     description: string;
     imageUrl: string[];
     name: string;
     price: number;
     tag: string[];
+    updatedAt: Date;
+    bidding_amount: String[];
+    bidder_id: String[];
+    currentBid: number;
 }
 
-
-export default async function payment({ params }: { params: { productId: string } }) {
-    const productDetails = await getProductDetail(params.productId);
-    if (!productDetails) {
+export default async function payment({ params }: { params: { auctionId: string } }) {
+    const output = await getAuctionDetail(params.auctionId);
+    // console.log(output)
+    if (!output) {
         notFound();
     }
     return (
@@ -24,11 +28,11 @@ export default async function payment({ params }: { params: { productId: string 
             <div className="text-sm breadcrumbs">
                 <ul>
                     <li><a>Nitid</a></li>
-                    <li><a href="">{productDetails?.tag[0]} </a></li>
-                    <li>{productDetails?.name}</li>
+                    <li><a href="">{output?.auction.product.tag[0]} </a></li>
+                    <li>{output?.auction.product.name}</li>
                 </ul>
             </div>
-            <ProductInfo productDetails={productDetails} />
+            <ProductInfo data={output} />
             <div className="bg-base-100 w-full mt-5 p-5 flex flex-row justify-between">
                 <div className="flex flex-row gap-5">
                     <div className="avatar">
@@ -44,7 +48,7 @@ export default async function payment({ params }: { params: { productId: string 
                     </div>
                     <div className="divider lg:divider-horizontal"></div>
                     <div>
-                        <p>selled 8 products {params.productId}</p>
+                        <p>selled 8 products {params.auctionId}</p>
                         <p>joined for 8 sec</p>
                         <p>score 1.2</p>
                     </div>
