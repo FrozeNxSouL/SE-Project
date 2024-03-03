@@ -4,7 +4,7 @@ import { useState } from "react"
 export default function ProductCarousel(props: any) {
     const images = props.data.imageUrl
 
-    const [currentImage, setCurrentImage] = useState(images[1]);
+    const [currentImage, setCurrentImage] = useState(images[0]);
 
     const handleHover = (order: number)=> {
         setCurrentImage(images[order]);

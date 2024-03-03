@@ -67,7 +67,7 @@ export async function getAuctionProduct() {
             product: true
         },
         where: {
-            product : {
+            product: {
                 status: "auction"
             },
         },
@@ -89,4 +89,49 @@ export async function getProducts() {
         }
     })
     return products
+}
+
+export async function getProductDetail(productId: string) {
+    try {
+        const productDetails = await prisma.product.findUnique({
+            where: {
+                id: productId,
+            }
+        });
+        if (!productDetails) {
+            return null
+        }
+        return productDetails;
+    } catch (error) {
+        console.log(error);
+        return null
+    }
+}
+
+export async function getAuctionDetail(productId: string) {
+    try {
+        const output = await prisma.auction_log.findFirst({
+            include: {
+                auction: {
+                    include: {
+                        product: true
+                    }
+                }
+            },
+            where : {
+                auction : {
+                    product : {
+                        id : productId
+                    }
+                }
+            },
+        })
+        if (!output) {
+            return null;
+        }
+        return output;
+    } catch (error) {
+        console.log(error);
+        return null
+    }
 }
