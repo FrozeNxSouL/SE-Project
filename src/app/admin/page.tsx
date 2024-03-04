@@ -23,9 +23,9 @@ export default async function admin({ searchParams }: { searchParams: { search?:
               <EditTag index={index} categoryHandle={admin?.category} />
             ))} */}
             {admin.categorys.map((cat, index) => (
-              <tr key={index}>
+              <div key={index}>
                 <EditTag catid={cat.id} catname={cat.name} caturl={cat.url}></EditTag>
-              </tr>
+              </div>
             ))}
             <AddTag adminid={admin.id}></AddTag>
           </div>
