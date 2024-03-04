@@ -275,14 +275,6 @@ export function EditTag({catid, catname, caturl}: editTagProps) {
         setUrl(e.target.value)
     }
 
-    // const handleSubmit = (index: number) => {
-    //     const newCategory = category
-    //     newCategory[index].name = name
-    //     newCategory[index].url = url
-    //     editTag(newCategory)
-    // }
-
-
     return (
         <>
             <button onClick={handleToggle} className="btn btn-primary btn-outline">
@@ -294,17 +286,16 @@ export function EditTag({catid, catname, caturl}: editTagProps) {
                 </div>
                 <div className="modal-middle space-y-2">
                     <label className="input input-bordered flex items-center gap-2">
-                        Label
+                        Label :
                         <input type="text" className="grow bg-transparent" value={name} onChange={(e) => handleChangeName(e)} />
                     </label>
                     <label className="input input-bordered flex items-center gap-2">
-                        URL
+                        URL :
                         <input type="text" className="grow bg-transparent" value={url} onChange={(e) => handleChangeUrl(e)} />
                     </label>
                 </div>
                 <div className="modal-action">
                     <button onClick={() => {
-                        // handleSubmit(index)
                         editTag(catid,name,url)
                         handleToggle()
                         router.refresh()
