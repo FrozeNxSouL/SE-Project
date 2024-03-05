@@ -3,9 +3,11 @@
 import { useState } from "react";
 import { auction } from "@/component/variables";
 import { stringSpliter } from "@/component/panel/auction";
+import { updateExpiredStatus } from "@/api/action/fetch";
+import { callUpdateData } from "@/app/auction/[auctionId]/page";
 
 export default function CountdownTimer(props: any) {
-    console.log(props.data)
+    // console.log(props.data)
     const auctionOBJ = props.data;
     const [expired, setExpired] = useState(false)
 
@@ -14,6 +16,10 @@ export default function CountdownTimer(props: any) {
             let day = stringSpliter(item, 0), range;
             if (day == "Ended") {
                 setExpired(true)
+
+                // props.exp = true
+                callUpdateData(auctionOBJ[0].id)
+                // console.log(props.data, "EXP")
                 return
             } else {
                 return

@@ -16,7 +16,12 @@ export async function getAuctionProductbyTag(tagInput: string) {
                                 hasSome: [tagInput]
                             }
                         },
-                    }
+                    },
+                    {
+                        product: {
+                            status: "auction"
+                        },
+                    },
                 ],
             },
             // take: 3,
@@ -118,10 +123,10 @@ export async function getAuctionDetail(productId: string) {
                     }
                 }
             },
-            where : {
-                auction : {
-                    product : {
-                        id : productId
+            where: {
+                auction: {
+                    product: {
+                        id: productId
                     }
                 }
             },
@@ -135,3 +140,35 @@ export async function getAuctionDetail(productId: string) {
         return null
     }
 }
+
+export async function getUserDetail(userId: string) {
+    try {
+        const output = await prisma.user.findFirst({
+            where: {
+                id: userId
+            },
+        })
+        if (!output) {
+            return null;
+        }
+        return output;
+    } catch (error) {
+        console.log(error);
+        return null
+    }
+}
+
+export async function updateExpiredStatus(productId : string) {
+    try {
+      const updatedRecord = await prisma.product.update({
+        where: { id: productId },
+        data: { 
+          status: "expired",
+        },
+      });
+      console.log('Updated record:', updatedRecord);
+    } catch (error) {
+      console.error('Error updating record:', error);
+    }
+  }
+  
