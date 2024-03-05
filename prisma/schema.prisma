@@ -14,7 +14,7 @@ model Product {
   name          String
   price         Float
   tag           String[]
-  status        String
+  status        String?
   auction       Auction?
   Transaction   Transaction? @relation(fields: [transactionId], references: [id])
   transactionId String?      @db.ObjectId
@@ -68,7 +68,7 @@ model Transaction {
   totalPrice       Float
   currency String
   create_transaction_date DateTime @default(now())
-  status           String
+  status           String?
   userId           String?   @db.ObjectId
   deliveryStatus String?
   paymentIntentId String @unique

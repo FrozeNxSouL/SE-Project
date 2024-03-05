@@ -99,6 +99,7 @@ export const CartContextProvider = (props: Props) =>{
     }, [cartProducts])
 
     const handleSetPaymentIntent = useCallback((val: string | null) =>{
+        console.log("Problem isnt in SetPaymentIntent")
         setPaymentIntent(val)
         localStorage.setItem('eShopPaymentIntent', JSON.stringify(val));
     }, [paymentIntent]);

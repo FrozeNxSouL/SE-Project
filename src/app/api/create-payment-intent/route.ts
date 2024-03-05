@@ -36,7 +36,16 @@ export async function POST(request: Request){
         status: "pending",
         deliveryStatus: "pending",
         paymentIntentId: payment_intent_id,
-        products: items
+        product: {
+            create: items.map((item: CartProductType) => ({
+                description: item.description,
+                imageUrl: { set: item.img },
+                name: item.name,
+                price: item.price,
+                tag: { set: item.tag },
+                // Include other necessary fields from your CartProductType
+            }))
+        }
     }
     if(payment_intent_id){
         const current_intent = await stripe.paymentIntents.retrieve(payment_intent_id)
@@ -52,10 +61,19 @@ export async function POST(request: Request){
                     where: {paymentIntentId: payment_intent_id}
                 }),
                 prisma.transaction.update({
-                    where: {paymentIntentId: payment_intent_id},
+                    where: { paymentIntentId: payment_intent_id },
                     data: {
                         totalPrice: total,
-                        product: items
+                        product: {
+                            create: items.map((item: CartProductType) => ({
+                                description: item.description,
+                                imageUrl: { set: item.img },
+                                name: item.name,
+                                price: item.price,
+                                tag: { set: item.tag },
+                                // Include other necessary fields from your CartProductType
+                            }))
+                        }
                     }
                 })
             ])

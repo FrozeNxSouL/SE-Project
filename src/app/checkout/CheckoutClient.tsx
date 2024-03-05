@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 const CheckoutClient = () =>{
-    const {cartProducts, paymentIntent, handleSetPaymentIntent} = useCart()
+    const {cartProducts, paymentIntent, handleSetPaymentIntent } = useCart()
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
     const [clientSecret, setClientSecret] = useState('')
@@ -21,7 +21,7 @@ const CheckoutClient = () =>{
             setLoading(true)
             setError(false)
 
-            fetch("src\app\api\auth\create-payment-intent",{
+            fetch('/api/create-payment-intent',{
                 
                 method: "POST",
                 headers: {'Content-Type':'application/json'},
@@ -36,7 +36,7 @@ const CheckoutClient = () =>{
                     return router.push('/auth/login')
                 }
                 return res.json()
-            }).then((data: any) =>{
+            }).then((data) =>{
                 console.log("Error is in data")
                 setClientSecret(data.paymentIntent.client_secret);
                 handleSetPaymentIntent(data.paymentIntent.id);
