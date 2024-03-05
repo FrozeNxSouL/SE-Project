@@ -37,7 +37,6 @@ const CheckoutClient = () =>{
                 }
                 return res.json()
             }).then((data) =>{
-                console.log("Error is in data")
                 setClientSecret(data.paymentIntent.client_secret);
                 handleSetPaymentIntent(data.paymentIntent.id);
             }).catch((error)=>{

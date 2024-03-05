@@ -16,7 +16,7 @@ const calculateOrderAmount = (items: CartProductType[]) =>{
         return acc + itemTotal
     }, 0);
 
-    return Math.round(totalPrice*100);
+    return Math.round(totalPrice);
 };
 
 export async function POST(request: Request){
