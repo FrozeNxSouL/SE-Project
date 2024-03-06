@@ -19,9 +19,6 @@ export default async function admin({ searchParams }: { searchParams: { search?:
           <p>Tax : {admin?.tax}%</p>
           <p>catagory :</p>
           <div className="flex flex-row flex-wrap gap-2 m-3">
-            {/* {admin.category.map((cat: any, index: number) => (
-              <EditTag index={index} categoryHandle={admin?.category} />
-            ))} */}
             {admin.categorys.map((cat, index) => (
               <div key={index}>
                 <EditTag catid={cat.id} catname={cat.name} caturl={cat.url}></EditTag>
@@ -32,7 +29,6 @@ export default async function admin({ searchParams }: { searchParams: { search?:
           <Taxchange taxhandle={admin?.tax} categoryhandle={admin?.category}></Taxchange>
         </div>
       </div>
-      {/* categoryhandle={admin?.category} */}
       {/* report Manage */}
       <div className="mx-auto w-full bg-base-100 shadow-lg mt-3">
         <div className="flex justify-between font-semibold p-5 border-b-2">

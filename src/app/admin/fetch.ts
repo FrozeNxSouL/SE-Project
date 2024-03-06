@@ -50,15 +50,10 @@ export async function getUser(usersearch: string) {
         const list = await prisma.user.findMany({
             where: {
                 OR: [
-                    { name: { contains: usersearch } },
+                    { name: { contains: usersearch } }
                 ]
             }
         })
-        // const list = await prisma.report.findMany({
-        //     include: {
-        //         reportedUser: true 
-        //     }
-        // })
         revalidatePath("/admin")
         return list
     } catch (error) {
