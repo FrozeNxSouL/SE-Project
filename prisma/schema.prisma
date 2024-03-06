@@ -73,9 +73,20 @@ model Transaction {
   deliveryStatus String?
   paymentIntentId String @unique
   address Address?
-  product          Product[]
+  products          CartProductType[]
+  product   Product[]
   user             User?     @relation(fields: [userId], references: [id],onDelete: Cascade)
   
+}
+
+type CartProductType {
+  id String
+  name String
+  description String
+  quantity Int
+  price Float
+  img String[]
+  tag  String[]
 }
 
 type Address{

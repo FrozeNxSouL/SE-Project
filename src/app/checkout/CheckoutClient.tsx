@@ -22,7 +22,6 @@ const CheckoutClient = () =>{
             setError(false)
 
             fetch('/api/create-payment-intent',{
-                
                 method: "POST",
                 headers: {'Content-Type':'application/json'},
                 body: JSON.stringify({
@@ -37,6 +36,7 @@ const CheckoutClient = () =>{
                 }
                 return res.json()
             }).then((data) =>{
+                console.log(data)
                 setClientSecret(data.paymentIntent.client_secret);
                 handleSetPaymentIntent(data.paymentIntent.id);
             }).catch((error)=>{

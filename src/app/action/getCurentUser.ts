@@ -11,20 +11,20 @@ export default async function getCurrentUser() {
                     email : session?.user?.email,
                 },
             })
-            console.log("Current User:", currentUser);
+            // console.log("Current User:", currentUser);
             return {
                 ...currentUser
             };
         } else {
             // No user logged in
-            console.log("No user logged in.");
+            // console.log("No user logged in.");
             return null;
         }
     } catch (error) {
-        console.error("Error getting current user:", error);
+        // console.error("Error getting current user:", error);
         return null;
     }
 }
 
-console.log("Here")
+// console.log("Here")
 getCurrentUser();
