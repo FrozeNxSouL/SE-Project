@@ -5,8 +5,8 @@ import { useState } from "react"
 import admin from "./page";
 interface deleteButtonProps { userid: string, username: string }
 // interface editTagProps { index: number, categoryHandle: JSON | null }
-interface editTagProps {catid: string,catname: string,caturl: string}
-interface addtagProps {adminid: string}
+interface editTagProps { catid: string, catname: string, caturl: string }
+interface addtagProps { adminid: string }
 interface searchButtonProps { search: string }
 interface managechangeProps { taxhandle: number | undefined, categoryhandle: JSON | null }
 
@@ -138,7 +138,33 @@ export function DeleteButton({ userid, username }: deleteButtonProps) {
     )
 }
 
-export function AddTag({adminid}: addtagProps) {
+export function DeatailReport() {
+    const [showModal, setShowModal] = useState<boolean>(false);
+    const router = useRouter()
+    const handleToggle = () => {
+        setShowModal((prev) => !prev)
+    };
+
+    return (
+        <>
+            <button onClick={handleToggle} className="btn btn-ghost btn-xs">
+                details
+            </button>
+            <Modal open={showModal}>
+                <h3 className="font-bold text-lg">Are you sure to delete user ?</h3>
+                <div className="modal-action">
+                    <button onClick={() => {
+                        handleToggle()
+                        router.refresh()
+                    }} className="btn btn-success text-white rounded-lg mr-4">Confirm</button>
+                    <button className="btn btn-error text-white rounded-lg" onClick={handleToggle}>Cancel</button>
+                </div>
+            </Modal>
+        </>
+    )
+}
+
+export function AddTag({ adminid }: addtagProps) {
     const [url, setUrl] = useState<string>("")
     const [name, setName] = useState<string>("")
     const [showModal, setShowModal] = useState<boolean>(false);
@@ -154,7 +180,7 @@ export function AddTag({adminid}: addtagProps) {
         const newCategory = e.target.value;
         setUrl(newCategory);
     }
-    const setdefault =()=>{
+    const setdefault = () => {
         setUrl("")
         setName("")
     }
@@ -184,7 +210,7 @@ export function AddTag({adminid}: addtagProps) {
 
                 <div className="modal-action">
                     <button onClick={() => {
-                        tagAdd(name,url,adminid)
+                        tagAdd(name, url, adminid)
                         setdefault()
                         handleToggle()
                         router.refresh()
@@ -256,7 +282,7 @@ export function AddTag({adminid}: addtagProps) {
 // }
 
 
-export function EditTag({catid, catname, caturl}: editTagProps) {
+export function EditTag({ catid, catname, caturl }: editTagProps) {
     const [showModal, setShowModal] = useState<boolean>(false);
     // const [category, setCategory] = useState<JSON | null>(categoryHandle)
 
@@ -296,7 +322,7 @@ export function EditTag({catid, catname, caturl}: editTagProps) {
                 </div>
                 <div className="modal-action">
                     <button onClick={() => {
-                        editTag(catid,name,url)
+                        editTag(catid, name, url)
                         handleToggle()
                         router.refresh()
                     }} className="btn btn-success text-white rounded-lg mr-4">Confirm</button>

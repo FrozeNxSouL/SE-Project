@@ -1,5 +1,5 @@
 import { Caramel } from "next/font/google";
-import { DeleteButton, SearchButton, Taxchange, EditTag, AddTag } from "./commandadmin"
+import { DeleteButton, SearchButton, Taxchange, EditTag, AddTag, DeatailReport } from "./commandadmin"
 import { getManage, getUser } from "./fetch";
 export default async function admin({ searchParams }: { searchParams: { search?: string } }) {
   const search = searchParams.search || "";
@@ -74,7 +74,7 @@ export default async function admin({ searchParams }: { searchParams: { search?:
                     <td>{user.id}</td>
                     <td>{user.score}</td>
                     <th>
-                      <button className="btn btn-ghost btn-xs">details</button>
+                      <DeatailReport></DeatailReport>
                     </th>
                   </tr>
                 ))}
