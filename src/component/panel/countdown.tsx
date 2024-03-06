@@ -5,7 +5,6 @@ import { auction } from "@/component/variables";
 import { stringSpliter } from "@/component/panel/auction";
 
 export default function CountdownTimer(props: any) {
-    console.log(props.data)
     const auctionOBJ = props.data;
     const [expired, setExpired] = useState(false)
 

@@ -7,9 +7,7 @@ import getCurrentUser from "@/app/action/getCurentUser";
 import getCategory from "@/app/action/getCategory";
 
 export default async function NavBar() {
-    const session = await getCurrentSession();
-    console.log(session?.user)
-    const a = await getCurrentUser();
+    const session = await getCurrentUser();
     const category = await getCategory();
 
     return (

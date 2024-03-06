@@ -23,9 +23,6 @@ export const CartContextProvider = (props: Props) =>{
     const [cartTotalQty, setCartTotalQty] = useState(0);
     const [cartTotalAmount, setCartTotalAmount] = useState(1)
     const [cartProducts, setCartProducts] = useState<CartProductType[] | null>(null);
-
-    console.log('qty', cartTotalQty);
-    console.log('amount', cartTotalAmount);
     
     useEffect(()=>{
         const cartItems: any = localStorage.getItem('eShopCartItems')
@@ -58,7 +55,6 @@ export const CartContextProvider = (props: Props) =>{
     }, [cartProducts])
     
     const handleAddProductToCart = useCallback((product: CartProductType)=>{
-        console.log("1")
         setCartProducts((prev)=>{
             let updatedCart;
 
