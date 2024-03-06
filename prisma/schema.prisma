@@ -45,20 +45,20 @@ model User {
 
 model Auction {
   id          String       @id @default(auto()) @map("_id") @db.ObjectId
-  productId   String      @unique @db.ObjectId
-  product     Product     @relation(fields: [productId], references: [id],onDelete: Cascade, onUpdate: Cascade)
+  productId   String       @unique @db.ObjectId
+  product     Product      @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   currentBid  Float
   bidderId    String       @db.ObjectId
-  user        User         @relation(fields: [bidderId], references: [id],onDelete: Cascade, onUpdate: Cascade)
+  user        User         @relation(fields: [bidderId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   createdAt   DateTime     @default(now())
-  updatedAt   DateTime     
+  updatedAt   DateTime
   auction_log Auction_log?
 }
 
 model Auction_log {
   id             String   @id @default(auto()) @map("_id") @db.ObjectId
   auctionId      String   @unique @db.ObjectId
-  auction        Auction  @relation(fields: [auctionId], references: [id],onDelete: Cascade, onUpdate: Cascade)
+  auction        Auction  @relation(fields: [auctionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   bidding_amount String[]
   bidder_id      String[]
 }
@@ -107,9 +107,19 @@ model Report {
 }
 
 model Management {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  id       String     @id @default(auto()) @map("_id") @db.ObjectId
   tax      Float
-  category Json
+  categorys Category[]
 
   @@map("managements")
+}
+
+model Category {
+  id           String      @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  url          String
+  Management   Management? @relation(fields: [managementId], references: [id])
+  managementId  String?     @map("_managementId") @db.ObjectId
+
+  @@map("category")
 }

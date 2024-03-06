@@ -1,10 +1,11 @@
 "use client"
-import { categories } from "../variables"
+import { Category } from "@prisma/client"
 import { useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 
-export default function Category() {
+export default function CategoryList(props: any) {
+    const category = props.data;
     const router = useRouter();
     const [scrollPosition, setScroll] = useState(0);
     const scroll = (direction: string)=> {
@@ -33,10 +34,10 @@ export default function Category() {
                     <span className="material-icons">arrow_left</span>
                 </button>
                 <div id="cat-slider" className='flex flew-row flex-nowrap cursor-grab overflow-scroll gap-2 max-w-4xl [&::-webkit-scrollbar]:hidden'>
-                    {categories.map((cat, idx) => (
-                    <div onClick = {()=>router.push(`/${cat.label}`)}  className="flex flex-col btn btn-outline join-item w-24 h-24" key={idx}>
-                        <span className="material-icons">{cat.icon}</span>
-                        <span>{cat.label}</span>
+                    {category.map((cat: Category, idx: number) => (
+                    <div onClick = {()=>router.push(`/${cat.url}`)}  className="flex flex-col btn btn-outline join-item w-24 h-24" key={idx}>
+                        <span className="material-icons">shopping_bag</span>
+                        <span>{cat.name}</span>
                     </div>
                     ))}
                 </div>
