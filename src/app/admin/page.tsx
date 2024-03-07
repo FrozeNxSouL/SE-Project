@@ -1,26 +1,34 @@
-import { DeleteButton, SearchButton, Taxchange } from "./commandadmin"
+import { Caramel } from "next/font/google";
+import { DeleteButton, SearchButton, Taxchange, EditTag, AddTag, DeatailReport } from "./commandadmin"
 import { getManage, getUser } from "./fetch";
 export default async function admin({ searchParams }: { searchParams: { search?: string } }) {
   const search = searchParams.search || "";
   const users = await getUser(search)
   const admin = await getManage()
+  if (!admin) {
+    return (<div>poon</div>)
+  }
+  console.log(admin)
   return (
     <div className="mx-auto w-2/3 bg-base-300">
       <div className="mx-auto w-full bg-base-100 shadow-lg">
         <div className="font-semibold p-5 border-b-2">
           <span>Manage</span>
         </div>
-        {/* <div className="p-5">
-          <span>Tax :</span>
-          <Taxchange></Taxchange>
-        </div> */}
         <div className="p-5">
           <p>Tax : {admin?.tax}%</p>
           <p>catagory :</p>
-          <Taxchange taxhandle={admin?.tax}></Taxchange>
+          <div className="flex flex-row flex-wrap gap-2 m-3">
+            {admin.categorys.map((cat, index) => (
+              <div key={index}>
+                <EditTag catid={cat.id} catname={cat.name} caturl={cat.url}></EditTag>
+              </div>
+            ))}
+            <AddTag adminid={admin.id}></AddTag>
+          </div>
+          <Taxchange taxhandle={admin?.tax} categoryhandle={admin?.category}></Taxchange>
         </div>
       </div>
-
       {/* report Manage */}
       <div className="mx-auto w-full bg-base-100 shadow-lg mt-3">
         <div className="flex justify-between font-semibold p-5 border-b-2">
@@ -66,7 +74,7 @@ export default async function admin({ searchParams }: { searchParams: { search?:
                     <td>{user.id}</td>
                     <td>{user.score}</td>
                     <th>
-                      <button className="btn btn-ghost btn-xs">details</button>
+                      <DeatailReport></DeatailReport>
                     </th>
                   </tr>
                 ))}
@@ -88,6 +96,6 @@ export default async function admin({ searchParams }: { searchParams: { search?:
           </div>
         </div>
       </div>
-    </div>
+    </div >
   )
 }

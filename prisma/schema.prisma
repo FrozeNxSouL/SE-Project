@@ -94,9 +94,19 @@ model Report {
 }
 
 model Management {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  id       String     @id @default(auto()) @map("_id") @db.ObjectId
   tax      Float
-  category Json
+  categorys Category[]
 
   @@map("managements")
+}
+
+model Category {
+  id           String      @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  url          String
+  Management   Management? @relation(fields: [managementId], references: [id])
+  managementId  String?     @map("_managementId") @db.ObjectId
+
+  @@map("category")
 }

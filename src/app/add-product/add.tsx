@@ -2,16 +2,24 @@
 import prisma from "@/lib/db/prisma";
 import { Auction } from "@prisma/client";
 import { redirect } from "next/navigation";
-async function addProduct(formData: FormData) {
-    // "use server";
+import { getCurrentSession } from "@/lib/getCurrentSession";
 
+async function addProduct(formData: FormData) {
+    const session = await getCurrentSession();
+    if (!session) {
+        redirect("/auth/login");
+    }
     const name = formData.get("name")?.toString();
     const description = formData.get("description")?.toString();
     const image = formData.get("imageUrl")?.toString();
     const price = Number(formData.get("price") || 0)
     const tag = formData.get("tag")?.toString();
-    const status = formData.get("status")?.toString();
+    const status = formData.get("status") === "on" ? "auction" : "normal";
     const time = formData.get("Time")?.toString();
+    // const byUser = session.user.id;
+
+
+    console.log(name, description, image, price, tag, status, time)
 
     if (!name || !description || !image || !price || !tag || !status) {
         throw Error("Missing required fields or price = 0");

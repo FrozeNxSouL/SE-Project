@@ -1,20 +1,17 @@
 
 import Link from "next/link";
-import { categories } from "../variables";
 import { getCurrentSession } from "@/lib/getCurrentSession";
 import SignOutButton from "./signOut";
+import CartCount from "./CartCount";
+import getCurrentUser from "@/app/action/getCurentUser";
+import getCategory from "@/app/action/getCategory";
 
 export default async function NavBar() {
     const session = await getCurrentSession();
-    // window.onscroll = function() {scrollFunction()};
+    console.log(session?.user)
+    const a = await getCurrentUser();
+    const category = await getCategory();
 
-    // const scrollFunction = () => {
-    //     if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
-    //         document.getElementById("header").style.fontSize = "30px";
-    //       } else {
-    //         document.getElementById("header").style.fontSize = "90px";
-    //       }
-    // }
     return (
         <>
             <div className="navbar bg-base-100">
@@ -29,8 +26,7 @@ export default async function NavBar() {
                 </div>
                 <div className="navbar-end">
                     <button className="btn">
-                        <div className="badge badge-primary">+99</div>
-                        <span className="material-icons">shopping_cart</span>
+                        <CartCount />
                     </button>
                     {session ? (
                         <div className="dropdown dropdown-hover dropdown-end">
@@ -67,8 +63,8 @@ export default async function NavBar() {
                         <span>Category</span>
                     </div>
                     <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                        {categories.map((value, idx) => (
-                            <li key={idx}><Link href={`/${value.label}`}>{value.label}</Link></li>
+                        {category.map((value, idx) => (
+                            <li key={idx}><Link href={`/${value.url}`}>{value.name}</Link></li>
                         ))}
                     </ul>
                 </div>

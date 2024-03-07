@@ -1,21 +1,30 @@
 "use client"
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { changeTax, deleteUser, } from "./fetch";
+import { changeTax, deleteUser, editTag, tagAdd } from "./fetch";
 import { useState } from "react"
 import admin from "./page";
 interface deleteButtonProps { userid: string, username: string }
+// interface editTagProps { index: number, categoryHandle: JSON | null }
+interface editTagProps { catid: string, catname: string, caturl: string }
+interface addtagProps { adminid: string }
 interface searchButtonProps { search: string }
-interface TaxchangeProps {taxhandle: number|undefined}
+interface managechangeProps { taxhandle: number | undefined, categoryhandle: JSON | null }
 
 
-export function Taxchange({taxhandle}: TaxchangeProps) {
-    const [tax, setTax] = useState<number|undefined>(taxhandle);
+export function Taxchange({ taxhandle, categoryhandle }: managechangeProps) {
+    const [tax, setTax] = useState<number | undefined>(taxhandle);
+    const [category, setCategory] = useState<JSON | null>(categoryhandle);
     const [showModal, setShowModal] = useState<boolean>(false);
     const router = useRouter()
 
     const handleTaxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newTax = parseFloat(e.target.value);
         setTax(newTax);
+    }
+
+    const handleCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newCategory = JSON.parse(e.target.value);
+        setCategory(newCategory);
     }
 
     const handleToggle = () => {
@@ -51,15 +60,22 @@ export function Taxchange({taxhandle}: TaxchangeProps) {
                     </label>
                 </div>
 
-                <p className="font-bold text-lg">catagory :</p>
+                <div className="flex justify-between">
+                    <div>
+                        <span className="font-bold text-lg">category :</span>
+                    </div>
+                    <label className="input input-bordered input-sm items-center gap-2">
+                        <input type="text" value={JSON.stringify(category)} className="grow bg-transparent" onChange={(e) => handleCategoryChange(e)} />
+                    </label>
+                </div>
 
                 <div className="modal-action">
                     <button onClick={() => {
-                        changeTax(tax)
+                        changeTax(tax, category)
                         handleToggle()
                         router.refresh()
-                    }} className="btn btn-success text-white rounded-lg mr-4">yes</button>
-                    <button className="btn btn-error text-white rounded-lg" onClick={handleToggle}>no</button>
+                    }} className="btn btn-success text-white rounded-lg mr-4">Confirm</button>
+                    <button className="btn btn-error text-white rounded-lg" onClick={handleToggle}>Cancel</button>
                 </div>
             </Modal>
         </>
@@ -104,7 +120,9 @@ export function DeleteButton({ userid, username }: deleteButtonProps) {
 
     return (
         <>
-            <button onClick={handleToggle} className="btn btn-error text-white rounded-lg">Delete</button>
+            <button onClick={handleToggle} className="btn btn-error ">
+                <span className="material-icons-outlined">delete_forever</span>
+            </button>
             <Modal open={showModal}>
                 <h3 className="font-bold text-lg">Are you sure to delete user {username} ?</h3>
                 <div className="modal-action">
@@ -112,19 +130,209 @@ export function DeleteButton({ userid, username }: deleteButtonProps) {
                         deleteUser(userid)
                         handleToggle()
                         router.refresh()
-                    }} className="btn btn-success text-white rounded-lg mr-4">yes</button>
-                    <button className="btn btn-error text-white rounded-lg" onClick={handleToggle}>no</button>
+                    }} className="btn btn-success text-white rounded-lg mr-4">Confirm</button>
+                    <button className="btn btn-error text-white rounded-lg" onClick={handleToggle}>Cancel</button>
                 </div>
-                {/* <button onClick={() => {
-                    deleteUser(userid)
-                    handleToggle()
-                    router.refresh()
-                }} className="btn btn-success text-white rounded-lg mr-4">yes</button>
-                <button className="btn btn-error text-white rounded-lg" onClick={handleToggle}>no</button> */}
             </Modal>
         </>
     )
 }
+
+export function DeatailReport() {
+    const [showModal, setShowModal] = useState<boolean>(false);
+    const router = useRouter()
+    const handleToggle = () => {
+        setShowModal((prev) => !prev)
+    };
+
+    return (
+        <>
+            <button onClick={handleToggle} className="btn btn-ghost btn-xs">
+                details
+            </button>
+            <Modal open={showModal}>
+                <h3 className="font-bold text-lg">Are you sure to delete user ?</h3>
+                <div className="modal-action">
+                    <button onClick={() => {
+                        handleToggle()
+                        router.refresh()
+                    }} className="btn btn-success text-white rounded-lg mr-4">Confirm</button>
+                    <button className="btn btn-error text-white rounded-lg" onClick={handleToggle}>Cancel</button>
+                </div>
+            </Modal>
+        </>
+    )
+}
+
+export function AddTag({ adminid }: addtagProps) {
+    const [url, setUrl] = useState<string>("")
+    const [name, setName] = useState<string>("")
+    const [showModal, setShowModal] = useState<boolean>(false);
+    const router = useRouter()
+    const handleToggle = () => {
+        setShowModal((prev) => !prev)
+    };
+    const createname = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newTax = e.target.value;
+        setName(newTax);
+    }
+    const createurl = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newCategory = e.target.value;
+        setUrl(newCategory);
+    }
+    const setdefault = () => {
+        setUrl("")
+        setName("")
+    }
+    return (
+        <>
+            <button onClick={handleToggle} className="btn btn-success">
+                <span className="material-icons">add</span>
+            </button>
+            <Modal open={showModal}>
+                <div className="flex justify-between">
+                    <div>
+                        <span className="font-bold text-lg">Name :</span>
+                    </div>
+                    <label className="input input-bordered input-sm items-center gap-2">
+                        <input type="text" value={name} className="grow bg-transparent" onChange={(e) => createname(e)} />
+                    </label>
+                </div>
+
+                <div className="flex justify-between">
+                    <div>
+                        <span className="font-bold text-lg">Url :</span>
+                    </div>
+                    <label className="input input-bordered input-sm items-center gap-2">
+                        <input type="text" value={url} className="grow bg-transparent" onChange={(e) => createurl(e)} />
+                    </label>
+                </div>
+
+                <div className="modal-action">
+                    <button onClick={() => {
+                        tagAdd(name, url, adminid)
+                        setdefault()
+                        handleToggle()
+                        router.refresh()
+                    }} className="btn btn-success text-white rounded-lg mr-4">Confirm</button>
+                    <button className="btn btn-error text-white rounded-lg" onClick={handleToggle}>Cancel</button>
+                </div>
+            </Modal>
+        </>
+    )
+}
+
+// export function EditTag({ index, categoryHandle }: editTagProps) {
+//     const [showModal, setShowModal] = useState<boolean>(false);
+//     const [category, setCategory] = useState<JSON | null>(categoryHandle)
+
+//     const [name, setName] = useState(categoryHandle[index].name)
+//     const [url, setUrl] = useState(categoryHandle[index].url)
+
+//     const router = useRouter()
+//     const handleToggle = () => {
+//         setShowModal((prev) => !prev)
+//     };
+
+//     const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
+//         setName(e.target.value)
+//     }
+//     const handleChangeUrl = (e: React.ChangeEvent<HTMLInputElement>) => {
+//         setUrl(e.target.value)
+//     }
+
+//     const handleSubmit = (index: number) => {
+//         const newCategory = category
+//         newCategory[index].name = name
+//         newCategory[index].url = url
+//         editTag(newCategory)
+//     }
+
+
+//     return (
+//         <>
+//             <button key={index} onClick={handleToggle} className="btn btn-primary btn-outline">
+//                 {categoryHandle[index].name}
+//             </button>
+//             <Modal open={showModal}>
+//                 <div className="modal-top mb-5">
+//                     <h3 className="font-bold text-lg">Edit</h3>
+//                 </div>
+//                 <div className="modal-middle space-y-2">
+//                     <label className="input input-bordered flex items-center gap-2">
+//                         Label
+//                         <input type="text" className="grow bg-transparent" value={categoryHandle[index].name} onChange={(e) => handleChangeName(e)} />
+//                     </label>
+//                     <label className="input input-bordered flex items-center gap-2">
+//                         URL
+//                         <input type="text" className="grow bg-transparent" value={categoryHandle[index].url} onChange={(e) => handleChangeUrl(e)} />
+//                     </label>
+//                 </div>
+//                 <div className="modal-action">
+//                     <button onClick={() => {
+//                         handleSubmit(index)
+//                         handleToggle()
+//                         router.refresh()
+//                     }} className="btn btn-success text-white rounded-lg mr-4">Confirm</button>
+//                     <button className="btn btn-error text-white rounded-lg" onClick={handleToggle}>Cancel</button>
+//                 </div>
+//             </Modal>
+//         </>
+//     )
+// }
+
+
+export function EditTag({ catid, catname, caturl }: editTagProps) {
+    const [showModal, setShowModal] = useState<boolean>(false);
+    // const [category, setCategory] = useState<JSON | null>(categoryHandle)
+
+    const [name, setName] = useState(catname)
+    const [url, setUrl] = useState(caturl)
+
+    const router = useRouter()
+    const handleToggle = () => {
+        setShowModal((prev) => !prev)
+    };
+
+    const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setName(e.target.value)
+    }
+    const handleChangeUrl = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setUrl(e.target.value)
+    }
+
+    return (
+        <>
+            <button onClick={handleToggle} className="btn btn-primary btn-outline">
+                {catname}
+            </button>
+            <Modal open={showModal}>
+                <div className="modal-top mb-5">
+                    <h3 className="font-bold text-lg">Edit</h3>
+                </div>
+                <div className="modal-middle space-y-2">
+                    <label className="input input-bordered flex items-center gap-2">
+                        Label :
+                        <input type="text" className="grow bg-transparent" value={name} onChange={(e) => handleChangeName(e)} />
+                    </label>
+                    <label className="input input-bordered flex items-center gap-2">
+                        URL :
+                        <input type="text" className="grow bg-transparent" value={url} onChange={(e) => handleChangeUrl(e)} />
+                    </label>
+                </div>
+                <div className="modal-action">
+                    <button onClick={() => {
+                        editTag(catid, name, url)
+                        handleToggle()
+                        router.refresh()
+                    }} className="btn btn-success text-white rounded-lg mr-4">Confirm</button>
+                    <button className="btn btn-error text-white rounded-lg" onClick={handleToggle}>Cancel</button>
+                </div>
+            </Modal>
+        </>
+    )
+}
+
 
 
 export function Modal({ children, open }: { children: React.ReactNode, open: boolean }) {

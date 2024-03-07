@@ -13,7 +13,6 @@ export const authOption: NextAuthOptions = {
             },
 
             async authorize(credentials) {
-                console.log(credentials)
                 if (!credentials?.email || !credentials?.password) {
                     console.log("wow1")
                     throw new Error("email and password is required")
@@ -38,6 +37,7 @@ export const authOption: NextAuthOptions = {
                     id: user.id,
                     name: user.name,
                     image: user.picture,
+                    email: user.email,
                 }
                                
             }
