@@ -43,7 +43,9 @@ export function Taxchange({ taxhandle}: managechangeProps) {
 
     return (
         <>
-            <button onClick={handleToggle} className="btn btn-error text-white rounded-lg">Edit</button>
+            <div className="flex justify-end">
+                <button onClick={handleToggle} className="btn btn-error text-white rounded-lg mr-8">Edit</button>
+            </div>
             <Modal open={showModal}>
                 <div className="flex justify-between">
                     <div>
@@ -268,5 +270,4 @@ export function Modal({ children, open }: { children: React.ReactNode, open: boo
         </div>
     );
 };
-
 
