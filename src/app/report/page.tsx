@@ -1,7 +1,20 @@
+"use client"
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 export default function report() {
+    const [checkbox, setCheckbox] = useState([false,false,false,false,false,false]);
 
+    const handleCheckboxChange = (index:any) => {
+        const newCheckboxes = [...checkbox];
+        newCheckboxes[index] = !newCheckboxes[index];
+        setCheckbox(newCheckboxes);
+        console.log('Selected Checkboxes:', newCheckboxes);
+      };
+
+
+    const handleSubmit = () => {
+        console.log('Selected Checkboxes:', checkbox);
+      };
 
 
 
@@ -46,31 +59,31 @@ export default function report() {
                 <form className="form-control">
                     <label className="label cursor-pointer">
                         <span className="label-text">ขายสินค้าไม่ตรงปก</span>
-                        <input type="checkbox" className="checkbox checkbox-primary" />
+                        <input type="checkbox" className="checkbox checkbox-primary"  onChange={() =>handleCheckboxChange(0)} />
                     </label>
 
                     <label className="label cursor-pointer">
                         <span className="label-text">จัดส่งสินค้านาน</span>
-                        <input type="checkbox" className="checkbox checkbox-primary" />
+                        <input type="checkbox" className="checkbox checkbox-primary" onChange={() =>handleCheckboxChange(1) }/>
                     </label>
 
                     <label className="label cursor-pointer">
                         <span className="label-text">ใช้คำพูดไม่เหมาะสม</span>
-                        <input type="checkbox" className="checkbox checkbox-primary" />
+                        <input type="checkbox" className="checkbox checkbox-primary" onChange={() =>handleCheckboxChange(2) } />
                     </label>
                     <label className="label cursor-pointer">
                         <span className="label-text">ความไม่ชัดเจนในการให้ข้อมูลสินค้า</span>
-                        <input type="checkbox" className="checkbox checkbox-primary" />
+                        <input type="checkbox" className="checkbox checkbox-primary" onChange={() =>handleCheckboxChange(3) } />
                     </label>
 
                     <label className="label cursor-pointer">
                         <span className="label-text">การแก้ไขปัญหาและการคืนสินค้า</span>
-                        <input type="checkbox" className="checkbox checkbox-primary" />
+                        <input type="checkbox" className="checkbox checkbox-primary" onChange={() =>handleCheckboxChange(4) }/>
                     </label>
 
                     <label className="label cursor-pointer">
                         <span className="label-text">การให้บริการหลังการขายที่ไม่มีประสิทธิภาพ</span>
-                        <input type="checkbox" className="checkbox checkbox-primary" />
+                        <input type="checkbox" className="checkbox checkbox-primary" onChange={() =>handleCheckboxChange(5) }/>
                     </label>
 
 
@@ -80,7 +93,7 @@ export default function report() {
 
                     <textarea className="h-40 textarea textarea-primary mt-4" placeholder="Bio"></textarea>
 
-                    <button className="btn btn-block btn-primary mt-4 ">submit</button>
+                    <button className="btn btn-block btn-primary mt-4" onClick={handleSubmit} >submit</button>
 
                 </form>
 
