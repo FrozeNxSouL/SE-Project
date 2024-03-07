@@ -4,12 +4,21 @@ import { useState } from 'react';
 import { createReport } from './reportfetch';
 export default function report() {
     const [checkbox, setCheckbox] = useState([false,false,false,false,false,false]);
+    const [data, setdata] = useState([]);
+    const ref = ["ขายสินค้าไม่ตรงปก" ,"จัดส่งสินค้านาน ","ใช้คำพูดไม่เหมาะสม", "ความไม่ชัดเจนในการให้ข้อมูลสินค้า ","การแก้ไขปัญหาและการคืนสินค้า" ,"การให้บริการหลังการขายที่ไม่มีประสิทธิภาพ"]
+
+
+
 
     const handleCheckboxChange = (index:any) => {
         const newCheckboxes = [...checkbox];
         newCheckboxes[index] = !newCheckboxes[index];
         setCheckbox(newCheckboxes);
-        console.log('Selected Checkboxes:', newCheckboxes);
+        
+        const newData = newCheckboxes.map((isChecked, i) => isChecked ? ref[i] : null);
+        console.log('Selected choice:', newData);
+        setdata(newData);
+        
       };
 
 
