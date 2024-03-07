@@ -61,7 +61,6 @@ export const CartContextProvider = (props: Props) =>{
     }, [cartProducts])
     
     const handleAddProductToCart = useCallback((product: CartProductType)=>{
-        console.log("1")
         setCartProducts((prev)=>{
             let updatedCart;
 
