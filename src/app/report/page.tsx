@@ -5,7 +5,6 @@ import { createReport } from './reportfetch';
 export default function report() {
     const [description,setdescription] = useState<string>("first")
     return (
-
         <div className='flex bg-base-100 p-6 justify-center max-w-screen-lg mx-auto'>
 
             <div className='w-full shadow-lg flex flex-col bg-base-100 p-6'>
