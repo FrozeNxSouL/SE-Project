@@ -14,7 +14,7 @@ model Product {
   name          String
   price         Float
   tag           String[]
-  status        String?
+  status        String
   auction       Auction?
   Transaction   Transaction? @relation(fields: [transactionId], references: [id])
   transactionId String?      @db.ObjectId
