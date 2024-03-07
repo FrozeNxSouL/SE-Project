@@ -127,10 +127,15 @@ export default function ProductInfo(props: any) {
         </div>
         <div className="flex flex-col items-center p-3 gap-3">
           <h2 className="text-2xl">NOW</h2>
-          <h2 className="text-5xl text-primary">{cartProduct.currentBid} ฿</h2>
-          <h6>by {cartProduct.current_bidder}</h6>
-
-          <CountdownTimer data={auct}/>
+          <div className="card w-96 bg-neutral text-neutral-content">
+            <div className="card-body items-center text-center">
+              <h2 className="card-title text-3xl">{cartProduct.currentBid} ฿</h2>
+            </div>
+          </div>
+          <div className="card w-96 bg-primary text-primary-content text-center">
+            <p className="text-lg">by {cartProduct.current_bidder}.</p>
+          </div>
+          <CountdownTimer data={auct} />
         </div>
         {isProductInCart ? (
           <>

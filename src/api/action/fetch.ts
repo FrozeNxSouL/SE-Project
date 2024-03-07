@@ -158,17 +158,47 @@ export async function getUserDetail(userId: string) {
     }
 }
 
-export async function updateExpiredStatus(productId : string) {
+export async function updateExpiredStatus(productId: string) {
     try {
-      const updatedRecord = await prisma.product.update({
-        where: { id: productId },
-        data: { 
-          status: "expired",
-        },
-      });
-      console.log('Updated record:', updatedRecord);
+        const findInLog = await prisma.auction_log.findFirst({
+            include: {
+                auction: {
+                    include: {
+                        product: true
+                    }
+                }
+            },
+            where: {
+                auction: {
+                    product: {
+                        id: productId
+                    }
+                }
+            },
+        })
+        if (findInLog?.auction.product.price == findInLog?.auction.currentBid) {
+            const updatedRecord = await prisma.product.update({
+                where: { id: productId },
+                data: {
+                    status: "expired",
+                },
+            });
+        } else {
+            const updatedRecord = await prisma.product.update({
+                where: { id: productId },
+                data: {
+                    status: "finished",
+                },
+            });
+
+            // const updateTransaction = await prisma.transaction.create({
+
+            // })
+        }
+
+
+        //   console.log('Updated record:', updatedRecord);
     } catch (error) {
-      console.error('Error updating record:', error);
+        console.error('Error updating record:', error);
     }
-  }
-  
+}
