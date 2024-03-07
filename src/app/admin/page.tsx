@@ -16,13 +16,15 @@ export default async function admin({ searchParams }: { searchParams: { search?:
           <span>Manage</span>
         </div>
         <div className="p-5">
-          <p>Tax : {admin?.tax}%</p>
-          <p>catagory :</p>
+
+          <div className="badge badge-primary h-10">Tax : {admin?.tax}%</div>
+          <br/>
+          <div className="badge badge-neutral w-24 mt-4 h-10 font-extrabold">Category</div>
           <div className="flex flex-row flex-wrap gap-2 m-3">
             {/* {admin.category.map((cat: any, index: number) => (
               <EditTag index={index} categoryHandle={admin?.category} />
             ))} */}
-            {admin.categorys.map((cat, index) => (
+            {admin.categorys.map((cat:any, index:number) => (
               <tr key={index}>
                 <EditTag catid={cat.id} catname={cat.name} caturl={cat.url}></EditTag>
               </tr>
