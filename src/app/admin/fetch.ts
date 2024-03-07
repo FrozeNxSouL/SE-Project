@@ -6,26 +6,30 @@ export async function getManage() {
     const list = await prisma.management.findFirst({
         include: {
             categorys: true,
-          },
+        }
     });
     return list
 }
 
-export async function changeTax(newtax: number|undefined,newcategory: JSON|null){
-    const list = await prisma.management.update({
-        where: {
-            id: "65decc90137f28b543937afb"
-        },
-        data: {
-            tax: newtax,
-            category: newcategory
-        }
-    })
+export async function changeTax(newtax: number) {
+    try {
+        const list = await prisma.management.update({
+            where: {
+                id: "65decc90137f28b543937afb"
+            },
+            data: {
+                tax: newtax,
+            }
+        })
+    } catch (error) {
+        console.log(error)
+    }
+    
 }
 
-export async function tagAdd(addname: string,addurl: string,adminid: string) {
+export async function tagAdd(addname: string, addurl: string, adminid: string) {
     const list = await prisma.category.create({
-        data:{
+        data: {
             name: addname,
             url: addurl,
             managementId: adminid
@@ -33,7 +37,7 @@ export async function tagAdd(addname: string,addurl: string,adminid: string) {
     })
 }
 
-export async function editTag(catid: string,catname: string,caturl: string) {
+export async function editTag(catid: string, catname: string, caturl: string) {
     const list = await prisma.category.update({
         where: {
             id: catid
@@ -44,26 +48,32 @@ export async function editTag(catid: string,catname: string,caturl: string) {
         }
     })
 }
+export async function deleteTag(catid: string) {
+    const list = await prisma.category.delete({
+        where: {
+            id: catid
+        }
+    })
+}
 
 export async function getUser(usersearch: string) {
     try {
         const list = await prisma.user.findMany({
+            include: {
+                report: true,
+            },
             where: {
-                OR: [
+                AND: [
                     { name: { contains: usersearch } },
+                    { report: { some: {} } }
                 ]
             }
         })
-        // const list = await prisma.report.findMany({
-        //     include: {
-        //         reportedUser: true 
-        //     }
-        // })
         revalidatePath("/admin")
         return list
     } catch (error) {
         return []
-    }    
+    }
 }
 
 export async function deleteUser(userid: string) {

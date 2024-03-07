@@ -1,5 +1,5 @@
 import { Caramel } from "next/font/google";
-import { DeleteButton, SearchButton, Taxchange, EditTag, AddTag } from "./commandadmin"
+import { DeleteButton, SearchButton, Taxchange, EditTag, AddTag, DeatailReport } from "./commandadmin"
 import { getManage, getUser } from "./fetch";
 export default async function admin({ searchParams }: { searchParams: { search?: string } }) {
   const search = searchParams.search || "";
@@ -21,20 +21,16 @@ export default async function admin({ searchParams }: { searchParams: { search?:
           <br/>
           <div className="badge badge-neutral w-24 mt-4 h-10 font-extrabold">Category</div>
           <div className="flex flex-row flex-wrap gap-2 m-3">
-            {/* {admin.category.map((cat: any, index: number) => (
-              <EditTag index={index} categoryHandle={admin?.category} />
-            ))} */}
-            {admin.categorys.map((cat:any, index:number) => (
-              <tr key={index}>
+            {admin.categorys.map((cat, index) => (
+              <div key={cat.id}>
                 <EditTag catid={cat.id} catname={cat.name} caturl={cat.url}></EditTag>
-              </tr>
+              </div>
             ))}
             <AddTag adminid={admin.id}></AddTag>
           </div>
-          <Taxchange taxhandle={admin?.tax} categoryhandle={admin?.category}></Taxchange>
+          <Taxchange taxhandle={admin?.tax}></Taxchange>
         </div>
       </div>
-      {/* categoryhandle={admin?.category} */}
       {/* report Manage */}
       <div className="mx-auto w-full bg-base-100 shadow-lg mt-3">
         <div className="flex justify-between font-semibold p-5 border-b-2">
@@ -80,7 +76,7 @@ export default async function admin({ searchParams }: { searchParams: { search?:
                     <td>{user.id}</td>
                     <td>{user.score}</td>
                     <th>
-                      <button className="btn btn-ghost btn-xs">details</button>
+                      <DeatailReport data={user.report}></DeatailReport>
                     </th>
                   </tr>
                 ))}
