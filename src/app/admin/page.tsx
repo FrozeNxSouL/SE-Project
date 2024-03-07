@@ -15,8 +15,7 @@ export default async function admin({ searchParams }: { searchParams: { search?:
           <span>Manage</span>
         </div>
         <div className="p-5">
-
-          <div className="badge badge-primary h-10">Tax : {admin?.tax}%</div>
+        <div className="badge badge-primary h-10">Tax : {admin?.tax}%</div>
           <br/>
           <div className="badge badge-neutral w-24 mt-4 h-10 font-extrabold">Category</div>
           <div className="flex flex-row flex-wrap gap-2 m-3">
