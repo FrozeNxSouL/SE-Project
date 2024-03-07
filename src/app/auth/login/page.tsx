@@ -1,11 +1,10 @@
 "use client"
-import { useEffect, useRef } from 'react'
+import { useRef, useState } from 'react'
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import getCurrentUser from '@/app/action/getCurentUser';
 
-export default async function AuthForm() {
-    const showLogin = true;
+export default function AuthForm() {
+    const [error, setError] = useState<String | null>(null)
     const router = useRouter()
     const email = useRef<HTMLInputElement>(null)
     const password = useRef<HTMLInputElement>(null)
@@ -18,7 +17,7 @@ export default async function AuthForm() {
         })
 
         if (res?.error) {
-            console.log(res.error)
+            setError(res.error)
         } else {
             router.refresh()
             router.push("/")
@@ -29,6 +28,15 @@ export default async function AuthForm() {
         <div className="py-10">
             <div className="max-w-lg mx-auto p-12 shadow-xl bg-base-100">
                 <h1 className="text-2xl text-primary font-extrabold pb-6 text-center">Sign in</h1>
+                {error && (
+                    <div role="alert" className="alert">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="stroke-info shrink-0 w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <span>{error}</span>
+                        <div>
+                            <button className="btn btn-error btn-sm" onClick={()=> {setError(null)}}><span className="material-icons">close</span></button>
+                        </div>
+                    </div>
+                )}
                 <label className="input input-bordered flex items-center gap-2 my-2">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="w-4 h-4 opacity-70"><path d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z" /><path d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" /></svg>
                     <input name="email" type="text" className="grow bg-transparent" placeholder="Email" ref={email} />

@@ -4,21 +4,27 @@ import { getCurrentSession } from "@/lib/getCurrentSession";
 export default async function getCurrentUser() {
     try {
         const session = await getCurrentSession();
-        if (session?.user) {
+        if (session?.user?.email) {
             // User is logged in, session.user contains user information
-            const currentUser = session.user;
-            console.log("Current User:", currentUser);
-            return currentUser;
+            const currentUser = await prisma?.user.findUnique({
+                where: {
+                    email : session?.user?.email,
+                },
+            })
+            // console.log("Current User:", currentUser);
+            return {
+                ...currentUser
+            };
         } else {
             // No user logged in
-            console.log("No user logged in.");
+            // console.log("No user logged in.");
             return null;
         }
     } catch (error) {
-        console.error("Error getting current user:", error);
+        // console.error("Error getting current user:", error);
         return null;
     }
 }
 
-console.log("Here")
+// console.log("Here")
 getCurrentUser();

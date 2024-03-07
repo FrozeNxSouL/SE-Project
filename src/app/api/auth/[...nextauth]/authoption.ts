@@ -14,7 +14,6 @@ export const authOption: NextAuthOptions = {
 
             async authorize(credentials) {
                 if (!credentials?.email || !credentials?.password) {
-                    console.log("wow1")
                     throw new Error("email and password is required")
                 }
                 const res = await prisma.user.findUnique({
@@ -23,7 +22,7 @@ export const authOption: NextAuthOptions = {
                     }
                 })
                 if (!res) {
-                    throw new Error("wow2");
+                    throw new Error("email or password is invalid");
                 }
                 
                 const user = await compare(credentials.password, res.hashedPassword).then((result) => {
@@ -33,17 +32,20 @@ export const authOption: NextAuthOptions = {
                         return res
                     }
                 });
-                return {
-                    id: user.id,
-                    name: user.name,
-                    image: user.picture,
-                    email: user.email,
-                }
-                               
+                return user;      
             }
         })
     ],
+    callbacks: {
+        session: ({ session, token }) => ({
+            ...session,
+            user: {
+            ...session.user,
+            id: token.sub,
+            },
+        }),
+    },
     pages: {
-        signIn: '/auth/login'
+        signIn: '/auth/login',
     }
 }

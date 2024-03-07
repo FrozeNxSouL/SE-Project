@@ -36,7 +36,7 @@ model User {
   role           String
   auction        Auction[]
   product        Product[]
-  transaction    Transaction[]
+  transactions    Transaction[]
   report         Report[]
   wallet         Wallet?
 
@@ -66,11 +66,35 @@ model Auction_log {
 model Transaction {
   id               String    @id @default(auto()) @map("_id") @db.ObjectId
   totalPrice       Float
-  transaction_date DateTime
-  status           String
+  currency        String
+  create_transaction_date DateTime @default(now())
+  status           String?
   userId           String?   @db.ObjectId
-  User             User?     @relation(fields: [userId], references: [id])
-  product          Product[]
+  deliveryStatus  String?
+  paymentIntentId String @unique
+  address Address?
+  products          CartProductType[]
+  product         Product[]
+  user             User?     @relation(fields: [userId], references: [id],onDelete: Cascade)
+  
+}
+
+type CartProductType {
+  id String
+  name String
+  description String
+  quantity Int
+  price Float
+  img String[]
+  tag  String[]
+}
+
+type Address{
+  province String
+  amphoe String
+  line1 String
+  line2 String?
+  postal_code String
 }
 
 model Wallet {
