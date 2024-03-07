@@ -20,13 +20,13 @@ export default async function admin({ searchParams }: { searchParams: { search?:
           <p>catagory :</p>
           <div className="flex flex-row flex-wrap gap-2 m-3">
             {admin.categorys.map((cat, index) => (
-              <div key={index}>
+              <div key={cat.id}>
                 <EditTag catid={cat.id} catname={cat.name} caturl={cat.url}></EditTag>
               </div>
             ))}
             <AddTag adminid={admin.id}></AddTag>
           </div>
-          <Taxchange taxhandle={admin?.tax} categoryhandle={admin?.category}></Taxchange>
+          <Taxchange taxhandle={admin?.tax}></Taxchange>
         </div>
       </div>
       {/* report Manage */}
@@ -74,7 +74,7 @@ export default async function admin({ searchParams }: { searchParams: { search?:
                     <td>{user.id}</td>
                     <td>{user.score}</td>
                     <th>
-                      <DeatailReport></DeatailReport>
+                      <DeatailReport data={user.report}></DeatailReport>
                     </th>
                   </tr>
                 ))}
