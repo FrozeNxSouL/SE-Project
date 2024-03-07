@@ -21,6 +21,20 @@ const calculateOrderAmount = (items: CartProductType[]) => {
     return totalPrice;
 };
 
+async function callTrasaction(element : any,transaction : any){
+    const updateProduct = await prisma.product.update({
+        where: { id: element.id },
+        data: { 
+          Transaction: { connect: { id: transaction.id } },
+        },
+    })
+
+    const findkuy = await prisma.product.findFirst({
+        where: { id: element.id },
+    })
+    console.log(findkuy, "product T")
+}
+
 export async function POST(request: Request){
     const currentUser = await getCurrentUser()
 
@@ -37,9 +51,7 @@ export async function POST(request: Request){
         totalPrice: total/100,
         currency: 'thb',
         status: "pending",
-        deliveryStatus: "pending",
         paymentIntentId: payment_intent_id,
-        products: items
     }
 
     if(payment_intent_id){
@@ -60,9 +72,16 @@ export async function POST(request: Request){
             //create the order
             orderData.paymentIntentId = paymentIntent.id
     
-            await prisma.transaction.create({
+            const transactionOutput = await prisma.transaction.create({
                 data: orderData,
             })
+            console.log(transactionOutput.id,": transaction ID")
+            items.forEach((element : any) => {
+                callTrasaction(element,transactionOutput);
+
+            });
+
+            // console.log(body)
             // const [existing_order, update_order] = await Promise.all([
             //     prisma.transaction.findFirst({
             //         where: {paymentIntentId: payment_intent_id}
@@ -84,19 +103,19 @@ export async function POST(request: Request){
         }
     }else{
         // create the intent
-        const paymentIntent = await stripe.paymentIntents.create({
-            amount: total,
-            currency: 'thb',
-            automatic_payment_methods: {enabled: true}
-        });
+        // const paymentIntent = await stripe.paymentIntents.create({
+        //     amount: total,
+        //     currency: 'thb',
+        //     automatic_payment_methods: {enabled: true}
+        // });
 
-        //create the order
-        orderData.paymentIntentId = paymentIntent.id
+        // //create the order
+        // orderData.paymentIntentId = paymentIntent.id
 
-        await prisma.transaction.create({
-            data: orderData,
-        })
-
-        return NextResponse.json({ paymentIntent });
+        // await prisma.transaction.create({
+        //     data: orderData,
+        // })
+        console.log("KUY POON")
+        // return NextResponse.json({ paymentIntent });
     }
 }

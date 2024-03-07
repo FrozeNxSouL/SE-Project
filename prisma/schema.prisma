@@ -36,7 +36,7 @@ model User {
   role           String
   auction        Auction[]
   product        Product[]
-  transactions    Transaction[]
+  transactions   Transaction[]
   report         Report[]
   wallet         Wallet?
 
@@ -66,34 +66,31 @@ model Auction_log {
 model Transaction {
   id               String    @id @default(auto()) @map("_id") @db.ObjectId
   totalPrice       Float
-  currency        String
-  create_transaction_date DateTime @default(now())
+  currency         String
+  transaction_date DateTime?  @default(now())
   status           String?
+  address          Address?
+  paymentIntentId  String?
+  product          Product[]
   userId           String?   @db.ObjectId
-  deliveryStatus  String?
-  paymentIntentId String @unique
-  address Address?
-  products          CartProductType[]
-  product         Product[]
-  user             User?     @relation(fields: [userId], references: [id],onDelete: Cascade)
-  
+  user             User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 type CartProductType {
-  id String
-  name String
+  id          String
+  name        String
   description String
-  quantity Int
-  price Float
-  img String[]
-  tag  String[]
+  quantity    Int
+  price       Float
+  img         String[]
+  tag         String[]
 }
 
-type Address{
-  province String
-  amphoe String
-  line1 String
-  line2 String?
+type Address {
+  province    String
+  amphoe      String
+  line1       String
+  line2       String?
   postal_code String
 }
 
@@ -118,8 +115,8 @@ model Report {
 }
 
 model Management {
-  id       String     @id @default(auto()) @map("_id") @db.ObjectId
-  tax      Float
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  tax       Float
   categorys Category[]
 
   @@map("managements")
@@ -130,7 +127,7 @@ model Category {
   name         String
   url          String
   Management   Management? @relation(fields: [managementId], references: [id])
-  managementId  String?     @map("_managementId") @db.ObjectId
+  managementId String?     @map("_managementId") @db.ObjectId
 
   @@map("category")
 }
