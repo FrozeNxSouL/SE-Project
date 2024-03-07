@@ -11,16 +11,20 @@ export async function getManage() {
     return list
 }
 
-export async function changeTax(newtax: number | undefined, newcategory: JSON | null) {
-    const list = await prisma.management.update({
-        where: {
-            id: "65decc90137f28b543937afb"
-        },
-        data: {
-            tax: newtax,
-            category: newcategory
-        }
-    })
+export async function changeTax(newtax: number) {
+    try {
+        const list = await prisma.management.update({
+            where: {
+                id: "65decc90137f28b543937afb"
+            },
+            data: {
+                tax: newtax,
+            }
+        })
+    } catch (error) {
+        console.log(error)
+    }
+    
 }
 
 export async function tagAdd(addname: string, addurl: string, adminid: string) {
@@ -44,6 +48,13 @@ export async function editTag(catid: string, catname: string, caturl: string) {
         }
     })
 }
+export async function deleteTag(catid: string) {
+    const list = await prisma.category.delete({
+        where: {
+            id: catid
+        }
+    })
+}
 
 export async function getUser(usersearch: string) {
     try {
@@ -53,7 +64,7 @@ export async function getUser(usersearch: string) {
             },
             where: {
                 AND: [
-                    { name: { contains: usersearch }},
+                    { name: { contains: usersearch } },
                     { report: { some: {} } }
                 ]
             }
