@@ -13,11 +13,12 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string,
 const calculateOrderAmount = (items: CartProductType[]) => {
     const totalPrice = items.reduce((acc, item) => {
         const itemTotal = item.price * item.quantity;
+        console.log(acc+itemTotal)
 
         return acc + itemTotal
     }, 0);
-
-    return Math.floor(totalPrice);
+    
+    return totalPrice;
 };
 
 export async function POST(request: Request){
@@ -29,10 +30,11 @@ export async function POST(request: Request){
 
     const body = await request.json()
     const {items, payment_intent_id} = body
-    const total = calculateOrderAmount(items)
+    let total = Math.round(calculateOrderAmount(items) *100)
+
     const orderData = {
         user: {connect: {id: currentUser.id}},
-        totalPrice: total ,
+        totalPrice: total/100,
         currency: 'thb',
         status: "pending",
         deliveryStatus: "pending",
