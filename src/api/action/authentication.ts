@@ -12,9 +12,6 @@ export async function signup(prevState: any, formData: FormData) {
     
     const filters = ["admin", "user", "test", "nu", " "]
 
-
-
-
     const hashPass: string = hashSync(pass, 10);
 
     let passed: boolean = true
