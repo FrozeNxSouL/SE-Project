@@ -32,9 +32,15 @@ export type CartProductType = {
 
 };
 
+var exp = false;
+
+export function updateExpired() {
+  exp = true;
+}
+
 export default function ProductInfo(props: any) {
   const { handleAddProductToCart, cartProducts } = useCart();
-  const [isProductInCart, setIsProductInCart] = useState(false);
+  const [isExpired, setIsExpired] = useState(false);
   const { cartTotalQty } = useCart();
   const auctionData = props.data;
   const userData = props.user;
@@ -77,7 +83,6 @@ export default function ProductInfo(props: any) {
     {
       auct.map((item: auction, index: number) => {
         const countdownInterval = setInterval(() => setTime(new Date(item.targetTime).getTime(), index, auct), 1000);
-
         return () => {
           clearInterval(countdownInterval)
         }
@@ -125,38 +130,35 @@ export default function ProductInfo(props: any) {
             </div>
           </div>
         </div>
+
         <div className="flex flex-col items-center p-3 gap-3">
-          <h2 className="text-2xl">NOW</h2>
-          <div className="card w-96 bg-neutral text-neutral-content">
-            <div className="card-body items-center text-center">
-              <h2 className="card-title text-3xl">{cartProduct.currentBid} ฿</h2>
-            </div>
+          <div className=" flex justify-center items-center h-32 w-96 rounded-3xl bg-neutral text-neutral-content">
+            <h2 className="absolute self-auto mr-72 mb-20 text-md">NOW</h2>
+            <h2 className="font-mono text-6xl text-primary">{cartProduct.currentBid} ฿</h2>
           </div>
-          <div className="card w-96 bg-primary text-primary-content text-center">
-            <p className="text-lg">by {cartProduct.current_bidder}.</p>
+
+          <div className="dropdown dropdown-hover dropdown-bottom">
+            <div tabIndex={0} role="button" className="btn rounded-3xl bg-primary w-96">
+              <p className="text-white text-lg">by {cartProduct.current_bidder}.</p>
+            </div>
+            <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-96">
+              {cartProduct.bidder_id.map((item, index) => (
+                <li key={index}><a className="justify-center w-full">{item} : {cartProduct.bidding_amount[index]}</a></li>
+              ))}
+            </ul>
           </div>
           <CountdownTimer data={auct} />
         </div>
-        {isProductInCart ? (
+        {exp ? (
           <>
-            <p className="mb-2 text-slate-500 flex items-enter gap-1">
-              <MdCheckCircle className="text-teal-400" size={20} />
-              <span>Product added to cart</span>
-            </p>
-            <div className="max-w-[300px]">
-              <Button label="View Cart" outline onClick={() => {
-                router.push('/cart');
-              }} />
+            <div className="flex flex-row gap-3 justify-center">
+              <button className="btn btn-wide btn-outline">Expired</button>
             </div>
           </>
         ) : (
           <>
             <div className="flex flex-row gap-3 justify-center">
-              {/* <Button
-                label="Add to cart"
-                onClick={() => handleAddProductToCart(cartProduct)}
-              /> */}
-              <button className="btn btn-wide btn-primary">Take Now</button>
+              <button onClick={() => { }} className="btn btn-wide btn-primary">Take Now</button>
             </div>
           </>
         )}
