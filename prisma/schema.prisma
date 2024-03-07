@@ -87,6 +87,7 @@ model Report {
   reportingUserID   String
   reportDescription String
   reportStatus      String
+  reportSelection   String[]
   userId            String?  @db.ObjectId
   reportedUser      User?    @relation(fields: [userId], references: [id])
 
@@ -94,8 +95,8 @@ model Report {
 }
 
 model Management {
-  id       String     @id @default(auto()) @map("_id") @db.ObjectId
-  tax      Float
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  tax       Float
   categorys Category[]
 
   @@map("managements")
@@ -106,7 +107,7 @@ model Category {
   name         String
   url          String
   Management   Management? @relation(fields: [managementId], references: [id])
-  managementId  String?     @map("_managementId") @db.ObjectId
+  managementId String?     @map("_managementId") @db.ObjectId
 
   @@map("category")
 }

@@ -24,7 +24,7 @@ export async function changeTax(newtax: number) {
     } catch (error) {
         console.log(error)
     }
-    
+
 }
 
 export async function tagAdd(addname: string, addurl: string, adminid: string) {
@@ -65,7 +65,14 @@ export async function getUser(usersearch: string) {
             where: {
                 AND: [
                     { name: { contains: usersearch } },
-                    { report: { some: {} } }
+                    // { report: { some: {} } }
+                    {
+                        report: {
+                            some: {
+                                reportStatus: "1"
+                            }
+                        }
+                    }
                 ]
             }
         })
