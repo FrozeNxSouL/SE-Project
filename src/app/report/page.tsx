@@ -1,6 +1,7 @@
 "use client"
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { createReport } from './reportfetch';
 export default function report() {
     const [checkbox, setCheckbox] = useState([false,false,false,false,false,false]);
 
@@ -19,6 +20,7 @@ export default function report() {
 
 
 
+    const [description,setdescription] = useState<string>("first")
     return (
 
         <div className='flex bg-base-100 p-6 justify-center max-w-screen-lg mx-auto'>
@@ -93,7 +95,10 @@ export default function report() {
 
                     <textarea className="h-40 textarea textarea-primary mt-4" placeholder="Bio"></textarea>
 
-                    <button className="btn btn-block btn-primary mt-4" onClick={handleSubmit} >submit</button>
+                    {/* <button className="btn btn-block btn-primary mt-4" onClick={handleSubmit} >submit</button> */}
+                    <button onClick={()=>{
+                        createReport(description)
+                    }}className="btn btn-block btn-primary mt-4 ">submit</button>
 
                 </form>
 
