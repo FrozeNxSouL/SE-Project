@@ -7,8 +7,7 @@ export default async function getCurrentUser() {
         if (session?.user) {
             // User is logged in, session.user contains user information
             const currentUser = session.user;
-            console.log("Current User:", currentUser);
-            return currentUser;
+            return session;
         } else {
             // No user logged in
             console.log("No user logged in.");
@@ -19,6 +18,4 @@ export default async function getCurrentUser() {
         return null;
     }
 }
-
-console.log("Here")
 getCurrentUser();

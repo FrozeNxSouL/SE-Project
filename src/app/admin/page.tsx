@@ -8,7 +8,6 @@ export default async function admin({ searchParams }: { searchParams: { search?:
   if (!admin) {
     return (<div>poon</div>)
   }
-  console.log(admin)
   return (
     <div className="mx-auto w-2/3 bg-base-300">
       <div className="mx-auto w-full bg-base-100 shadow-lg">

@@ -77,7 +77,6 @@ export async function getUser(usersearch: string) {
 }
 
 export async function deleteUser(userid: string) {
-    console.log(userid)
     await prisma.user.delete({
         where: {
             id: userid

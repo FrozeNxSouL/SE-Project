@@ -30,7 +30,6 @@ export default function ProductInfo({productDetails} : ProductDetailsProps) {
   const [isProductInCart, setIsProductInCart] = useState(false);
   const { cartTotalQty } = useCart();
   // const productDetails = props.data;
-  console.log(productDetails)
   const [cartProduct, setCartProduct] = useState<CartProductType>({
     quantity: 1,
     id: productDetails.id,
@@ -44,7 +43,6 @@ export default function ProductInfo({productDetails} : ProductDetailsProps) {
   
 
   useEffect(() => {
-    console.log(cartProducts);
     setIsProductInCart(false);
 
     if (cartProducts) {

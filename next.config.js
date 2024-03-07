@@ -6,7 +6,7 @@ const nextConfig = {
     experimental: {
         serverActions: true,
     },
-    reactStrictMode: false
+    reactStrictMode: false,
 };
 
 module.exports = nextConfig

@@ -18,9 +18,6 @@ async function addProduct(formData: FormData) {
     const time = formData.get("Time")?.toString();
     // const byUser = session.user.id;
 
-
-    console.log(name, description, image, price, tag, status, time)
-
     if (!name || !description || !image || !price || !tag || !status) {
         throw Error("Missing required fields or price = 0");
     }
@@ -40,7 +37,6 @@ async function addProduct(formData: FormData) {
                 status,
             },
         });
-        console.log(productOutput);
         if (status == "auction") {
             const specificDate = new Date(time || "");
             const updatedAt = specificDate.toISOString();
@@ -53,14 +49,11 @@ async function addProduct(formData: FormData) {
                     user: { connect: { id: "65d581b7f9ee9189e1b19051" } },
                 },
             });
-            console.log(auctionOutput)
             const auctionLogOutput = await prisma.auction_log.create({
                 data: {
                     auction: { connect: { id: auctionOutput.id } },
                 },
             });
-            console.log(auctionLogOutput)
-            console.log("get auction !")
         }
     } catch (error) {
         console.log(error)
