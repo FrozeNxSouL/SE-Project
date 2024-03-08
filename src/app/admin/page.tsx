@@ -1,5 +1,5 @@
 import { Caramel } from "next/font/google";
-import { DeleteButton, SearchButton, Taxchange, EditTag, AddTag } from "./commandadmin"
+import { DeleteButton, SearchButton, Taxchange, EditTag, AddTag, DeatailReport } from "./commandadmin"
 import { getManage, getUser } from "./fetch";
 export default async function admin({ searchParams }: { searchParams: { search?: string } }) {
   const search = searchParams.search || "";
@@ -15,17 +15,18 @@ export default async function admin({ searchParams }: { searchParams: { search?:
           <span>Manage</span>
         </div>
         <div className="p-5">
-          <p>Tax : {admin?.tax}%</p>
-          <p>catagory :</p>
+        <div className="badge badge-primary h-10">Tax : {admin?.tax}%</div>
+          <br/>
+          <div className="badge badge-neutral w-24 mt-4 h-10 font-extrabold">Category</div>
           <div className="flex flex-row flex-wrap gap-2 m-3">
             {admin.categorys.map((cat, index) => (
-              <div key={index}>
+              <div key={cat.id}>
                 <EditTag catid={cat.id} catname={cat.name} caturl={cat.url}></EditTag>
               </div>
             ))}
             <AddTag adminid={admin.id}></AddTag>
           </div>
-          <Taxchange taxhandle={admin?.tax} categoryhandle={admin?.category}></Taxchange>
+          <Taxchange taxhandle={admin?.tax}></Taxchange>
         </div>
       </div>
       {/* report Manage */}
@@ -73,7 +74,7 @@ export default async function admin({ searchParams }: { searchParams: { search?:
                     <td>{user.id}</td>
                     <td>{user.score}</td>
                     <th>
-                      <button className="btn btn-ghost btn-xs">details</button>
+                      <DeatailReport data={user.report}></DeatailReport>
                     </th>
                   </tr>
                 ))}
