@@ -7,10 +7,11 @@ interface deleteButtonProps { userid: string, username: string }
 interface editTagProps { catid: string, catname: string, caturl: string }
 interface addtagProps { adminid: string }
 interface searchButtonProps { search: string }
-interface managechangeProps { taxhandle: number}
+interface managechangeProps { taxhandle: number }
+interface reportdetailProps { userid: string }
 
 
-export function Taxchange({ taxhandle}: managechangeProps) {
+export function Taxchange({ taxhandle }: managechangeProps) {
     const [tax, setTax] = useState<number>(taxhandle);
     const [showModal, setShowModal] = useState<boolean>(false);
     const router = useRouter()
@@ -126,8 +127,10 @@ export function DeleteButton({ userid, username }: deleteButtonProps) {
 }
 
 export function DeatailReport(props: any) {
+    // export function DeatailReport({userid}: reportdetailProps) {
     const [showModal, setShowModal] = useState<boolean>(false);
     const router = useRouter()
+    // const userreport = getReport(userid)
     const handleToggle = () => {
         setShowModal((prev) => !prev)
     };
@@ -137,15 +140,39 @@ export function DeatailReport(props: any) {
             <button onClick={handleToggle} className="btn btn-ghost btn-xs">
                 details
             </button>
+            {/* <Modal open={showModal}>
+                {props.data.map((rep, index) => (
+                    <div key={index}>
+                        <h3 className="font-bold text-lg">Are you sure to delete user ? {rep.reportStatus}</h3>
+                        <div className="modal-action">
+                            <button onClick={() => {
+                                handleToggle()
+                                router.refresh()
+                            }} className="btn btn-success text-white rounded-lg mr-4">Confirm</button>
+                            <button className="btn btn-error text-white rounded-lg" onClick={handleToggle}>Cancel</button>
+                        </div>
+                    </div>
+                ))}
+            </Modal> */}
             <Modal open={showModal}>
-                <h3 className="font-bold text-lg">Are you sure to delete user ? </h3>
-                <div className="modal-action">
-                    <button onClick={() => {
-                        handleToggle()
-                        router.refresh()
-                    }} className="btn btn-success text-white rounded-lg mr-4">Confirm</button>
-                    <button className="btn btn-error text-white rounded-lg" onClick={handleToggle}>Cancel</button>
-                </div>
+                
+                <button className="absolute top-2 right-5 text-gray-500 " onClick={handleToggle}>X</button> 
+                {props.data.map((rep: any, index: any) => (
+                    <div key={index} className="mb-5 mt-5">
+                        {/* {rep.reportStatus === "1" && (  */}
+                        <>
+                            <h3 className="font-bold text-lg">Are you sure to delete user ? {rep.reportStatus}</h3>
+                            <div className="modal-action">
+                                <button onClick={() => {
+                                    handleToggle();
+                                    router.refresh();
+                                }} className="btn btn-success text-white rounded-lg mr-4">Confirm</button>
+
+                            </div>
+                        </>
+                        {/* )} */}
+                    </div>
+                ))}
             </Modal>
         </>
     )
@@ -224,7 +251,7 @@ export function EditTag({ catid, catname, caturl }: editTagProps) {
     const handleChangeUrl = (e: React.ChangeEvent<HTMLInputElement>) => {
         setUrl(e.target.value)
     }
-  
+
     return (
         <>
             <button onClick={handleToggle} className="btn btn-primary btn-outline">
