@@ -5,6 +5,7 @@ import { useState } from "react";
 import EditProfile from "./editProfile";
 import Address from "./address";
 import ChangePassword from "./changePassword";
+import MyPurchase from "./mypurchase";
 
 export default function user() {
     const { data: session } = useSession();
@@ -22,6 +23,8 @@ export default function user() {
                 return(<Address />)
             case "changepassword" :
                 return(<ChangePassword />)
+            case "mypurchase" :
+                return(<MyPurchase />)
             default :
                 return(<>ยังไม่ได้ทำครับพี่</>)
         }
@@ -41,7 +44,7 @@ export default function user() {
                     </ul>
                     </details>
                 </li>
-                <li><a><span className="material-icons">receipt_long</span>My purchase</a></li>
+                <li><a onClick={()=> handleTabChange("mypurchase")}><span className="material-icons">receipt_long</span>My purchase</a></li>
             </ul>
             {handlePageChange()}
         </div>
