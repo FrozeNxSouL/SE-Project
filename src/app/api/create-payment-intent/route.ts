@@ -44,7 +44,7 @@ export async function POST(request: Request){
 
     if(payment_intent_id){
         const current_intent = await stripe.paymentIntents.retrieve(payment_intent_id)
-
+        console.log(payment_intent_id)
         if(current_intent){
             const updated_intent = await stripe.paymentIntents.update(
                 payment_intent_id, {amount: total}
@@ -79,7 +79,7 @@ export async function POST(request: Request){
             currency: "thb",
             automatic_payment_methods: {enabled: true},
         })
-
+        
         //create the order
         orderData.paymentIntentId = paymentIntent.id
 
@@ -89,5 +89,5 @@ export async function POST(request: Request){
 
         return NextResponse.json({ paymentIntent });
     }
-    
+
 }

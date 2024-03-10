@@ -90,11 +90,12 @@ type CartProductType {
 }
 
 type Address{
-  province String
-  amphoe String
+  city String
+  country String
   line1 String
   line2 String?
   postal_code String
+  state String
 }
 
 model Wallet {
