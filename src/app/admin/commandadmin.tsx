@@ -140,34 +140,25 @@ export function DeatailReport(props: any) {
             <button onClick={handleToggle} className="btn btn-ghost btn-xs">
                 details
             </button>
-            {/* <Modal open={showModal}>
-                {props.data.map((rep, index) => (
-                    <div key={index}>
-                        <h3 className="font-bold text-lg">Are you sure to delete user ? {rep.reportStatus}</h3>
-                        <div className="modal-action">
-                            <button onClick={() => {
-                                handleToggle()
-                                router.refresh()
-                            }} className="btn btn-success text-white rounded-lg mr-4">Confirm</button>
-                            <button className="btn btn-error text-white rounded-lg" onClick={handleToggle}>Cancel</button>
-                        </div>
-                    </div>
-                ))}
-            </Modal> */}
+
             <Modal open={showModal}>
-                
-                <button className="absolute top-2 right-5 text-gray-500 " onClick={handleToggle}>X</button> 
+
+                <button className="absolute top-2 right-5 text-gray-500 " onClick={handleToggle}>X</button>
                 {props.data.map((rep: any, index: any) => (
                     <div key={index} className="mb-5 mt-5">
                         {/* {rep.reportStatus === "1" && (  */}
                         <>
-                            <h3 className="font-bold text-lg">Are you sure to delete user ? {rep.reportStatus}</h3>
+                            <h3 className="font-bold text-lg">From: {rep.reportingUserID}</h3>
+                            {rep.reportSelection.map((sec: any, index2: any) => (
+                                <div key={index2}>
+                                    <h3 className="font-bold text-lg">{sec}</h3>
+                                </div>
+                            ))}
                             <div className="modal-action">
                                 <button onClick={() => {
                                     handleToggle();
                                     router.refresh();
                                 }} className="btn btn-success text-white rounded-lg mr-4">Confirm</button>
-
                             </div>
                         </>
                         {/* )} */}
