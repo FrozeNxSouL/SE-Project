@@ -4,6 +4,8 @@ import { useState } from "react";
 
 export default function MyPurchase() {
     const { data: session } = useSession()
+    const ses = session?.user?.name
+    console.log(ses);
 
     return (
         <div className="flex flex-col items-center bg-base-200 w-full p-5">
