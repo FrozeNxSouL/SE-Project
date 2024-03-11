@@ -33,14 +33,14 @@ export default function CategoryList(props: any) {
                 <button className="btn btn-outline btn-primary btn-circle" onClick={()=> {scroll("left")}}>
                     <span className="material-icons">arrow_left</span>
                 </button>
-                {/* <div id="cat-slider" className='flex flew-row flex-nowrap cursor-grab overflow-scroll gap-2 max-w-4xl [&::-webkit-scrollbar]:hidden'>
+                <div id="cat-slider" className='flex flew-row flex-nowrap cursor-grab overflow-scroll gap-2 max-w-4xl [&::-webkit-scrollbar]:hidden'>
                     {category.map((cat: Category, idx: number) => (
                     <div onClick = {()=>router.push(`/${cat.url}`)}  className="flex flex-col btn btn-outline join-item w-24 h-24" key={idx}>
                         <span className="material-icons">shopping_bag</span>
                         <span>{cat.name}</span>
                     </div>
                     ))}
-                </div> */}
+                </div>
                 <button className="btn btn-outline btn-primary btn-circle" onClick={()=> {scroll("right")}}>
                     <span className="material-icons">arrow_right</span>
                 </button>
