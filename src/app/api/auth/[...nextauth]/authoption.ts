@@ -32,13 +32,7 @@ export const authOption: NextAuthOptions = {
                         return res
                     }
                 });
-                return {
-                    id: user.id,
-                    name: user.name,
-                    image: user.picture,
-                    email: user.email,
-                }
-                               
+                return user;      
             }
         })
     ],

@@ -2,7 +2,7 @@ import ProductInfo from "./auctionInfo";
 import prisma from "@/lib/prismaDB";
 import { productDetails, userData } from "@/component/variables";
 import { notFound } from "next/navigation";
-import { getAuctionDetail } from "@/api/action/fetch";
+import { getAuctionDetail, getUserDetail, updateExpiredStatus } from "@/api/action/fetch";
 
 export interface auctionObject {
     id: string;
@@ -16,10 +16,13 @@ export interface auctionObject {
     bidder_id: String[];
     currentBid: number;
 }
+export async function callUpdateData(productId : string){
+    await updateExpiredStatus(productId);
+}
 
 export default async function payment({ params }: { params: { auctionId: string } }) {
     const output = await getAuctionDetail(params.auctionId);
-    // console.log(output)
+    const user = await getUserDetail(output?.auction.bidderId || "");
     if (!output) {
         notFound();
     }
@@ -32,7 +35,7 @@ export default async function payment({ params }: { params: { auctionId: string 
                     <li>{output?.auction.product.name}</li>
                 </ul>
             </div>
-            <ProductInfo data={output} />
+            <ProductInfo data={output} user={user} />
             <div className="bg-base-100 w-full mt-5 p-5 flex flex-row justify-between">
                 <div className="flex flex-row gap-5">
                     <div className="avatar">

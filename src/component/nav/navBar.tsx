@@ -10,8 +10,6 @@ export default async function NavBar() {
     const session = await getCurrentUser();
     const category = await getCategory();
 
-    console.log(session?.user)
-
     return (
         <>
             <div className="navbar bg-base-100">
