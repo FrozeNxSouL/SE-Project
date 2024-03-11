@@ -16,8 +16,8 @@ export interface auctionObject {
     bidder_id: String[];
     currentBid: number;
 }
-export function callUpdateData(productId : string){
-    updateExpiredStatus(productId);
+export async function callUpdateData(productId : string){
+    await updateExpiredStatus(productId);
 }
 
 export default async function payment({ params }: { params: { auctionId: string } }) {

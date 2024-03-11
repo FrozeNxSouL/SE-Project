@@ -26,7 +26,7 @@ export async function getAuctionProductbyTag(tagInput: string) {
             },
             // take: 3,
             orderBy: {
-                id: 'desc'
+                updatedAt: 'desc'
             }
         });
         if (!output) {
@@ -77,7 +77,7 @@ export async function getAuctionProduct() {
             },
         },
         orderBy: {
-            id: 'desc'
+            updatedAt: 'asc'
         }
     })
     return products
@@ -90,7 +90,7 @@ export async function getProducts() {
             status: "sell",
         },
         orderBy: {
-            id: 'desc'
+            id: 'asc'
         }
     })
     return products
