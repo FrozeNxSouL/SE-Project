@@ -1,6 +1,6 @@
 "use client"
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { changeTax, deleteTag, deleteUser, editTag, tagAdd } from "./fetch";
+import { changeTax, deleteTag, deleteUser, editTag, statusReport, tagAdd } from "./fetch";
 import { useEffect, useState } from "react"
 import admin from "./page";
 interface deleteButtonProps { userid: string, username: string }
@@ -134,15 +134,19 @@ export function DeatailReport(props: any) {
     const handleToggle = () => {
         setShowModal((prev) => !prev)
     };
+
+    const readreport = (read: any) => {
+        {read.map((rep: any,index :any)=>(
+            statusReport(rep.id)
+        ))}
+    }
     console.log(props.data)
     return (
         <>
             <button onClick={handleToggle} className="btn btn-ghost btn-xs">
                 details
             </button>
-
             <Modal open={showModal}>
-
                 <button className="absolute top-2 right-5 text-gray-500 " onClick={handleToggle}>X</button>
                 {props.data.map((rep: any, index: any) => (
                     <div key={index} className="mb-5 mt-5">
@@ -151,7 +155,7 @@ export function DeatailReport(props: any) {
                             <h3 className="font-bold text-lg">From: {rep.reportingUserID}</h3>
                             {rep.reportSelection.map((sec: any, index2: any) => (
                                 <div key={index2}>
-                                    <h3 className="font-bold text-lg">{sec}</h3>
+                                    <h3 className="font-bold text-lg">• {sec}</h3>
                                 </div>
                             ))}
                             <div className="modal-action">
@@ -164,6 +168,13 @@ export function DeatailReport(props: any) {
                         {/* )} */}
                     </div>
                 ))}
+                <div className="modal-action">
+                    <button onClick={() => {
+                        readreport(props.data)
+                        handleToggle();
+                        router.refresh();
+                    }} className="btn btn-error text-white rounded-lg mr-4">Delete</button>
+                </div>
             </Modal>
         </>
     )

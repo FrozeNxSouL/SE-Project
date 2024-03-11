@@ -93,3 +93,15 @@ export async function deleteUser(userid: string) {
         }
     })
 }
+
+export async function statusReport(reportid: string) {
+    await prisma.report.update({
+        where: {
+            id: reportid
+        },
+        data: {
+            reportStatus: "0"
+        }
+    })
+
+}
