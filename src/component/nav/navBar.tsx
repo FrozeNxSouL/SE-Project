@@ -1,6 +1,5 @@
 
 import Link from "next/link";
-import { getCurrentSession } from "@/lib/getCurrentSession";
 import SignOutButton from "./signOut";
 import CartCount from "./CartCount";
 import getCurrentUser from "@/app/action/getCurentUser";
@@ -41,7 +40,7 @@ export default async function NavBar() {
                                     <span className="text-center">{session.user?.name}</span>
                                 </div>
                                 <div className="divider"></div>
-                                <li><a>Account</a></li>
+                                <li><a href="/user">Account</a></li>
                                 <li><a>Selling</a></li>
                                 <li><a>My purchase</a></li>
                                 <div className="divider"></div>
