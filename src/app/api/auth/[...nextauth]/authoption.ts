@@ -34,23 +34,37 @@ export const authOption: NextAuthOptions = {
                 }
 
                 // Return an object with the required properties
-                return {
-                    id: user.id,
-                    name: user.name,
-                    email: user.email,
-                    image: user.picture,
-                };
+                return user
             }
         })
     ],
     callbacks: {
-        session: ({ session, token }) => ({
-            ...session,
-            user: {
-                ...session.user,
-                id: token.sub,
-            },
-        }),
+        session: async ({ session, token }) => {
+            const user = await prisma.user.findUnique({
+                where: {
+                    id: token.sub,
+                },
+                select: {
+                    id: true,
+                    name: true,
+                    address: true,
+                    email: true,
+                    phone: true,
+                    picture: true,
+                    score: true,
+                    role: true,
+                    auction: true,
+                    product: true,
+                    transactions: true,
+                    report: true,
+                    wallet: true,
+                }
+            });
+            session.user = {
+                ...user
+            }
+            return Promise.resolve(session)
+        },
     },
     pages: {
         signIn: '/auth/login',

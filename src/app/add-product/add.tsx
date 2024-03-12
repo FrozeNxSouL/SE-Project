@@ -16,7 +16,7 @@ async function addProduct(formData: FormData) {
     const tag = formData.get("tag")?.toString();
     const status = formData.get("status") === "on" ? "auction" : "normal";
     const time = formData.get("Time")?.toString();
-    // const byUser = session.user.id;
+    const byUser = session?.user?.id;
 
     if (!name || !description || !image || !price || !tag || !status) {
         throw Error("Missing required fields or price = 0");
@@ -35,6 +35,7 @@ async function addProduct(formData: FormData) {
                 price,
                 tag: [tag],
                 status,
+                userId: byUser
             },
         });
         if (status == "auction") {
@@ -46,7 +47,7 @@ async function addProduct(formData: FormData) {
                     product: { connect: { id: productOutput.id } },
                     currentBid: price,
                     updatedAt,
-                    user: { connect: { id: "65d581b7f9ee9189e1b19051" } },
+                    user: { connect: { id: byUser } },
                 },
             });
             const auctionLogOutput = await prisma.auction_log.create({
@@ -59,6 +60,6 @@ async function addProduct(formData: FormData) {
         console.log(error)
     }
 
-    redirect("/");
+    redirect("/user/mystore");
 }
 export default addProduct
