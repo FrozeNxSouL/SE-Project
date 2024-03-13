@@ -66,15 +66,15 @@ model Auction_log {
 model Transaction {
   id               String    @id @default(auto()) @map("_id") @db.ObjectId
   totalPrice       Float
-  currency String
+  currency        String
   create_transaction_date DateTime @default(now())
   status           String?
   userId           String?   @db.ObjectId
-  deliveryStatus String?
+  deliveryStatus  String?
   paymentIntentId String @unique
   address Address?
   products          CartProductType[]
-  product   Product[]
+  product         Product[]
   user             User?     @relation(fields: [userId], references: [id],onDelete: Cascade)
   
 }
@@ -90,11 +90,12 @@ type CartProductType {
 }
 
 type Address{
-  province String
-  amphoe String
+  city String
+  country String
   line1 String
   line2 String?
   postal_code String
+  state String
 }
 
 model Wallet {
