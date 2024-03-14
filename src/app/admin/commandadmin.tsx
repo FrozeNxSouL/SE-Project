@@ -158,12 +158,19 @@ export function DeatailReport(props: any) {
                                     <h3 className="font-bold text-lg">• {sec}</h3>
                                 </div>
                             ))}
-                            <div className="modal-action">
+                            {rep.reportPicture.map((sec: any, index3: any) => (
+                                <div key={index3}>
+                                    <h3 className="font-bold text-lg">{sec}</h3>
+                                </div>
+                            ))}
+                            <h3 className="font-bold text-lg">{rep.reportDescription}</h3>
+
+                            {/* <div className="modal-action">
                                 <button onClick={() => {
                                     handleToggle();
                                     router.refresh();
                                 }} className="btn btn-success text-white rounded-lg mr-4">Confirm</button>
-                            </div>
+                            </div> */}
                         </>
                         {/* )} */}
                     </div>

@@ -87,9 +87,12 @@ export async function getUser(usersearch: string) {
 }
 
 export async function deleteUser(userid: string) {
-    await prisma.user.delete({
+    await prisma.user.update({
         where: {
             id: userid
+        },
+        data: {
+            role: "deleted"
         }
     })
 }
