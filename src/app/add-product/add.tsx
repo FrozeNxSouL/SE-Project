@@ -35,6 +35,7 @@ async function addProduct(formData: FormData) {
                 price,
                 tag: [tag],
                 status,
+                userId: session?.user?.id,
             },
         });
         if (status == "auction") {

@@ -16,12 +16,17 @@ export async function getAuctionProductbyTag(tagInput: string) {
                                 hasSome: [tagInput]
                             }
                         },
-                    }
+                    },
+                    {
+                        product: {
+                            status: "auction"
+                        },
+                    },
                 ],
             },
             // take: 3,
             orderBy: {
-                id: 'desc'
+                updatedAt: 'desc'
             }
         });
         if (!output) {
@@ -72,7 +77,7 @@ export async function getAuctionProduct() {
             },
         },
         orderBy: {
-            id: 'desc'
+            updatedAt: 'asc'
         }
     })
     return products
@@ -85,7 +90,7 @@ export async function getProducts() {
             status: "sell",
         },
         orderBy: {
-            id: 'desc'
+            id: 'asc'
         }
     })
     return products
@@ -118,10 +123,10 @@ export async function getAuctionDetail(productId: string) {
                     }
                 }
             },
-            where : {
-                auction : {
-                    product : {
-                        id : productId
+            where: {
+                auction: {
+                    product: {
+                        id: productId
                     }
                 }
             },
@@ -133,5 +138,67 @@ export async function getAuctionDetail(productId: string) {
     } catch (error) {
         console.log(error);
         return null
+    }
+}
+
+export async function getUserDetail(userId: string) {
+    try {
+        const output = await prisma.user.findFirst({
+            where: {
+                id: userId
+            },
+        })
+        if (!output) {
+            return null;
+        }
+        return output;
+    } catch (error) {
+        console.log(error);
+        return null
+    }
+}
+
+export async function updateExpiredStatus(productId: string) {
+    try {
+        const findInLog = await prisma.auction_log.findFirst({
+            include: {
+                auction: {
+                    include: {
+                        product: true
+                    }
+                }
+            },
+            where: {
+                auction: {
+                    product: {
+                        id: productId
+                    }
+                }
+            },
+        })
+        if (findInLog?.auction.product.price == findInLog?.auction.currentBid) {
+            const updatedRecord = await prisma.product.update({
+                where: { id: productId },
+                data: {
+                    status: "expired",
+                },
+            });
+        } else {
+            const updatedRecord = await prisma.product.update({
+                where: { id: productId },
+                data: {
+                    status: "finished",
+                },
+            });
+
+            // const updateTransaction = await prisma.transaction.create({
+
+            // })
+        }
+
+
+        //   console.log('Updated record:', updatedRecord);
+    } catch (error) {
+        console.error('Error updating record:', error);
     }
 }
