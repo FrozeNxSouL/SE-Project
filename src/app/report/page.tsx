@@ -70,7 +70,6 @@ export default function report() {
 
 
     return (
-
         <div className='flex bg-base-100 p-6 justify-center max-w-screen-lg mx-auto'>
 
             <div className='w-full shadow-lg flex flex-col bg-base-100 p-6'>
