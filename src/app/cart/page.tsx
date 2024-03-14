@@ -1,10 +1,10 @@
 import Container from "@/component/Container";
 import React from "react";
 import CartClient from "./CartClient";
-import getCurrentUser from "../action/getCurentUser";
+import { getCurrentSession } from "@/lib/getCurrentSession";
 
 async function Cart() {
-  const currentUser = await getCurrentUser()
+  const currentUser = await getCurrentSession()
   return <div className="">
     <Container>
       <CartClient currentUser = {currentUser}/>
