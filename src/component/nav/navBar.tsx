@@ -34,15 +34,15 @@ export default async function NavBar() {
                                 <div className="mx-auto flex flex-col">
                                     <div className="avatar mx-auto">
                                         <div className="w-16 rounded-full">
-                                            <img src={session.user?.image || "https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"} />
+                                            <img src={session.user?.picture || "https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"} />
                                         </div>
                                     </div>
                                     <span className="text-center">{session.user?.name}</span>
                                 </div>
                                 <div className="divider"></div>
                                 <li><a href="/user">Account</a></li>
-                                <li><a>Selling</a></li>
-                                <li><a>My purchase</a></li>
+                                <li><a href="/user/mystore">My store</a></li>
+                                <li><a href="/user/mypurchase">My purchase</a></li>
                                 <div className="divider"></div>
                                 <li><a href="/admin">Admin</a></li>
                                 <SignOutButton />
