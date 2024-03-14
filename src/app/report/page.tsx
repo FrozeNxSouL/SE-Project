@@ -9,30 +9,23 @@ export default function report() {
     const [productImgUrl, setProductImgUrl] = useState('https://laz-img-sg.alicdn.com/p/6a78913c131cfcd539813bd4b7c42459.png');
     const [productname, setProductname] = useState("product");
 
-    const [productprice, setProductprice] = useState(0);
+    const [productprice, setProductprice] = useState<number|any>(0);
 
     const [username, setusername] = useState("kkkk");
 
+    // const test = await getproductprice("65f03a822e0ab3a001a62fe4");
+
     const handleButtonClick = async () => {
         try {
-            const url = await getproduct("65ead96cd203bf0221818eae");
-            console.log(url)
+            const product = await getproduct("65f03a822e0ab3a001a62fe4");
+            console.log(product)
+            setProductImgUrl(product.imageUrl);
+            setProductname(product.name);
+            setProductprice(product?.price);
 
-            setProductImgUrl(url);
-
-            const name = await getproductname("65ead96cd203bf0221818eae");
-            setProductname(name);
-
-            const username = await getusername("65ead96cd203bf0221818eae");
+            const username = await getusername("65f03a822e0ab3a001a62fe4");
             setusername(username);
-            console.log(username);
-
-            const productprice = await getproductprice("65ead96cd203bf0221818eae");
-            setProductprice(productprice);
-
-
-
-
+            
         } catch (error) {
             console.error('Error fetching product:', error);
         }
@@ -70,7 +63,6 @@ export default function report() {
 
 
     return (
-
         <div className='flex bg-base-100 p-6 justify-center max-w-screen-lg mx-auto'>
 
             <div className='w-full shadow-lg flex flex-col bg-base-100 p-6'>
