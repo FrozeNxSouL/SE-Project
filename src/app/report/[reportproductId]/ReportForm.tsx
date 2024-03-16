@@ -11,44 +11,46 @@ interface ReportFormProps {
 export default function ReportForm({ productId }: ReportFormProps) {
     const [description, setdescription] = useState<string>("first")
     const [checkbox, setCheckbox] = useState([false, false, false, false, false, false]);
-    const [data, setdata] = useState([]);
-    const [productImgUrl, setProductImgUrl] = useState('https://laz-img-sg.alicdn.com/p/6a78913c131cfcd539813bd4b7c42459.png');
-    const [productname, setProductname] = useState("product");
+    const [data, setdata] = useState<(string | null)[]>([]);
 
-    const [sellerImgUrl, setsellerImgUrl] = useState('');
+
+    const [productImgUrl, setProductImgUrl] = useState<string[] | undefined>(['https://laz-img-sg.alicdn.com/p/6a78913c131cfcd539813bd4b7c42459.png']);
+    const [productname, setProductname] = useState<string | undefined>("product");
+
+    const [sellerImgUrl, setsellerImgUrl] = useState<string | undefined>("");
     const [productprice, setProductprice] = useState<number | any>(0);
 
-    const [username, setusername] = useState("kkkk");
+    const [username, setusername] = useState<string | undefined>("kkkk");
 
 
     // const [me, setme] = useState("");
-    const [reportwho, setreportwho] = useState("");
+    const [reportwho, setreportwho] = useState<string | undefined>("");
 
     const session = useSession()
     // setme(session.data?.user.id)
-    
+
 
 
     useEffect(() => {
-        
+
         const fetchUsername = async () => {
-            
+
 
             // setme(session?.user.id)
-            
 
-            const result = await getproductanduser(productId); 
+
+            const result = await getproductanduser(productId);
             console.log(result)
             setusername(result?.User?.name)
             // const product = await getproduct("65f03a822e0ab3a001a62fe4");
-            setProductImgUrl(result.imageUrl);
+            setProductImgUrl(result?.imageUrl);
             setProductname(result?.name);
             setProductprice(result?.price);
             setsellerImgUrl(result?.User?.picture)
             // console.log(username);
 
             setreportwho(result?.User?.id)
-            
+
         };
         fetchUsername();
     }, [productId]);
@@ -176,9 +178,14 @@ export default function ReportForm({ productId }: ReportFormProps) {
                     <textarea className="h-40 textarea textarea-primary mt-4" placeholder="Bio" value={des} onChange={handleTextareaChange} ></textarea>
 
                     {/* <button className="btn btn-block btn-primary mt-4" onClick={handleSubmit} >submit</button> */}
-                    <button onClick={() => {
-                        createReport(des, data,session.data?.user?.id,reportwho)
-                    }} className="btn btn-block btn-primary mt-4 ">submit</button>
+
+                    {session.data?.user?.id && (
+
+                        <button onClick={() => {
+                            createReport(des, data, session.data?.user?.id, reportwho)
+                        }} className="btn btn-block btn-primary mt-4 ">submit</button>
+                    )}
+
 
                     {/* <button type='button' onClick={handleButtonClick} className="btn btn-block btn-primary mt-4 ">test fetch</button> */}
 

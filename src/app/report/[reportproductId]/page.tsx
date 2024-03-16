@@ -6,13 +6,13 @@ import getCreatorUserId from "@/app/action/getCreatorUserId";
 import { Product, User } from "@prisma/client";
 
 interface ReportDetailsProps {
-    params: {reportId: string};
+    params: {reportproductId: string};
 }
 
 const Report: React.FC<ReportDetailsProps> = async({ params }: ReportDetailsProps) => {
-    console.log(params.reportId)
-    // const userId = await getCreatorUserId(params.reportId);
-    const userId = params.reportId
+    console.log(params.reportproductId)
+    // const userId = await getCreatorUserId(params.reportproductId);
+    const userId = params.reportproductId
     console.log(userId)
     return (
         <div className="p-8">
