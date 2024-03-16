@@ -2,6 +2,7 @@
 import prisma from "@/lib/db/prisma";
 import { revalidatePath } from "next/cache";
 
+
 export async function getManage() {
     const list = await prisma.management.findFirst({
         include: {
@@ -48,6 +49,7 @@ export async function editTag(catid: string, catname: string, caturl: string) {
         }
     })
 }
+
 export async function deleteTag(catid: string) {
     const list = await prisma.category.delete({
         where: {
@@ -60,7 +62,8 @@ export async function getUser(usersearch: string) {
     try {
         const list = await prisma.user.findMany({
             include: {
-                report: true,
+                // report: true,
+                report: { where: { reportStatus: "1" } }
             },
             where: {
                 AND: [
@@ -84,9 +87,24 @@ export async function getUser(usersearch: string) {
 }
 
 export async function deleteUser(userid: string) {
-    await prisma.user.delete({
+    await prisma.user.update({
         where: {
             id: userid
+        },
+        data: {
+            role: "deleted"
         }
     })
+}
+
+export async function statusReport(reportid: string) {
+    await prisma.report.update({
+        where: {
+            id: reportid
+        },
+        data: {
+            reportStatus: "0"
+        }
+    })
+
 }
