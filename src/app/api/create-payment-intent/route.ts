@@ -2,8 +2,6 @@ import Stripe from 'stripe'
 import prisma from '@/lib/db/prisma'
 import { NextResponse } from 'next/server'
 import { CartProductType } from '@/app/product/[productId]/productInfo';
-import getCurrentUser from '@/app/action/getCurentUser';
-import { connect } from 'http2';
 import { getCurrentSession } from '@/lib/getCurrentSession';
 
 const stripe = new Stripe(process.env.STRIPE_TEST_SECRET_KEY as string,
@@ -24,7 +22,7 @@ const calculateOrderAmount = (items: CartProductType[]) => {
 
 export async function POST(request: Request){
     const currentUser = await getCurrentSession()
-
+    console.log(currentUser)
     if(!currentUser){
         return NextResponse.json({error: 'Unauthorized'}, {status: 401})
     }
@@ -34,7 +32,7 @@ export async function POST(request: Request){
     let total = Math.round(calculateOrderAmount(items) *100)
 
     const orderData = {
-        user: {connect: {id: currentUser.id}},
+        user: {connect: {id: currentUser.user.id}},
         totalPrice: total/100,
         currency: 'thb',
         status: "pending",

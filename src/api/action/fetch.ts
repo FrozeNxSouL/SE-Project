@@ -2,6 +2,63 @@
 import prisma from "@/lib/db/prisma";
 import { notFound } from "next/navigation"
 
+export interface requestProducts {
+    quantity: number,
+    sort: string,
+    keyword: string | null,
+    price: {
+        min: number,
+        max: number,
+    },
+    page: number
+}
+export interface requestAuctions {
+
+}
+
+export const getProducts = async (request: requestProducts)=> {
+
+    const where: any = {};
+    if (request.keyword) {
+        where.name = {
+            contains: request.keyword,
+            mode: 'insensitive'
+        }
+    }
+    if (request.price.min < request.price.max) {
+        where.price = {
+            gte: request.price.min,
+            lte: request.price.max
+        }
+    }
+
+    try {
+        const list = await prisma.product.findMany({
+            take: request.quantity,
+            skip: (request.page) ? (request.page - 1) * request.quantity : 0,
+            orderBy: {
+                price: (request.sort == "asc") ? "asc" : "desc"
+            },
+            where,
+        })
+        const count = await prisma.product.count({
+            orderBy: {
+                price: (request.sort == "asc") ? "asc" : "desc"
+            },
+            where,
+        })
+        return {list, count}
+    } catch (error) {
+        console.log(error)
+        throw new Error("Can't get product from database")
+    }
+    
+
+}
+
+export const getAuctions = (request: requestAuctions)=> {
+
+}
 export async function getAuctionProductbyTag(tagInput: string) {
     try {
         const output = await prisma.auction.findMany({
@@ -78,34 +135,38 @@ export async function getAuctionProduct() {
     return products
 }
 
-export async function getProducts() {
-    const products = await prisma.product.findMany({
-        take: 6,
-        where: {
-            status: "sell",
-        },
-        orderBy: {
-            id: 'desc'
-        }
-    })
-    return products
-}
-
 export async function getProductDetail(productId: string) {
+    let productDetails;
     try {
-        const productDetails = await prisma.product.findUnique({
+        productDetails = await prisma.product.findUnique({
             where: {
                 id: productId,
             }
         });
-        if (!productDetails) {
-            return null
-        }
-        return productDetails;
     } catch (error) {
         console.log(error);
         return null
     }
+    if (!productDetails) {
+        throw new Error("This product is not available");
+    }
+    const seller = await prisma.user.findUnique({
+        where: {
+            id: productDetails.userId || "",
+        },
+        select: {
+            id: true,
+            name: true,
+            address: true,
+            email: true,
+            phone: true,
+            picture: true,
+            score: true,
+            role: true,
+        }
+    });
+
+    return {productDetails, seller}
 }
 
 export async function getAuctionDetail(productId: string) {
