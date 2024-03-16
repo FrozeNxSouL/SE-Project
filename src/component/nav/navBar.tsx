@@ -2,12 +2,13 @@
 import Link from "next/link";
 import SignOutButton from "./signOut";
 import CartCount from "./CartCount";
-import getCurrentUser from "@/app/action/getCurentUser";
 import getCategory from "@/app/action/getCategory";
+import { getCurrentSession } from "@/lib/getCurrentSession";
 
 export default async function NavBar() {
-    const session = await getCurrentUser();
+    const session = await getCurrentSession();
     const category = await getCategory();
+    console.log(session)
 
     return (
         <>
