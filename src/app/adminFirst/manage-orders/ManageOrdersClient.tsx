@@ -6,9 +6,9 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { formatPrice } from "@/utils/formatPrice";
 import ActionBtn from "@/component/ActionBtn";
 import { MdCached, MdDelete, MdRemoveRedEye } from "react-icons/md";
-import { useCallback } from "react";
+import { useCallback } from "react";  
 import toast from "react-hot-toast";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 
 interface ManageOrdersClientProps {
   orders: ExtendedOrder[] | undefined;
@@ -22,7 +22,7 @@ const ManageOrdersClient: React.FC<ManageOrdersClientProps> = ({
   orders,
 }) => {
   let rows: any = [];
-  const router = useRouter()
+  const router = useRouter();
 
   if (orders) {
     rows = orders.map((order) => {
@@ -81,7 +81,7 @@ const ManageOrdersClient: React.FC<ManageOrdersClientProps> = ({
         return <div className="flex justify-between gap-4 w-full">
 
           <ActionBtn icon={MdRemoveRedEye} onClick={()=>{
-            router.push(`product/${params.row.id}`)
+            router.push(`/order/${params.row.id}`)
           }}/>
         </div>;
       },
