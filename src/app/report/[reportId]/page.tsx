@@ -11,13 +11,14 @@ interface ReportDetailsProps {
 
 const Report: React.FC<ReportDetailsProps> = async({ params }: ReportDetailsProps) => {
     console.log(params.reportId)
-    const userId = await getCreatorUserId(params.reportId);
+    // const userId = await getCreatorUserId(params.reportId);
+    const userId = params.reportId
     console.log(userId)
     return (
         <div className="p-8">
             <Container>
                 {userId ? (
-                    <ReportForm userId={userId} />
+                    <ReportForm productId={userId} />
                 ) : (
                     <NullData title="ไม่มีไอหน้าส้นตีน" />
                 )}

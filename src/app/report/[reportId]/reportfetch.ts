@@ -2,34 +2,33 @@
 import prisma from "@/lib/db/prisma";
 import { revalidatePath } from "next/cache";
 
-export async function createReport(Des: string,reportSelection: string[]) {
+export async function createReport(Des: string,reportSelection: string[],me:string,reportwho:string) {
     const cleanedReportSelection = reportSelection.filter(value => value !== null);
     await prisma.report.create({
         data:{
             reportPicture: ["https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Alligator_gar_%28Atractosteus_spatula%29.JPG/1200px-Alligator_gar_%28Atractosteus_spatula%29.JPG"],
             reportDescription: Des,
             reportStatus: "1",
-            reportingUserID: "gay",
+            reportingUserID: me,
             reportSelection: cleanedReportSelection,
-            userId: "65e226c76685873d32bd9fcb"
+            userId: reportwho
         }
     });
 }
 
-export async function getusername(searchid: string) {
+export async function getproductanduser(searchid: string) {
     try{
-        const usersWithThisid= await prisma.user.findMany({
+        const usersWithThisid= await prisma.product.findFirst({
             where: {
-                product: {
-                    some: {
-                        id: searchid,
-                    },
-                },
+                id:searchid
             },
+            include:{
+                User:true
+            }
         });
-          const username = usersWithThisid.map(i => i.name);
-          console.log(username);
-          return username
+        //   const username = usersWithThisid.map(i => i.name);
+        //   console.log(username);
+          return usersWithThisid
     }
     catch (error) {
         // Handle errors

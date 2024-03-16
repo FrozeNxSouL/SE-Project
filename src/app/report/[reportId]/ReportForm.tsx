@@ -4,6 +4,7 @@ import { useState } from 'react';
 import React, { useEffect } from 'react';
 import { createReport, getproduct, getproductanduser } from './reportfetch';
 import { getCurrentSession } from '@/lib/getCurrentSession';
+import { useSession } from 'next-auth/react';
 interface ReportFormProps {
     productId: string;
 }
@@ -20,18 +21,20 @@ export default function ReportForm({ productId }: ReportFormProps) {
     const [username, setusername] = useState("kkkk");
 
 
-    const [me, setme] = useState("");
+    // const [me, setme] = useState("");
     const [reportwho, setreportwho] = useState("");
 
+    const session = useSession()
+    // setme(session.data?.user.id)
     
 
 
     useEffect(() => {
         
         const fetchUsername = async () => {
-            const session = await getCurrentSession();
+            
 
-            setme(session?.user.id)
+            // setme(session?.user.id)
             
 
             const result = await getproductanduser(productId); 
@@ -174,7 +177,7 @@ export default function ReportForm({ productId }: ReportFormProps) {
 
                     {/* <button className="btn btn-block btn-primary mt-4" onClick={handleSubmit} >submit</button> */}
                     <button onClick={() => {
-                        createReport(des, data,me,reportwho)
+                        createReport(des, data,session.data?.user?.id,reportwho)
                     }} className="btn btn-block btn-primary mt-4 ">submit</button>
 
                     {/* <button type='button' onClick={handleButtonClick} className="btn btn-block btn-primary mt-4 ">test fetch</button> */}
