@@ -1,11 +1,75 @@
 "use client"
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { createReport } from './reportfetch';
+import React, { useEffect } from 'react';
+import { createReport, getproduct, getproductname, getproductprice, getusername } from './reportfetch';
 export default function report() {
-    const [description,setdescription] = useState<string>("first")
-    return (
+    const [checkbox, setCheckbox] = useState([false, false, false, false, false, false]);
+    const [data, setdata] = useState([]);
+    const [productImgUrl, setProductImgUrl] = useState('https://laz-img-sg.alicdn.com/p/6a78913c131cfcd539813bd4b7c42459.png');
+    const [productname, setProductname] = useState("product");
 
+    const [productprice, setProductprice] = useState(0);
+
+    const [username, setusername] = useState("kkkk");
+
+    const handleButtonClick = async () => {
+        try {
+            const url = await getproduct("65ead96cd203bf0221818eae");
+            console.log(url)
+
+            setProductImgUrl(url);
+
+            const name = await getproductname("65ead96cd203bf0221818eae");
+            setProductname(name);
+
+            const username = await getusername("65ead96cd203bf0221818eae");
+            setusername(username);
+            console.log(username);
+
+            const productprice = await getproductprice("65ead96cd203bf0221818eae");
+            setProductprice(productprice);
+
+
+
+
+        } catch (error) {
+            console.error('Error fetching product:', error);
+        }
+    };
+
+    const [des, setDes] = useState("");
+    const ref = ["ขายสินค้าไม่ตรงปก", "จัดส่งสินค้านาน ", "ใช้คำพูดไม่เหมาะสม", "ความไม่ชัดเจนในการให้ข้อมูลสินค้า ", "การแก้ไขปัญหาและการคืนสินค้า", "การให้บริการหลังการขายที่ไม่มีประสิทธิภาพ"]
+
+    const handleCheckboxChange = (index: any) => {
+        const newCheckboxes = [...checkbox];
+        newCheckboxes[index] = !newCheckboxes[index];
+        setCheckbox(newCheckboxes);
+
+        const newData = newCheckboxes.map((isChecked, i) => isChecked ? ref[i] : null) as (string | null)[];
+        console.log('Selected choice:', newData);
+        setdata(newData);
+
+    };
+    const handleTextareaChange = (event: any) => {
+        // Update the state with the new value from the textarea
+        setDes(event.target.value);
+    };
+
+    //       const [selectedFile, setSelectedFile] = useState();
+
+    //   const handleFileChange = (event) => {
+    //     const file = event.target.files[0];
+
+    //     // Do something with the selected file (e.g., store it in state)
+    //     setSelectedFile(file);
+
+    //     // You can also perform additional actions with the file, such as uploading it to a server
+    //   };
+
+
+
+    return (
         <div className='flex bg-base-100 p-6 justify-center max-w-screen-lg mx-auto'>
 
             <div className='w-full shadow-lg flex flex-col bg-base-100 p-6'>
@@ -14,10 +78,10 @@ export default function report() {
                     <div className="flex justify-start m-5">
                         <div className="h-11 avatar">
                             <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                                <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+                                <img src={productImgUrl} />
                             </div>
                         </div>
-                        <h1 className='overflow-visible h-6 font-extrabold ml-4 '>wow</h1>
+                        <h1 className='overflow-visible h-6 font-extrabold ml-4 '>{username}</h1>
                     </div>
                     <div className='min-w-96 flex'>
                         <div className="collapse bg-base-200">
@@ -27,13 +91,13 @@ export default function report() {
                             </div>
                             <div className="collapse-content bg-primary ">
                                 <figure>
-                                    <img className="object-cover w-full h-40" src="https://media.discordapp.net/attachments/1130011642361561209/1185824208140390441/IMG_2470.jpg?ex=65e4125a&is=65d19d5a&hm=7d6d5d4bcceeae4c4223cd0a430a95d0ec2e3d1bbcf2a2f028a927adc1661826&=&format=webp" />
+                                    <img className="object-cover w-full h-40" src={productImgUrl} />
                                 </figure>
                                 <div className="card-body p-5 bg-base-100">
-                                    <div className="card-title truncate overflow-hidden max-w-60">asdasd</div>
+                                    <div className="card-title truncate overflow-hidden max-w-60">{productname}</div>
                                     <div className="card-actions justify-end">
                                         <div>
-                                            <p className="text-primary text-xl">฿199</p>
+                                            <p className="text-primary text-xl">฿{productprice}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -44,31 +108,31 @@ export default function report() {
                 <form className="form-control">
                     <label className="label cursor-pointer">
                         <span className="label-text">ขายสินค้าไม่ตรงปก</span>
-                        <input type="checkbox" className="checkbox checkbox-primary" />
+                        <input type="checkbox" className="checkbox checkbox-primary" onChange={() => handleCheckboxChange(0)} />
                     </label>
 
                     <label className="label cursor-pointer">
                         <span className="label-text">จัดส่งสินค้านาน</span>
-                        <input type="checkbox" className="checkbox checkbox-primary" />
+                        <input type="checkbox" className="checkbox checkbox-primary" onChange={() => handleCheckboxChange(1)} />
                     </label>
 
                     <label className="label cursor-pointer">
                         <span className="label-text">ใช้คำพูดไม่เหมาะสม</span>
-                        <input type="checkbox" className="checkbox checkbox-primary" />
+                        <input type="checkbox" className="checkbox checkbox-primary" onChange={() => handleCheckboxChange(2)} />
                     </label>
                     <label className="label cursor-pointer">
                         <span className="label-text">ความไม่ชัดเจนในการให้ข้อมูลสินค้า</span>
-                        <input type="checkbox" className="checkbox checkbox-primary" />
+                        <input type="checkbox" className="checkbox checkbox-primary" onChange={() => handleCheckboxChange(3)} />
                     </label>
 
                     <label className="label cursor-pointer">
                         <span className="label-text">การแก้ไขปัญหาและการคืนสินค้า</span>
-                        <input type="checkbox" className="checkbox checkbox-primary" />
+                        <input type="checkbox" className="checkbox checkbox-primary" onChange={() => handleCheckboxChange(4)} />
                     </label>
 
                     <label className="label cursor-pointer">
                         <span className="label-text">การให้บริการหลังการขายที่ไม่มีประสิทธิภาพ</span>
-                        <input type="checkbox" className="checkbox checkbox-primary" />
+                        <input type="checkbox" className="checkbox checkbox-primary" onChange={() => handleCheckboxChange(5)} />
                     </label>
 
 
@@ -76,11 +140,14 @@ export default function report() {
                     <h1 className='font-extrabold mt-6'>เลือกรูปภาพ</h1>
                     <input type="file" className="file-input file-input-bordered w-full mt-2" />
 
-                    <textarea className="h-40 textarea textarea-primary mt-4" placeholder="Bio"></textarea>
+                    <textarea className="h-40 textarea textarea-primary mt-4" placeholder="Bio" value={des} onChange={handleTextareaChange} ></textarea>
 
-                    <button onClick={()=>{
-                        createReport(description)
-                    }}className="btn btn-block btn-primary mt-4 ">submit</button>
+                    {/* <button className="btn btn-block btn-primary mt-4" onClick={handleSubmit} >submit</button> */}
+                    <button onClick={() => {
+                        createReport(des, data)
+                    }} className="btn btn-block btn-primary mt-4 ">submit</button>
+
+                    <button type='button' onClick={handleButtonClick} className="btn btn-block btn-primary mt-4 ">test fetch</button>
 
                 </form>
 
