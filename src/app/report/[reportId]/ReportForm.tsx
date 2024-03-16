@@ -2,7 +2,10 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { createReport } from './reportfetch';
-export default function report() {
+interface ReportFormProps {
+    userId: string;
+}
+export default function ReportForm({ userId }: ReportFormProps) {
     const [description,setdescription] = useState<string>("first")
     return (
 

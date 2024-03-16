@@ -8,6 +8,7 @@ import { formatPrice } from "@/utils/formatPrice";
 import { getCurrentSession } from "@/lib/getCurrentSession";
 import { SafeUser } from "@/types";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 interface CartClientProps{
   currentUser: SafeUser | null

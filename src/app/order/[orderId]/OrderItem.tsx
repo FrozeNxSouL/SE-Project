@@ -26,7 +26,7 @@ const OrderItem: React.FC<OrderItemProps>= ({ item }) =>{
         <div className="justify-self-center">{formatPrice(item.price)}</div>
         <div className="justify-self-end font-semibold">
         <ActionBtn icon={FaSkull} onClick={()=>{
-            router.push(`/report`)
+            router.push(`/report/${item.id}`)
           }}/>
         </div>
     </div>
