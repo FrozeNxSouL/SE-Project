@@ -25,7 +25,6 @@ export async function changeTax(newtax: number) {
     } catch (error) {
         console.log(error)
     }
-
 }
 
 export async function tagAdd(addname: string, addurl: string, adminid: string) {

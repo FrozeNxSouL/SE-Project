@@ -14,38 +14,59 @@ export const authOption: NextAuthOptions = {
 
             async authorize(credentials) {
                 if (!credentials?.email || !credentials?.password) {
-                    throw new Error("email and password is required")
+                    throw new Error("email and password are required");
                 }
-                const res = await prisma.user.findUnique({
+                
+                const user = await prisma.user.findUnique({
                     where: {
                         email: credentials?.email
                     }
-                })
-                if (!res) {
+                });
+
+                if (!user) {
                     throw new Error("email or password is invalid");
                 }
-                
-                const user = await compare(credentials.password, res.hashedPassword).then((result) => {
-                    if (!result) {
-                        throw new Error("email or password is invalid")
-                    } else {
-                        return res
-                    }
-                });
-                return user;      
+
+                const passwordValid = await compare(credentials.password, user.hashedPassword);
+
+                if (!passwordValid) {
+                    throw new Error("email or password is invalid");
+                }
+
+                // Return an object with the required properties
+                return user
             }
         })
     ],
     callbacks: {
-        session: ({ session, token }) => ({
-            ...session,
-            user: {
-            ...session.user,
-            id: token.sub,
-            },
-        }),
+        session: async ({ session, token }) => {
+            const user = await prisma.user.findUnique({
+                where: {
+                    id: token.sub,
+                },
+                select: {
+                    id: true,
+                    name: true,
+                    address: true,
+                    email: true,
+                    phone: true,
+                    picture: true,
+                    score: true,
+                    role: true,
+                    auction: true,
+                    product: true,
+                    transactions: true,
+                    report: true,
+                    wallet: true,
+                }
+            });
+            session.user = {
+                ...user
+            }
+            return Promise.resolve(session)
+        },
     },
     pages: {
         signIn: '/auth/login',
     }
-}
+};

@@ -1,13 +1,13 @@
 
 import Link from "next/link";
-import { getCurrentSession } from "@/lib/getCurrentSession";
 import SignOutButton from "./signOut";
 import CartCount from "./CartCount";
 import getCurrentUser from "@/app/action/getCurentUser";
 import getCategory from "@/app/action/getCategory";
+import { getCurrentSession } from "@/lib/getCurrentSession";
 
 export default async function NavBar() {
-    const session = await getCurrentUser();
+    const session = await getCurrentSession();
     const category = await getCategory();
 
     return (
@@ -41,9 +41,9 @@ export default async function NavBar() {
                                     <span className="text-center">{session.user?.name}</span>
                                 </div>
                                 <div className="divider"></div>
-                                <li><a>Account</a></li>
-                                <li><a>Selling</a></li>
-                                <li><a>My purchase</a></li>
+                                <li><a href="/user">Account</a></li>
+                                <li><a href="/user/mystore">My store</a></li>
+                                <li><a href="/orders">My purchase</a></li>
                                 <div className="divider"></div>
                                 <li><a href="/admin">Admin</a></li>
                                 <SignOutButton />

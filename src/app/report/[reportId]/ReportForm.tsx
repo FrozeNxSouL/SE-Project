@@ -2,34 +2,71 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import React, { useEffect } from 'react';
-import { createReport, getproduct, getproductname, getproductprice, getusername } from './reportfetch';
-export default function report() {
+import { createReport, getproduct, getproductanduser } from './reportfetch';
+import { getCurrentSession } from '@/lib/getCurrentSession';
+interface ReportFormProps {
+    productId: string;
+}
+export default function ReportForm({ productId }: ReportFormProps) {
+    const [description, setdescription] = useState<string>("first")
     const [checkbox, setCheckbox] = useState([false, false, false, false, false, false]);
     const [data, setdata] = useState([]);
     const [productImgUrl, setProductImgUrl] = useState('https://laz-img-sg.alicdn.com/p/6a78913c131cfcd539813bd4b7c42459.png');
     const [productname, setProductname] = useState("product");
 
-    const [productprice, setProductprice] = useState<number|any>(0);
+    const [sellerImgUrl, setsellerImgUrl] = useState('');
+    const [productprice, setProductprice] = useState<number | any>(0);
 
     const [username, setusername] = useState("kkkk");
 
+
+    const [me, setme] = useState("");
+    const [reportwho, setreportwho] = useState("");
+
+    
+
+
+    useEffect(() => {
+        
+        const fetchUsername = async () => {
+            const session = await getCurrentSession();
+
+            setme(session?.user.id)
+            
+
+            const result = await getproductanduser(productId); 
+            console.log(result)
+            setusername(result?.User?.name)
+            // const product = await getproduct("65f03a822e0ab3a001a62fe4");
+            setProductImgUrl(result.imageUrl);
+            setProductname(result?.name);
+            setProductprice(result?.price);
+            setsellerImgUrl(result?.User?.picture)
+            // console.log(username);
+
+            setreportwho(result?.User?.id)
+            
+        };
+        fetchUsername();
+    }, [productId]);
+
     // const test = await getproductprice("65f03a822e0ab3a001a62fe4");
 
-    const handleButtonClick = async () => {
-        try {
-            const product = await getproduct("65f03a822e0ab3a001a62fe4");
-            console.log(product)
-            setProductImgUrl(product.imageUrl);
-            setProductname(product.name);
-            setProductprice(product?.price);
+    // const handleButtonClick = async () => {
+    //     try {
+    //         const product = await getproduct("65f03a822e0ab3a001a62fe4");
+    //         console.log(product)
+    //         setProductImgUrl(product.imageUrl);
+    //         setProductname(product.name);
+    //         setProductprice(product?.price);
 
-            const username = await getusername("65f03a822e0ab3a001a62fe4");
-            setusername(username);
-            
-        } catch (error) {
-            console.error('Error fetching product:', error);
-        }
-    };
+    //         const username = await getproductanduser("65f03a822e0ab3a001a62fe4");
+    //         setusername(username);
+
+    //     } catch (error) {
+    //         console.error('Error fetching product:', error);
+    //     }
+    // };
 
     const [des, setDes] = useState("");
     const ref = ["ขายสินค้าไม่ตรงปก", "จัดส่งสินค้านาน ", "ใช้คำพูดไม่เหมาะสม", "ความไม่ชัดเจนในการให้ข้อมูลสินค้า ", "การแก้ไขปัญหาและการคืนสินค้า", "การให้บริการหลังการขายที่ไม่มีประสิทธิภาพ"]
@@ -71,7 +108,7 @@ export default function report() {
                     <div className="flex justify-start m-5">
                         <div className="h-11 avatar">
                             <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                                <img src={productImgUrl} />
+                                <img src={sellerImgUrl} />
                             </div>
                         </div>
                         <h1 className='overflow-visible h-6 font-extrabold ml-4 '>{username}</h1>
@@ -137,10 +174,10 @@ export default function report() {
 
                     {/* <button className="btn btn-block btn-primary mt-4" onClick={handleSubmit} >submit</button> */}
                     <button onClick={() => {
-                        createReport(des, data)
+                        createReport(des, data,me,reportwho)
                     }} className="btn btn-block btn-primary mt-4 ">submit</button>
 
-                    <button type='button' onClick={handleButtonClick} className="btn btn-block btn-primary mt-4 ">test fetch</button>
+                    {/* <button type='button' onClick={handleButtonClick} className="btn btn-block btn-primary mt-4 ">test fetch</button> */}
 
                 </form>
 
