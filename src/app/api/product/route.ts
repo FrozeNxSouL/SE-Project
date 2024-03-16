@@ -1,9 +1,10 @@
 import prisma from "@/lib/prismaDB";
 import { NextResponse  } from "next/server";
-import getCurrentUser from "@/app/action/getCurentUser";
+import { getCurrentSession } from "@/lib/getCurrentSession";
 
 export async function POST(request: Request){
-    const currentUser = await getCurrentUser()
+    const session = await getCurrentSession();
+    const currentUser = session?.user
     const body = await request.json();
     const {name, description, price,image,tag, status } = body;
 

@@ -1,8 +1,9 @@
-import getCurrentUser from "@/app/action/getCurentUser";
+import { getCurrentSession } from "@/lib/getCurrentSession";
 import { NextResponse } from "next/server";
 
 export async function DELETE(request: Request, {params}: {params: {id:string}}){
-    const currentUser = await getCurrentUser();
+    const session = await getCurrentSession();
+    const currentUser = session?.user
 
     if(!currentUser || currentUser.role !== "manager"){
         return NextResponse.error();

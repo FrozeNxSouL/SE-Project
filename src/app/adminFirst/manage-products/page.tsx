@@ -1,13 +1,14 @@
 import Container from "@/component/Container";
 import ManageProductsClient from "./ManageProductsClient";
 import getProducts from "@/app/action/getProducts";
-import getCurrentUser from "@/app/action/getCurentUser";
+import { getCurrentSession } from "@/lib/getCurrentSession";
 import NullData from "@/component/NullData";
 
 const ManageProducts = async () => {
 
     const products = await getProducts({category: null})
-    const currentUser = await getCurrentUser()
+    const session = await getCurrentSession();
+    const currentUser = session?.user
 
     if(!currentUser || currentUser.role !== "manager"){
         return <NullData title="Oops! ไอเหี้ยนี่มันพยายามจะเจาะระบบ" />
