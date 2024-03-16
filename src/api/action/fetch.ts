@@ -32,7 +32,7 @@ export async function getAuctionProductbyTag(tagInput: string) {
         if (!output) {
             notFound();
         }
-        console.log(output)
+        // console.log(output)
         return output;
     } catch (error) {
         console.log(error);
@@ -54,7 +54,7 @@ export async function getProductbyTag(tagInput: string) {
                 ],
             }
         });
-        console.log(output)
+        // console.log(output)
         if (!output) {
             notFound();
         }
@@ -80,6 +80,7 @@ export async function getAuctionProduct() {
             updatedAt: 'asc'
         }
     })
+    // console.log(products)
     return products
 }
 
@@ -98,9 +99,14 @@ export async function getProducts() {
 
 export async function getProductDetail(productId: string) {
     try {
-        const productDetails = await prisma.product.findUnique({
-            where: {
-                id: productId,
+        const productDetails = await prisma.product.findFirst({
+            where : {
+                AND: [
+                    {
+                        id : productId,
+                    },
+                    { status: "sell" },
+                ],
             }
         });
         if (!productDetails) {
