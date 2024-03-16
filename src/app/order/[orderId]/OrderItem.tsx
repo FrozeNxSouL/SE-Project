@@ -20,12 +20,13 @@ const OrderItem: React.FC<OrderItemProps>= ({ item }) =>{
             </div>
             <div>
                 <div>{truncateText(item.name)}</div>
+                <div>{truncateText(item.description)}</div>
             </div>
         </div>
         <div className="justify-self-center">{formatPrice(item.price)}</div>
         <div className="justify-self-end font-semibold">
         <ActionBtn icon={FaSkull} onClick={()=>{
-            // router.push(`/order/${params.row.id}`)
+            router.push(`/report`)
           }}/>
         </div>
     </div>
