@@ -1,24 +1,19 @@
 import ProductInfo from "./productInfo";
-import prisma from "@/lib/prismaDB";
 import { productDetails, userData } from "@/component/variables";
 import { notFound } from "next/navigation";
 import { getProductDetail } from "@/api/action/fetch";
-
-export interface productObject {
-    id: string;
-    description: string;
-    imageUrl: string[];
-    name: string;
-    price: number;
-    tag: string[];
-}
+import prisma from "@/lib/prismaDB";
 
 
-export default async function payment({ params }: { params: { productId: string } }) {
-    const productDetails = await getProductDetail(params.productId);
-    if (!productDetails) {
+
+export default async function product({ params }: { params: { productId: string } }) {
+    const res = await getProductDetail(params.productId);
+    const productDetails = res?.productDetails;
+    const seller = res?.seller;
+    if (!productDetails || !seller) {
         notFound();
     }
+
     return (
         <div className="max-w-screen-xl mx-auto" >
             <div className="text-sm breadcrumbs">
@@ -33,13 +28,13 @@ export default async function payment({ params }: { params: { productId: string 
                 <div className="flex flex-row gap-5">
                     <div className="avatar">
                         <div className="w-20 rounded-full">
-                            <img src={userData.image} />
+                            <img src={seller.picture} />
                         </div>
                     </div>
                     <div className="flex flex-col justify-center">
-                        <h1 className="font-bold">{userData.username}</h1>
+                        <h1 className="font-bold">{seller.name}</h1>
                         <span className="opacity-80 font-light">
-                            {userData.tel}
+                            {seller.phone}
                         </span>
                     </div>
                     <div className="divider lg:divider-horizontal"></div>

@@ -1,9 +1,11 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import addProduct from "./add";
 import FormSubmitButton from "@/component/nav/FormSubmitButton";
 import { categories } from "@/component/variables";
 import { Product } from "@prisma/client";
+import getCategory from "../action/getCategory";
+import { Category } from "@prisma/client";
 
 
 function AddProductPage() {
@@ -15,7 +17,6 @@ function AddProductPage() {
   const [category, setCategory] = useState("");
   const [productImage, setProductImage] = useState<string[]>([]);
   const [imageField, setImageField] = useState("");
-
 
   const handleName = (e: React.ChangeEvent<HTMLInputElement>)=> {
     setName(e.target.value)
@@ -118,7 +119,7 @@ function AddProductPage() {
           </div>
           <div className="join w-full">
               <input required name="imageUrl" type="text" className="input input-bordered w-full join-item" placeholder="Image url" onChange={handleImageField} />
-              <button className="btn btn-outline join-item" onClick={handleAddImage}>Add this image</button>
+              <button className="btn btn-outline join-item" onClick={handleAddImage}>Save</button>
           </div>
           <button className="btn btn-primary btn-block" onClick={handleSubmit}>Add Product</button>
         </div>
