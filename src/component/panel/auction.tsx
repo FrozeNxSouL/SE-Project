@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { auction } from '../variables';
 import { useRouter } from "next/navigation"
+import { callUpdateData } from '@/app/auction/[auctionId]/page';
 
 export const calculateTime = (targetTime: number, index: number, auction: auction[]) => {
     const currentTime = new Date().getTime();
@@ -12,7 +13,6 @@ export const calculateTime = (targetTime: number, index: number, auction: auctio
     const hours: number = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes: number = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
     const seconds: number = Math.floor((timeDifference % (1000 * 60)) / 1000);
-    // newAuction[index].countdown = `${hours}h ${minutes}m ${seconds}s`
     const newAuction: auction[] = [...auction]
     // if (hours <= 0 && timeDifference >= 0) {
     //     newAuction[index].countdown = `${minutes}m ${seconds}s`
@@ -82,6 +82,7 @@ export default function AuctionProducts(props: any) {
         let day = stringSpliter(item, 0), range;
         let output: string = ""
         if (day == "Ended") {
+            callUpdateData(item.id)
             return "Ended"
         } else {
             for (let i = 0; i < 4; i++) {

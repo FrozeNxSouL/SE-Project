@@ -11,6 +11,7 @@ import ProductCarousel from "@/app/product/[productId]/carousel";
 import { auction } from "@/component/variables";
 import { calculateTime, stringSpliter } from "@/component/panel/auction";
 import CountdownTimer from "@/component/panel/countdown";
+import { getUserDetail } from "@/api/action/fetch";
 
 
 interface auctionProps {
@@ -24,17 +25,26 @@ export type CartProductType = {
   img: string[];
   tag: string[];
   time: Date;
+  current_bidder: string;
   bidding_amount: String[];
   bidder_id: String[];
   currentBid: number;
 
 };
+
+var exp = false;
+
+export function updateExpired() {
+  exp = true;
+}
+
 export default function ProductInfo(props: any) {
   const { handleAddProductToCart, cartProducts } = useCart();
-  const [isProductInCart, setIsProductInCart] = useState(false);
+  const [isExpired, setIsExpired] = useState(false);
   const { cartTotalQty } = useCart();
   const auctionData = props.data;
-
+  const userData = props.user;
+  // console.log(userData);
   const [cartProduct, setCartProduct] = useState<CartProductType>({
     id: auctionData.auction.product.id,
     description: auctionData.auction.product.description,
@@ -45,6 +55,7 @@ export default function ProductInfo(props: any) {
     bidder_id: auctionData.bidder_id,
     bidding_amount: auctionData.bidding_amount,
     currentBid: auctionData.auction.currentBid,
+    current_bidder: userData.name,
   });
 
   const [auct, setAuction] = useState<auction[]>(() => {
@@ -72,7 +83,6 @@ export default function ProductInfo(props: any) {
     {
       auct.map((item: auction, index: number) => {
         const countdownInterval = setInterval(() => setTime(new Date(item.targetTime).getTime(), index, auct), 1000);
-
         return () => {
           clearInterval(countdownInterval)
         }
@@ -83,21 +93,6 @@ export default function ProductInfo(props: any) {
 
   const router = useRouter()
 
-  // useEffect(() => {
-  //   console.log(cartProducts);
-  //   setIsProductInCart(false);
-
-  //   if (cartProducts) {
-  //     const existingIndex = cartProducts.findIndex(
-  //       (item) => item.id === productDetails.id
-  //     );
-
-  //     if (existingIndex > -1) {
-  //       setIsProductInCart(true);
-  //     }
-  //   }
-  // }, [cartProducts]);
-
   return (
     <div className="w-full bg-base-100 flex justify-center flex-row gap-5 px-20 py-10">
       <ProductCarousel data={auctionData.auction.product} />
@@ -106,9 +101,15 @@ export default function ProductInfo(props: any) {
           <h1 className="text-xl mb-3 text-wrap break-words">
             {cartProduct?.name}
           </h1>
-          <div className="bg-base-200 p-3">
-            <h2 className="text-2xl text-primary">฿{cartProduct.currentBid}</h2>
-          </div>
+        </div>
+
+        <div className="absolute self-end dropdown dropdown-hover dropdown-left">
+          <div tabIndex={0} role="button" className="btn m-1">History</div>
+          <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+            {cartProduct.bidder_id.map((item, index) => (
+              <li key={index}><a>{item} : {cartProduct.bidding_amount[index]}</a></li>
+            ))}
+          </ul>
         </div>
 
         <div className="flex flex-col gap-6">
@@ -124,34 +125,40 @@ export default function ProductInfo(props: any) {
           </div>
           <div className="flex gap-2">
             <h3 className="w-1/12 font-bold">Detail</h3>
-            <div className="flex gap-2 w-11/12 min-h-40 text-wrap break-words">
+            <div className="flex gap-2 w-11/12 min-h-20 text-wrap break-words">
               <p className="w-full">{cartProduct.description}</p>
             </div>
           </div>
         </div>
 
-        <CountdownTimer data={auct} />
+        <div className="flex flex-col items-center p-3 gap-3">
+          <div className=" flex justify-center items-center h-32 w-96 rounded-3xl bg-neutral text-neutral-content">
+            <h2 className="absolute self-auto mr-72 mb-20 text-md">NOW</h2>
+            <h2 className="font-mono text-6xl text-primary">{cartProduct.currentBid} ฿</h2>
+          </div>
 
-        {isProductInCart ? (
+          <div className="dropdown dropdown-hover dropdown-bottom">
+            <div tabIndex={0} role="button" className="btn rounded-3xl bg-primary w-96">
+              <p className="text-white text-lg">by {cartProduct.current_bidder}.</p>
+            </div>
+            <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-96">
+              {cartProduct.bidder_id.map((item, index) => (
+                <li key={index}><a className="justify-center w-full">{item} : {cartProduct.bidding_amount[index]}</a></li>
+              ))}
+            </ul>
+          </div>
+          <CountdownTimer data={auct} />
+        </div>
+        {exp ? (
           <>
-            <p className="mb-2 text-slate-500 flex items-enter gap-1">
-              <MdCheckCircle className="text-teal-400" size={20} />
-              <span>Product added to cart</span>
-            </p>
-            <div className="max-w-[300px]">
-              <Button label="View Cart" outline onClick={() => {
-                router.push('/cart');
-              }} />
+            <div className="flex flex-row gap-3 justify-center">
+              <button className="btn btn-wide btn-outline">Expired</button>
             </div>
           </>
         ) : (
           <>
-            <div className="flex flex-row gap-3">
-              {/* <Button
-                label="Add to cart"
-                onClick={() => handleAddProductToCart(cartProduct)}
-              /> */}
-              <button className="btn btn-wide btn-primary">Buy Now</button>
+            <div className="flex flex-row gap-3 justify-center">
+              <button onClick={() => { }} className="btn btn-wide btn-primary">Take Now</button>
             </div>
           </>
         )}

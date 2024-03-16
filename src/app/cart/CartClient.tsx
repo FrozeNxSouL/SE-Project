@@ -15,7 +15,7 @@ interface CartClientProps{
 
 const CartClient: React.FC<CartClientProps> = ({currentUser}) => {
   const { cartProducts, handleClearCart, cartTotalAmount} = useCart();
-
+  
   const router = useRouter()
 
   if (!cartProducts || cartProducts.length === 0) {
