@@ -4,6 +4,8 @@ import { productDetails, userData } from "@/component/variables";
 import { notFound } from "next/navigation";
 import { getAuctionDetail, getUserDetail, updateExpiredStatus } from "@/api/action/fetch";
 
+export const dynamic = "force-dynamic";
+
 export interface auctionObject {
     id: string;
     description: string;
@@ -25,7 +27,7 @@ export default async function payment({ params }: { params: { auctionId: string 
     const user = await getUserDetail(output?.auction.bidderId || "");
     if (!output) {
         notFound();
-    }
+    } 
     return (
         <div className="max-w-screen-xl mx-auto" >
             <div className="text-sm breadcrumbs">

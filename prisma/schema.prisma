@@ -59,7 +59,7 @@ model Auction_log {
   id             String   @id @default(auto()) @map("_id") @db.ObjectId
   auctionId      String   @unique @db.ObjectId
   auction        Auction  @relation(fields: [auctionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  bidding_amount String[]
+  bidding_amount Float[]
   bidder_id      String[]
 }
 
