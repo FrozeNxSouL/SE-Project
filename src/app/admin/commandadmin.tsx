@@ -163,7 +163,11 @@ export function DeatailReport(props: any) {
                                     <h3 className="font-bold text-lg">{sec}</h3>
                                 </div>
                             ))}
+<<<<<<< Updated upstream
                             <h3 className="font-bold text-lg">Description: {rep.reportDescription}</h3>
+=======
+                            <h3 className="font-bold text-lg">{rep.reportDescription}</h3>
+>>>>>>> Stashed changes
 
                             {/* <div className="modal-action">
                                 <button onClick={() => {
