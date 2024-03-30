@@ -2,7 +2,7 @@
 import prisma from "@/lib/db/prisma";
 import { revalidatePath } from "next/cache";
 
-export async function createReport(Des: string,reportSelection: (string | null)[],me:string|undefined,reportwho:string|undefined) {
+export async function createReport(Des: string,reportSelection: (string | null)[],me:string|undefined,reportwho:string|undefined ,reportpic:string[]) {
 
     if(!me){
         throw Error;
@@ -11,7 +11,7 @@ export async function createReport(Des: string,reportSelection: (string | null)[
     const cleanedReportSelection = reportSelection.filter(value => value !== null) as string[];
     await prisma.report.create({
         data:{
-            reportPicture: ["https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Alligator_gar_%28Atractosteus_spatula%29.JPG/1200px-Alligator_gar_%28Atractosteus_spatula%29.JPG"],
+            reportPicture: reportpic,
             reportDescription: Des,
             reportStatus: "1",
             reportingUserID: me,

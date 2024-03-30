@@ -1,6 +1,6 @@
 "use client"
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import React, { useEffect } from 'react';
 import { createReport, getproduct, getproductanduser } from './reportfetch';
 import { getCurrentSession } from '@/lib/getCurrentSession';
@@ -8,6 +8,11 @@ import { useSession } from 'next-auth/react';
 interface ReportFormProps {
     productId: string;
 }
+
+
+
+
+
 export default function ReportForm({ productId }: ReportFormProps) {
     const [description, setdescription] = useState<string>("first")
     const [checkbox, setCheckbox] = useState([false, false, false, false, false, false]);
@@ -21,24 +26,14 @@ export default function ReportForm({ productId }: ReportFormProps) {
     const [productprice, setProductprice] = useState<number | any>(0);
 
     const [username, setusername] = useState<string | undefined>("kkkk");
-
-
-    // const [me, setme] = useState("");
     const [reportwho, setreportwho] = useState<string | undefined>("");
 
+    const [fileDataUrls, setFileDataUrls] = useState<string[]>([]);
+
     const session = useSession()
-    // setme(session.data?.user.id)
-
-
-
     useEffect(() => {
 
         const fetchUsername = async () => {
-
-
-            // setme(session?.user.id)
-
-
             const result = await getproductanduser(productId);
             console.log(result)
             setusername(result?.User?.name)
@@ -47,31 +42,12 @@ export default function ReportForm({ productId }: ReportFormProps) {
             setProductname(result?.name);
             setProductprice(result?.price);
             setsellerImgUrl(result?.User?.picture)
-            // console.log(username);
-
             setreportwho(result?.User?.id)
 
         };
         fetchUsername();
     }, [productId]);
 
-    // const test = await getproductprice("65f03a822e0ab3a001a62fe4");
-
-    // const handleButtonClick = async () => {
-    //     try {
-    //         const product = await getproduct("65f03a822e0ab3a001a62fe4");
-    //         console.log(product)
-    //         setProductImgUrl(product.imageUrl);
-    //         setProductname(product.name);
-    //         setProductprice(product?.price);
-
-    //         const username = await getproductanduser("65f03a822e0ab3a001a62fe4");
-    //         setusername(username);
-
-    //     } catch (error) {
-    //         console.error('Error fetching product:', error);
-    //     }
-    // };
 
     const [des, setDes] = useState("");
     const ref = ["ขายสินค้าไม่ตรงปก", "จัดส่งสินค้านาน ", "ใช้คำพูดไม่เหมาะสม", "ความไม่ชัดเจนในการให้ข้อมูลสินค้า ", "การแก้ไขปัญหาและการคืนสินค้า", "การให้บริการหลังการขายที่ไม่มีประสิทธิภาพ"]
@@ -89,6 +65,29 @@ export default function ReportForm({ productId }: ReportFormProps) {
     const handleTextareaChange = (event: any) => {
         // Update the state with the new value from the textarea
         setDes(event.target.value);
+    };
+
+    const handleFileSelect = (event: ChangeEvent<HTMLInputElement>) => {
+        const files = event.target.files; // Get the selected files
+        if (files) {
+            const newFileDataUrls: string[] = [];
+            const readers: FileReader[] = [];
+            for (let i = 0; i < files.length; i++) {
+                const reader = new FileReader();
+                readers.push(reader);
+                reader.onload = (e) => {
+                    if (e.target) {
+                        const dataUrl = e.target.result as string;
+                        newFileDataUrls.push(dataUrl);
+                        if (newFileDataUrls.length === files.length) {
+                            setFileDataUrls(newFileDataUrls);
+                            console.log(fileDataUrls);
+                        }
+                    }
+                };
+                reader.readAsDataURL(files[i]); // Read the file as a data URL
+            }
+        }
     };
 
     //       const [selectedFile, setSelectedFile] = useState();
@@ -173,7 +172,7 @@ export default function ReportForm({ productId }: ReportFormProps) {
 
 
                     <h1 className='font-extrabold mt-6'>เลือกรูปภาพ</h1>
-                    <input type="file" className="file-input file-input-bordered w-full mt-2" />
+                    <input multiple type="file" id="fileInput" className="file-input file-input-bordered w-full mt-2" onChange={handleFileSelect} />
 
                     <textarea className="h-40 textarea textarea-primary mt-4" placeholder="Bio" value={des} onChange={handleTextareaChange} ></textarea>
 
@@ -182,7 +181,7 @@ export default function ReportForm({ productId }: ReportFormProps) {
                     {session.data?.user?.id && (
 
                         <button onClick={() => {
-                            createReport(des, data, session.data?.user?.id, reportwho)
+                            createReport(des, data, session.data?.user?.id, reportwho,fileDataUrls)
                         }} className="btn btn-block btn-primary mt-4 ">submit</button>
                     )}
 
