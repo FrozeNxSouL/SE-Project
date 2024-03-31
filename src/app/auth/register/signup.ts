@@ -57,6 +57,14 @@ export async function signup(signUpData: signUpForm) {
                 picture: "https://mpics.mgronline.com/pics/Images/557000005527401.JPEG",
             }
         })
+
+        const userWallet = await prisma.wallet.create({
+            data : {
+                creditCard : "",
+                cash : 0,
+                userId : a.id,
+            }
+        })
     } catch (e){
         throw new Error("Prisma error")
     }
