@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { auction } from '../variables';
 import { useRouter } from "next/navigation"
-import { callUpdateData } from '@/app/auction/[auctionId]/page';
+import allUpdateData from "@/app/auction/[auctionId]/page";
 
 export const calculateTime = (targetTime: number, index: number, auction: auction[]) => {
     const currentTime = new Date().getTime();
@@ -82,8 +82,7 @@ export default function AuctionProducts(props: any) {
         let day = stringSpliter(item, 0), range;
         let output: string = ""
         if (day == "Ended") {
-            callUpdateData(item.id)
-            return "Ended"
+            allUpdateData({ params: { auctionId: item.id } }); // Pass an object with the correct structure
         } else {
             for (let i = 0; i < 4; i++) {
                 if (stringSpliter(item, i) != "0") {

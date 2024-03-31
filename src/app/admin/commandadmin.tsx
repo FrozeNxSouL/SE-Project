@@ -77,26 +77,38 @@ export function SearchButton({ search }: searchButtonProps) {
     const router = useRouter();
 
     const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-        const params = new URLSearchParams(searchParams)
-        if (searchstr) {
-            params.set("search", searchstr)
-        } else {
-            params.delete("search")
+        e.preventDefault();
+
+        // Check if searchParams is not null
+        if (searchParams !== null) {
+            const params = new URLSearchParams(searchParams);
+
+            if (searchstr) {
+                params.set("search", searchstr);
+            } else {
+                params.delete("search");
+            }
+
+            router.replace(`${pathname}?${params.toString()}`);
         }
-        router.replace(`${pathname}?${params.toString()}`);
-    }
+    };
+
     return (
         <label className="input input-bordered input-sm flex items-center gap-2">
-            <form onSubmit={(e) => {
-                handleSearch(e)
-            }}>
-                <input type="text" value={searchstr} onChange={(e) => setsearchstr(e.target.value)} className="grow bg-transparent" placeholder="Search" />
+            <form onSubmit={handleSearch}>
+                <input
+                    type="text"
+                    value={searchstr}
+                    onChange={(e) => setsearchstr(e.target.value)}
+                    className="grow bg-transparent"
+                    placeholder="Search"
+                />
             </form>
-
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="w-4 h-4 opacity-70"><path fillRule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clipRule="evenodd" /></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="w-4 h-4 opacity-70">
+                <path fillRule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clipRule="evenodd" />
+            </svg>
         </label>
-    )
+    );
 }
 
 export function DeleteButton({ userid, username }: deleteButtonProps) {

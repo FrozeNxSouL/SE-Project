@@ -47,7 +47,7 @@ export default function AuthForm() {
                 </label>
                 <div className="flex flex-col justify-center">
                     <button className="btn btn-primary btn-block my-2" onClick={handleSignIn}>sign in</button>
-                    <div className="divider">Don't have an account?</div>
+                    <div className="divider">{`Don't have an account?`}</div>
                     <a className="btn btn-block my-2" href="/auth/register">sign up</a>
                 </div>
             </div>

@@ -3,7 +3,7 @@
 import { Product } from "@prisma/client";
 import { useState, useEffect, useRef } from "react";
 
-export default function shop() {
+export default function Shop() {
     const [products, setProducts] = useState<Product[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [maxPage, setMaxPage] = useState(1);

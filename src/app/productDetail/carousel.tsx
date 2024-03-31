@@ -17,7 +17,7 @@ export default function ProductCarousel(props: any) {
             </div>
             <div className="flex justify-center gap-2 mt-2">
                 {images.map((item: any, index: number)=> (
-                    <div className="cursor-pointer hover:outline hover:outline-primary" onMouseEnter={() => {handleHover(index)}}>
+                    <div key={index} className="cursor-pointer hover:outline hover:outline-primary" onMouseEnter={() => {handleHover(index)}}>
                         <img className="object-cover w-20 h-20" src={item.url} alt={item.label}/>
                     </div>
                 ))}

@@ -4,10 +4,9 @@ import CartClient from "./CartClient";
 import getCurrentUser from "../action/getCurentUser";
 
 async function Cart() {
-  const currentUser = await getCurrentUser()
   return <div className="">
     <Container>
-      <CartClient currentUser = {currentUser}/>
+      <CartClient />
     </Container>
   </div>;
 }
