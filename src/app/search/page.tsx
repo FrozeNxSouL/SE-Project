@@ -20,7 +20,7 @@ export default function shop() {
     useEffect(()=> {
       applyFilters();
       window.scrollTo(0, 0);
-    }, [, sort, currentPage]);
+    }, [searchKey, sort, currentPage]);
 
     const applyFilters = async ()=> {
       const request: requestProducts = {
