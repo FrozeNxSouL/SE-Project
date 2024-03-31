@@ -7,12 +7,13 @@ import { useCart } from "@/hooks/useCart";
 import { useEffect, useReducer, useState } from "react";
 import { MdCheckCircle } from "react-icons/md";
 import { useRouter } from "next/navigation";
-import { productObject } from "./page";
+// import { productObject } from "./page";
 import { useSession } from "next-auth/react";
+import { Product } from "@prisma/client";
 
-interface ProductDetailsProps {
-  productDetails: productObject;
-}
+// interface ProductDetailsProps {
+//   productDetails: productObject;
+// }
 
 export type CartProductType = {
   id: string;
@@ -24,7 +25,7 @@ export type CartProductType = {
   tag : string[];
 };
 
-export default function ProductInfo({productDetails} : ProductDetailsProps) {
+export default function ProductInfo({productDetails} : any) {
   const session = useSession()
   const { handleAddProductToCart, cartProducts } = useCart();
   const [isProductInCart, setIsProductInCart] = useState(false);

@@ -11,10 +11,9 @@ export default function LatestProducts(props: any) {
     const [data, setData] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
 
-    const request:requestProducts = {
-        quantity:6,
-        tag:[props.data],
-        keyword:props.data,
+    const request: requestProducts = {
+        quantity: props.quantity,
+        tag: [props.data],
     }
 
     useEffect(() => {
@@ -82,6 +81,10 @@ export default function LatestProducts(props: any) {
                         <Link href="/shop" className="btn btn-primary m-10">View more</Link>
                     </div>
                 </>
+            // ) : (
+            //     <div className="flex justify-center items-center">
+            //         <p>No products available.</p>
+            //     </div>
             )}
         </>
     )

@@ -8,6 +8,9 @@ import prisma from "@/lib/prismaDB";
 
 export default async function product({ params }: { params: { productId: string } }) {
     const res = await getProductDetail(params.productId);
+    if (!res) {
+        notFound();
+    }
     const productDetails = res?.productDetails;
     const seller = res?.seller;
     if (!productDetails || !seller) {

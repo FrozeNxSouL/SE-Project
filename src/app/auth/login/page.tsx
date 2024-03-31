@@ -2,7 +2,6 @@
 import { useRef, useState } from 'react'
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { revalidatePath } from 'next/cache';
 
 export default function AuthForm() {
     const [error, setError] = useState<String | null>(null)

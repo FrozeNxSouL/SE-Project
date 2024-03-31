@@ -14,7 +14,7 @@ export interface requestProducts {
         max: number,
     },
     page?: number,
-    tag?:string[]
+    tag?: string[]
 }
 
 export interface requestAuctions {
@@ -108,12 +108,9 @@ export async function getAuctionProduct() {
 
 export const getProducts = async (request: requestProducts) => {
     const where: any = {};
-    if (request.tag){
+    if (request.tag) {
         where.tag = {
-            contains: {
-                hasSome: [request.keyword]
-            },
-            mode: 'insensitive'
+            hasSome: [request.tag[0]]
         }
     }
     if (request.keyword) {
@@ -252,6 +249,7 @@ export async function updateExpiredStatus(productId: string) {
         if (!findInLog) {
             throw error
         }
+        
         if (findInLog?.auction.product.price == findInLog?.auction.currentBid) {
             const updatedRecord = await prisma.product.update({
                 where: { id: productId },
