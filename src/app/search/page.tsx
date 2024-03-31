@@ -1,14 +1,16 @@
 
 "use client"
-import { Product } from "@prisma/client";
+import { Product, Category } from "@prisma/client";
 import { useEffect, useState } from "react";
 import { requestProducts, getProducts } from "@/api/action/fetch";
 import { useRouter, useSearchParams } from "next/navigation";
+import getCategory from "@/app/action/getCategory";
 
 export default function shop() {
     const router = useRouter();
     const [products, setProducts] = useState<Product[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
+    const [tag, setTag] = useState<Category[]>([]);
     const [maxPage, setMaxPage] = useState(1);
     const [min, setMin] = useState(0);
     const [max, setMax] = useState(0);
@@ -25,7 +27,7 @@ export default function shop() {
     const applyFilters = async ()=> {
       const request: requestProducts = {
         keyword: (searchKey == "") ? null : searchKey,
-        quantity: 21,
+        quantity: 20,
         sort,
         price: {
           min,
@@ -68,47 +70,50 @@ export default function shop() {
     }
 
     return (
-      <div className="grid md:grid-cols-4 sm:grid-cols-1 mx-auto max-w-screen-lg">
-        <div className="flex flex-col items-center gap-3 p-5">
-          <div className="flex gap-2 w-full">
-            <span className="material-icons">filter_alt</span>
-            <h1 className="text-xl font-bold">Filter</h1>
+      <div className="flex flex-col mx-auto max-w-screen-xl">
+        <div className="flex flex-row flex-wrap justify-evenly p-2">
+          <div className="w-72 space-y-3">
+            <h2>Sort</h2>
+            <select onChange={handleSort} className="select select-bordered select-md w-full">
+              <option value={1}>Price: Low to High</option>
+              <option value={2}>Price: High to Low</option>
+            </select>
           </div>
-          <div className="w-full space-y-3">
+          {/* <div className="w-72 space-y-3">
+            <h2>Tag</h2>
+            <select onChange={handleTag} className="select select-bordered select-md w-full">
+                <option value="">asd</option>
+            </select>
+          </div> */}
+          <div className="w-72 space-y-3">
             <h2>Price range</h2>
             <div className="flex gap-4">
-              <input onChange={handleMinPrice} type="number" placeholder="฿ min" className="input input-bordered input-sm w-1/2" />
+              <input onChange={handleMinPrice} type="number" placeholder="฿ min" className="input input-bordered input-xs w-1/2" />
               <span>-</span>
-              <input onChange={handleMaxPrice} type="number" placeholder="฿ max" className="input input-bordered input-sm w-1/2" />
+              <input onChange={handleMaxPrice} type="number" placeholder="฿ max" className="input input-bordered input-xs w-1/2" />
             </div>
-            <button onClick={applyFilters} className="btn btn-primary btn-block btn-sm">APPLY</button>
+            <button onClick={applyFilters} className="btn btn-primary btn-block btn-xs">APPLY</button>
           </div>
-          <div className="divider"></div>
-          <select onChange={handleSort} className="select select-bordered select-md w-full">
-            <option value={1}>Price: Low to High</option>
-            <option value={2}>Price: High to Low</option>
-          </select>
         </div>
 
-        <div className="w-full md:col-span-3 sm:col-span-1">
-          <div className="flex flex-wrap gap-5 pt-5 pl-5 w-full">
+        <div className="flex-grow-0">
+          <div className="flex flex-wrap justify-center gap-3 w-full">
             {products.map((item, index)=> (
               <div onClick={() => router.push(`/product/${item.id}`)} key={index} className="bg-base-100 shadow-xl transition cursor-pointer hover:ring-1 ring-primary w-56">
                   <figure>
                       <img className="object-cover w-full h-40" src={item.imageUrl[0]} alt={item.name} />
                   </figure>
                   <div className="card-body p-5 bg-base-100">
-                      <div className="flex flex-wrap gap-2">
-                          {item.tag.map((t, idx)=> (
-                              <div key={idx} className="badge badge-outline">{t}</div>
-                          ))}
-                          
-                      </div>
-                      <div className="card-title overflow-hidden max-w-60"><span className="truncate">{item.name}</span></div>
-                      <div className="card-actions justify-end">
-                          <div>
-                              <p className="text-primary text-xl">฿ {item.price}</p>
-                          </div>
+                      <span className="overflow-hidden max-w-60 truncate block font-bold">{item.name}</span>
+                      <div className="flex flex-row justify-between">
+                        <div className="flex flex-wrap gap-2">
+                            {item.tag.map((t, idx)=> (
+                                <div key={idx} className="badge badge-outline">{t}</div>
+                            ))}
+                        </div>
+                        <div>
+                            <p className="text-primary text-lg">฿ {item.price}</p>
+                        </div>
                       </div>
                   </div>
               </div>
