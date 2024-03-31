@@ -3,18 +3,19 @@
 import { Product } from "@prisma/client";
 import { useEffect, useState } from "react";
 import { requestProducts, getProducts } from "@/api/action/fetch";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function shop() {
     const router = useRouter();
     const [products, setProducts] = useState<Product[]>([]);
-    const [searchKey, setSearchKey] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const [maxPage, setMaxPage] = useState(1);
     const [min, setMin] = useState(0);
     const [max, setMax] = useState(0);
     const [sort ,setSort] = useState("asc");
 
+    const searchParams = useSearchParams();
+    const searchKey = searchParams?.get("keyword");
 
     useEffect(()=> {
       applyFilters();
@@ -32,6 +33,7 @@ export default function shop() {
         },
         page: currentPage,
       }
+
       try {
         const res = await getProducts(request);
         setProducts(res.list)
@@ -55,14 +57,6 @@ export default function shop() {
       } else {
         setSort("desc");
       }
-    }
-
-    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>)=> {
-      setSearchKey(e.target.value);
-    }
-    const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>)=> {
-      e.preventDefault();
-      applyFilters();
     }
 
     const handlePageChange = (p: number)=> {
@@ -97,12 +91,6 @@ export default function shop() {
         </div>
 
         <div className="w-full md:col-span-3 sm:col-span-1">
-          <form onSubmit={handleSearchSubmit} className="w-full px-5">
-            <label className="input input-bordered flex items-center gap-2">
-              <input onChange={handleSearchChange} type="text" className="grow bg-transparent" placeholder="Search" />
-              <span className="material-icons">search</span>
-            </label>
-          </form>
           <div className="flex flex-wrap gap-5 pt-5 pl-5 w-full">
             {products.map((item, index)=> (
               <div onClick={() => router.push(`/product/${item.id}`)} key={index} className="bg-base-100 shadow-xl transition cursor-pointer hover:ring-1 ring-primary w-56">
