@@ -61,7 +61,7 @@ export async function signup(signUpData: signUpForm) {
         const userWallet = await prisma.wallet.create({
             data : {
                 creditCard : "",
-                cash : 0,
+                cash : 500,
                 userId : a.id,
             }
         })

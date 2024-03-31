@@ -1,5 +1,4 @@
 import ProductInfo from "./auctionInfo";
-import prisma from "@/lib/prismaDB";
 import { productDetails, userData } from "@/component/variables";
 import { notFound } from "next/navigation";
 import { getAuctionDetail, getUserDetail, updateExpiredStatus } from "@/api/action/fetch";
@@ -20,12 +19,10 @@ interface FunctionIndexSignature {
     [x: string]: (productId: string) => Promise<void>;
 }
 
-// Define the type for the index signature
 const functions: FunctionIndexSignature = {
     allUpdateData: async (productId: string) => {
         await updateExpiredStatus(productId);
     },
-    // Add other functions here if needed
 };
 
 export default async function payment({ params }: { params: { auctionId: string } }) {

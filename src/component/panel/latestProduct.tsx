@@ -1,5 +1,5 @@
 "use client"
-import { getProductbyTag } from "@/api/action/fetch";
+import { getProductbyTag, getProducts, requestProducts } from "@/api/action/fetch";
 import { Product } from "@prisma/client";
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -11,11 +11,17 @@ export default function LatestProducts(props: any) {
     const [data, setData] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
 
+    const request:requestProducts = {
+        quantity:6,
+        tag:[props.data],
+        keyword:props.data,
+    }
+
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await getProductbyTag(props.data)
-                const newData = response.map(item => ({
+                const response = await getProducts(request)
+                const newData = response.list.map(item => ({
                     id: item.id,
                     name: item.name,
                     description: item.description,

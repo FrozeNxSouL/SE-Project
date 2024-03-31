@@ -1,5 +1,8 @@
 "use server"
 import prisma from "@/lib/db/prisma";
+import { CartProductType } from "@prisma/client";
+import { error } from "console";
+import { revalidatePath } from "next/cache";
 import { notFound } from "next/navigation"
 
 export interface requestProducts {
@@ -10,62 +13,14 @@ export interface requestProducts {
         min: number,
         max: number,
     },
-    page?: number
+    page?: number,
+    tag?:string[]
 }
 
-export interface requestProducts {
-    quantity: number,
-    sort: string,
-    keyword: string | null,
-    price: {
-        min: number,
-        max: number,
-    },
-    page: number
-}
 export interface requestAuctions {
 
 }
 
-export const getProducts = async (request: requestProducts) => {
-
-    const where: any = {};
-    if (request.keyword) {
-        where.name = {
-            contains: request.keyword,
-            mode: 'insensitive'
-        }
-    }
-    if (request.price.min < request.price.max) {
-        where.price = {
-            gte: request.price.min,
-            lte: request.price.max
-        }
-    }
-
-    try {
-        const list = await prisma.product.findMany({
-            take: request.quantity,
-            skip: (request.page) ? (request.page - 1) * request.quantity : 0,
-            orderBy: {
-                price: (request.sort == "asc") ? "asc" : "desc"
-            },
-            where,
-        })
-        const count = await prisma.product.count({
-            orderBy: {
-                price: (request.sort == "asc") ? "asc" : "desc"
-            },
-            where,
-        })
-        return { list, count }
-    } catch (error) {
-        console.log(error)
-        throw new Error("Can't get product from database")
-    }
-
-
-}
 
 export const getAuctions = (request: requestAuctions) => {
 
@@ -151,9 +106,16 @@ export async function getAuctionProduct() {
     return products
 }
 
-export const getProducts = async (request: requestProducts)=> {
-
+export const getProducts = async (request: requestProducts) => {
     const where: any = {};
+    if (request.tag){
+        where.tag = {
+            contains: {
+                hasSome: [request.keyword]
+            },
+            mode: 'insensitive'
+        }
+    }
     if (request.keyword) {
         where.name = {
             contains: request.keyword,
@@ -182,13 +144,11 @@ export const getProducts = async (request: requestProducts)=> {
             },
             where,
         })
-        return {list, count}
+        return { list, count }
     } catch (error) {
         console.log(error)
         throw new Error("Can't get product from database")
     }
-    
-
 }
 
 export async function getProductDetail(productId: string) {
@@ -288,6 +248,10 @@ export async function updateExpiredStatus(productId: string) {
                 }
             },
         })
+
+        if (!findInLog) {
+            throw error
+        }
         if (findInLog?.auction.product.price == findInLog?.auction.currentBid) {
             const updatedRecord = await prisma.product.update({
                 where: { id: productId },
@@ -295,6 +259,7 @@ export async function updateExpiredStatus(productId: string) {
                     status: "expired",
                 },
             });
+
         } else {
             const updatedRecord = await prisma.product.update({
                 where: { id: productId },
@@ -303,13 +268,30 @@ export async function updateExpiredStatus(productId: string) {
                 },
             });
 
-            // const updateTransaction = await prisma.transaction.create({
+            const temp: CartProductType[] = [{
+                id: findInLog?.auction.product.id || "",
+                name: findInLog?.auction.product.name || "",
+                description: findInLog?.auction.product.description || "",
+                quantity: 1,
+                price: findInLog?.auction.product.price || 0,
+                img: findInLog?.auction.product.imageUrl || [],
+                tag: findInLog?.auction.product.tag || [],
+            }]
 
-            // })
+            const orderData = {
+                user: { connect: { id: findInLog.auction.bidderId } },
+                totalPrice: findInLog.auction.currentBid,
+                currency: 'thb',
+                status: "complete",
+                deliveryStatus: "pending",
+                paymentIntentId: "",
+                products: temp,
+            };
+            const updateTransaction = await prisma.transaction.create({
+                data: orderData
+            })
         }
 
-
-        //   console.log('Updated record:', updatedRecord);
     } catch (error) {
         console.error('Error updating record:', error);
     }
@@ -328,12 +310,12 @@ export async function updateNewBid(productId: string, inputBid: number, userId: 
             where: {
                 auction: {
                     product: {
-                        AND : [
+                        AND: [
                             {
                                 id: productId
                             },
                             {
-                                status : "auction"
+                                status: "auction"
                             }
                         ]
 
@@ -352,12 +334,12 @@ export async function updateNewBid(productId: string, inputBid: number, userId: 
         arrBid?.push(findInLog?.auction?.currentBid);
 
         const updateLog = await prisma.auction_log.update({
-            where : {
-                id : findInLog.id
+            where: {
+                id: findInLog.id
             },
-            data : {
-                bidder_id : arrID,
-                bidding_amount : arrBid
+            data: {
+                bidder_id: arrID,
+                bidding_amount: arrBid
             }
         })
 
