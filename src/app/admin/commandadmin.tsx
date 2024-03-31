@@ -155,7 +155,7 @@ export function DeatailReport(props: any) {
                         {/* {rep.reportStatus === "1" && (  */}
                         <>
                             <h3 className="font-bold text-2xl">From: {rep.reportingUserID}</h3>
-                            {rep.reportSelection.map((sec: any, index2: any) => (
+                            {rep.reportSelection.map((sec: string, index2: number) => (
                                 <div key={index2}>
                                     <h3 className="font-bold text-lg">• {sec}</h3>
                                 </div>
