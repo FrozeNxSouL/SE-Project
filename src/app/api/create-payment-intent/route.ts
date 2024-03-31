@@ -4,15 +4,19 @@ import { NextResponse } from 'next/server'
 import { CartProductType } from '@/app/product/[productId]/productInfo';
 import getCurrentUser from '@/app/action/getCurentUser';
 import { connect } from 'http2';
+import { getManage } from '@/app/admin/fetch';
 
 const stripe = new Stripe(process.env.STRIPE_TEST_SECRET_KEY as string,
     {
         apiVersion: "2023-10-16",
     });
 
-const calculateOrderAmount = (items: CartProductType[]) => {
+
+const calculateOrderAmount = async (items: CartProductType[]) => {
+    const tax1= await getManage();
+    console.log(tax1);
     const totalPrice = items.reduce((acc, item) => {
-        const itemTotal = item.price * item.quantity;
+        const itemTotal = item.price * item.quantity*tax1!.tax + item.price;
         console.log(acc+itemTotal)
 
         return acc + itemTotal
@@ -30,7 +34,7 @@ export async function POST(request: Request){
 
     const body = await request.json()
     const {items, payment_intent_id} = body
-    let total = Math.round(calculateOrderAmount(items) *100)
+    let total = Math.round(await calculateOrderAmount(items)*100)
 
     const orderData = {
         user: {connect: {id: currentUser.id}},
