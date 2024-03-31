@@ -1,42 +1,53 @@
 "use client"
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import React, { useEffect } from 'react';
-import { createReport, getproduct, getproductname, getproductprice, getusername } from './reportfetch';
-export default function report() {
+import { createReport, getproduct, getproductanduser } from './reportfetch';
+import { getCurrentSession } from '@/lib/getCurrentSession';
+import { useSession } from 'next-auth/react';
+interface ReportFormProps {
+    productId: string;
+}
+
+
+
+
+
+export default function ReportForm({ productId }: ReportFormProps) {
+    const [description, setdescription] = useState<string>("first")
     const [checkbox, setCheckbox] = useState([false, false, false, false, false, false]);
-    const [data, setdata] = useState([]);
-    const [productImgUrl, setProductImgUrl] = useState('https://laz-img-sg.alicdn.com/p/6a78913c131cfcd539813bd4b7c42459.png');
-    const [productname, setProductname] = useState("product");
-
-    const [productprice, setProductprice] = useState(0);
-
-    const [username, setusername] = useState("kkkk");
-
-    const handleButtonClick = async () => {
-        try {
-            const url = await getproduct("65ead96cd203bf0221818eae");
-            console.log(url)
-
-            setProductImgUrl(url);
-
-            const name = await getproductname("65ead96cd203bf0221818eae");
-            setProductname(name);
-
-            const username = await getusername("65ead96cd203bf0221818eae");
-            setusername(username);
-            console.log(username);
-
-            const productprice = await getproductprice("65ead96cd203bf0221818eae");
-            setProductprice(productprice);
+    const [data, setdata] = useState<(string | null)[]>([]);
 
 
+    const [productImgUrl, setProductImgUrl] = useState<string[] | undefined>(['https://laz-img-sg.alicdn.com/p/6a78913c131cfcd539813bd4b7c42459.png']);
+    const [productname, setProductname] = useState<string | undefined>("product");
 
+    const [sellerImgUrl, setsellerImgUrl] = useState<string | undefined>("");
+    const [productprice, setProductprice] = useState<number | any>(0);
 
-        } catch (error) {
-            console.error('Error fetching product:', error);
-        }
-    };
+    const [username, setusername] = useState<string | undefined>("kkkk");
+    const [reportwho, setreportwho] = useState<string | undefined>("");
+
+    const [fileDataUrls, setFileDataUrls] = useState<string[]>([]);
+
+    const session = useSession()
+    useEffect(() => {
+
+        const fetchUsername = async () => {
+            const result = await getproductanduser(productId);
+            console.log(result)
+            setusername(result?.User?.name)
+            // const product = await getproduct("65f03a822e0ab3a001a62fe4");
+            setProductImgUrl(result?.imageUrl);
+            setProductname(result?.name);
+            setProductprice(result?.price);
+            setsellerImgUrl(result?.User?.picture)
+            setreportwho(result?.User?.id)
+
+        };
+        fetchUsername();
+    }, [productId]);
+
 
     const [des, setDes] = useState("");
     const ref = ["ขายสินค้าไม่ตรงปก", "จัดส่งสินค้านาน ", "ใช้คำพูดไม่เหมาะสม", "ความไม่ชัดเจนในการให้ข้อมูลสินค้า ", "การแก้ไขปัญหาและการคืนสินค้า", "การให้บริการหลังการขายที่ไม่มีประสิทธิภาพ"]
@@ -54,6 +65,29 @@ export default function report() {
     const handleTextareaChange = (event: any) => {
         // Update the state with the new value from the textarea
         setDes(event.target.value);
+    };
+
+    const handleFileSelect = (event: ChangeEvent<HTMLInputElement>) => {
+        const files = event.target.files; // Get the selected files
+        if (files) {
+            const newFileDataUrls: string[] = [];
+            const readers: FileReader[] = [];
+            for (let i = 0; i < files.length; i++) {
+                const reader = new FileReader();
+                readers.push(reader);
+                reader.onload = (e) => {
+                    if (e.target) {
+                        const dataUrl = e.target.result as string;
+                        newFileDataUrls.push(dataUrl);
+                        if (newFileDataUrls.length === files.length) {
+                            setFileDataUrls(newFileDataUrls);
+                            console.log(fileDataUrls);
+                        }
+                    }
+                };
+                reader.readAsDataURL(files[i]); // Read the file as a data URL
+            }
+        }
     };
 
     //       const [selectedFile, setSelectedFile] = useState();
@@ -78,7 +112,7 @@ export default function report() {
                     <div className="flex justify-start m-5">
                         <div className="h-11 avatar">
                             <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                                <img src={productImgUrl} />
+                                <img src={sellerImgUrl} />
                             </div>
                         </div>
                         <h1 className='overflow-visible h-6 font-extrabold ml-4 '>{username}</h1>
@@ -138,16 +172,21 @@ export default function report() {
 
 
                     <h1 className='font-extrabold mt-6'>เลือกรูปภาพ</h1>
-                    <input type="file" className="file-input file-input-bordered w-full mt-2" />
+                    <input multiple type="file" id="fileInput" className="file-input file-input-bordered w-full mt-2" onChange={handleFileSelect} />
 
                     <textarea className="h-40 textarea textarea-primary mt-4" placeholder="Bio" value={des} onChange={handleTextareaChange} ></textarea>
 
                     {/* <button className="btn btn-block btn-primary mt-4" onClick={handleSubmit} >submit</button> */}
-                    <button onClick={() => {
-                        createReport(des, data)
-                    }} className="btn btn-block btn-primary mt-4 ">submit</button>
 
-                    <button type='button' onClick={handleButtonClick} className="btn btn-block btn-primary mt-4 ">test fetch</button>
+                    {session.data?.user?.id && (
+
+                        <button onClick={() => {
+                            createReport(des, data, session.data?.user?.id, reportwho,fileDataUrls)
+                        }} className="btn btn-block btn-primary mt-4 ">submit</button>
+                    )}
+
+
+                    {/* <button type='button' onClick={handleButtonClick} className="btn btn-block btn-primary mt-4 ">test fetch</button> */}
 
                 </form>
 
