@@ -5,6 +5,7 @@ import { formatPrice } from "@/utils/formatPrice";
 import { PaymentElement, useElements, useStripe, AddressElement } from "@stripe/react-stripe-js";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { getManage } from "../admin/fetch";
 interface CheckoutFormProps{
     clientSecret: string,
     handleSetPaymentSuccess: (value: boolean) => void
@@ -15,7 +16,26 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({clientSecret, handleSetPayme
     const stripe = useStripe()
     const elements = useElements()
     const [isLoading, setIsLoading] =useState(false);
-    const formattedPrice = formatPrice(cartTotalAmount);
+    const [tax, setTax] = useState<number | null>(null);
+    const formattedPrice = tax != null ? formatPrice((cartTotalAmount * tax) + cartTotalAmount) : null;
+    
+
+  useEffect(() => {
+    const fetchTax = async () => {
+      try {
+        const managementData = await getManage();
+        if (managementData?.tax != null) {
+          setTax(managementData.tax);
+        } else {
+          console.error("Management data or tax value is null or undefined.");
+        }
+      } catch (error) {
+        console.error("Error fetching tax:", error);
+      }
+    };
+
+    fetchTax();
+  }, []);
 
     useEffect(() =>{
         if(!stripe){
