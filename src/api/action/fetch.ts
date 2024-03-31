@@ -1,7 +1,17 @@
 "use server"
 import prisma from "@/lib/db/prisma";
-import { revalidatePath } from "next/cache";
-import { notFound, redirect } from "next/navigation"
+import { notFound } from "next/navigation"
+
+export interface requestProducts {
+    quantity: number,
+    sort?: string,
+    keyword?: string | null,
+    price?: {
+        min: number,
+        max: number,
+    },
+    page?: number
+}
 
 export interface requestProducts {
     quantity: number,
@@ -138,8 +148,47 @@ export async function getAuctionProduct() {
             updatedAt: 'asc'
         }
     })
-    // console.log(products)
     return products
+}
+
+export const getProducts = async (request: requestProducts)=> {
+
+    const where: any = {};
+    if (request.keyword) {
+        where.name = {
+            contains: request.keyword,
+            mode: 'insensitive'
+        }
+    }
+    if (request.price && request.price.min < request.price.max) {
+        where.price = {
+            gte: request.price.min,
+            lte: request.price.max
+        }
+    }
+
+    try {
+        const list = await prisma.product.findMany({
+            take: request.quantity,
+            skip: (request.page) ? (request.page - 1) * request.quantity : 0,
+            orderBy: {
+                price: (request.sort == "asc") ? "asc" : "desc"
+            },
+            where,
+        })
+        const count = await prisma.product.count({
+            orderBy: {
+                price: (request.sort == "asc") ? "asc" : "desc"
+            },
+            where,
+        })
+        return {list, count}
+    } catch (error) {
+        console.log(error)
+        throw new Error("Can't get product from database")
+    }
+    
+
 }
 
 export async function getProductDetail(productId: string) {

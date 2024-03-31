@@ -4,44 +4,21 @@ import SignOutButton from "./signOut";
 import CartCount from "./CartCount";
 import getCategory from "@/app/action/getCategory";
 import { getCurrentSession } from "@/lib/getCurrentSession";
+import SearchBox from "./searchBox";
 
 export default async function NavBar() {
     const session = await getCurrentSession();
     const category = await getCategory();
 
+    // /search?keyword=test
     return (
         <>
             <div className="navbar bg-base-100">
                 <div className="navbar-start">
                     <a href="/" className="btn btn-ghost text-xl">Nitid Company</a>
                 </div>
-                <div className="navbar-center hidden lg:flex">
-                    <div className="dropdown dropdown-hover">
-                        <div tabIndex={0} className="btn m-1 btn-ghost text-base">
-                            <span className="material-icons">sell</span>
-                            <span>Category</span>
-                        </div>
-                        <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                            {category.map((value, idx) => (
-                                <li key={idx}><Link href={`/tag/${value.name}`}>{value.name}</Link></li>
-                            ))}
-                        </ul>
-                    </div>
-                    <div>
-                        <Link href="/shop/product" className=" btn btn-ghost text-base">
-                            <span className="material-icons">shopping_bag</span>
-                            <span>Buy</span>
-                        </Link>
-                        <Link href="/add-product" className=" btn btn-ghost text-base">
-                            <span className="material-icons">shopping_bag</span>
-                            <span>Sell</span>
-                        </Link>
-                        <Link href="/shop/auction" className=" btn btn-ghost text-base">
-                            <span className="material-icons">gavel</span>
-                            <span>Auction</span>
-                        </Link>
-                    </div>
-
+                <div className="navbar-center hidden lg:flex w-1/3">
+                    <SearchBox></SearchBox>
                 </div>
                 <div className="navbar-end">
                     <button className="btn">
