@@ -310,12 +310,11 @@ export function EditTag({ catid, catname, caturl }: editTagProps) {
     )
 }
 
-
 export function Modal({ children, open }: { children: React.ReactNode, open: boolean }) {
     return (
         <div className={`modal modal-bottom sm:modal-middle ${open && "modal-open"}`}>
             <div className="modal-box">{children}</div>
         </div>
     );
-};
+}
 

@@ -9,10 +9,6 @@ interface ReportFormProps {
     productId: string;
 }
 
-
-
-
-
 export default function ReportForm({ productId }: ReportFormProps) {
     const [description, setdescription] = useState<string>("first")
     const [checkbox, setCheckbox] = useState([false, false, false, false, false, false]);
