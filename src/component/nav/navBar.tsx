@@ -9,8 +9,6 @@ import SearchBox from "./searchBox";
 export default async function NavBar() {
     const session = await getCurrentSession();
     const category = await getCategory();
-
-    // /search?keyword=test
     return (
         <>
             <div className="navbar bg-base-100">

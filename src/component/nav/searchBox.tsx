@@ -8,7 +8,7 @@ export default function SearchBox() {
 
     const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>)=> {
         e.preventDefault();
-        router.push(`/search?keyword=${keyword}`)
+        router.push(`/search?keyword=${keyword}`);
     }
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>)=> {
         setKeyword(e.target.value);
