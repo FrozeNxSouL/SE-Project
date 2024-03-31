@@ -149,7 +149,6 @@ export function DeatailReport(props: any) {
                 details
             </button>
             <Modal open={showModal} >
-                {/* <button className="absolute top-2 right-5 text-gray-500 text-2xl" onClick={handleToggle}>X</button> */}
                 <button className="absolute top-2 right-5 text-gray-500 text-[30px]" onClick={handleToggle}>x</button>
 
                 {props.data.map((rep: any, index: any) => (

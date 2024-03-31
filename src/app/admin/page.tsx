@@ -1,12 +1,20 @@
 import { Caramel } from "next/font/google";
 import { DeleteButton, SearchButton, Taxchange, EditTag, AddTag, DeatailReport } from "./commandadmin"
 import { getManage, getUser } from "./fetch";
+import { getCurrentSession } from "@/lib/getCurrentSession";
+import getCurrentUser from "../action/getCurentUser";
+
 export default async function admin({ searchParams }: { searchParams: { search?: string } }) {
+  const currentuser = await getCurrentUser()
   const search = searchParams.search || "";
   const users = await getUser(search)
   const admin = await getManage()
-  if (!admin) {
+  
+  if (!currentuser||currentuser.role!="manager") {
     return (<div>poon</div>)
+  }
+  if(!admin){
+    return (<div>server gay</div>)
   }
   return (
     <div className="mx-auto w-2/3 bg-base-300">
@@ -26,7 +34,7 @@ export default async function admin({ searchParams }: { searchParams: { search?:
             ))}
             <AddTag adminid={admin.id}></AddTag>
           </div>
-          <Taxchange taxhandle={admin?.tax}></Taxchange>
+          <Taxchange taxhandle={admin.tax}></Taxchange>
         </div>
       </div>
       {/* report Manage */}
