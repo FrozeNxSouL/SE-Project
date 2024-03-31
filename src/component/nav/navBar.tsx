@@ -4,11 +4,10 @@ import SignOutButton from "./signOut";
 import CartCount from "./CartCount";
 import getCurrentUser from "@/app/action/getCurentUser";
 import getCategory from "@/app/action/getCategory";
-import { getCurrentSession } from "@/lib/getCurrentSession";
 import SearchBox from "./searchBox";
 
 export default async function NavBar() {
-    const session = await getCurrentSession();
+    const session = await getCurrentUser();
     const category = await getCategory();
     return (
         <>
@@ -32,17 +31,19 @@ export default async function NavBar() {
                                 <div className="mx-auto flex flex-col">
                                     <div className="avatar mx-auto">
                                         <div className="w-16 rounded-full">
-                                            <img src={session.user?.image || "https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"} />
+                                            <img src={session.picture || "https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"} />
                                         </div>
                                     </div>
-                                    <span className="text-center">{session.user?.name}</span>
+                                    <span className="text-center">{session.name}</span>
                                 </div>
                                 <div className="divider"></div>
                                 <li><a href="/user">Account</a></li>
                                 <li><a href="/user/mystore">My store</a></li>
                                 <li><a href="/orders">My purchase</a></li>
                                 <div className="divider"></div>
-                                <li><a href="/admin">Admin</a></li>
+                                {(session.role == "manager") && (
+                                    <li><a href="/admin">Admin</a></li>
+                                )}
                                 <SignOutButton />
                             </ul>
                         </div>

@@ -1,6 +1,8 @@
 "use client"
 import { signUpForm, signup } from "./signup";
 import { useRef, useState } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function Register() {
     const [error, setError] = useState<String | null>(null)
@@ -8,6 +10,13 @@ export default function Register() {
     const name = useRef<HTMLInputElement>(null)
     const repassword = useRef<HTMLInputElement>(null)
     const password = useRef<HTMLInputElement>(null)
+
+    const router = useRouter();
+    const session = useSession();
+
+    if (session.data?.user) {
+        router.push("/");
+    }
 
     const handleSignUp = async ()=> {
         const formData: signUpForm = {
@@ -19,7 +28,7 @@ export default function Register() {
         try {
             await signup(formData);
         } catch (err: any) {
-            setError(err.toString())
+            setError(err.message)
         }
     }
 
