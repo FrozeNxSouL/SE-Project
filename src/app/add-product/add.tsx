@@ -1,9 +1,8 @@
 "use server"
 import prisma from "@/lib/db/prisma";
-import { Auction } from "@prisma/client";
 import { redirect } from "next/navigation";
 import { getCurrentSession } from "@/lib/getCurrentSession";
-import { Product } from "@prisma/client";
+import { Product, Auction } from "@prisma/client";
 
 async function addProduct(formData: Product, time: string | null) {
     const session = await getCurrentSession();
@@ -13,7 +12,7 @@ async function addProduct(formData: Product, time: string | null) {
     const byUser = session?.user?.id;
 
     if (!formData.name || !formData.description || formData.imageUrl.length === 0 || !formData.price || formData.price == 0 || !formData.tag || !formData.status) {
-        throw Error("Missing required fields or price = 0");
+        throw Error("Missing required fields or price = 0 DDD");
     }
     
     if (formData.status == "auction" && !time) {

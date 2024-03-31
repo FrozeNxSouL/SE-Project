@@ -1,5 +1,4 @@
 'use client'
-
 import Button from "@/component/Button";
 import { useCart } from "@/hooks/useCart";
 import { formatPrice } from "@/utils/formatPrice";

@@ -6,7 +6,7 @@ import AuctionProducts from '@/component/panel/auction';
 import getCategory from './action/getCategory';
 import CategoryList from '@/component/panel/category';
 
-
+export const dynamic = "force-dynamic";
 export default async function HomePage() {
   const auctionProduct = await getAuctionProduct();
   const category = await getCategory();

@@ -10,7 +10,7 @@ const config: Config = {
   ],
   
   daisyui: {
-    // themes: ["light", "dark", "corporate","cyberpunk"],
+    themes: ["light", "dark", "corporate","cyberpunk"],
   },
   plugins: [require("daisyui")],
 }

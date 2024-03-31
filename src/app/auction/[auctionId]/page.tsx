@@ -4,8 +4,6 @@ import { productDetails, userData } from "@/component/variables";
 import { notFound } from "next/navigation";
 import { getAuctionDetail, getUserDetail, updateExpiredStatus } from "@/api/action/fetch";
 
-export const dynamic = "force-dynamic";
-
 export interface auctionObject {
     id: string;
     description: string;
@@ -18,9 +16,17 @@ export interface auctionObject {
     bidder_id: String[];
     currentBid: number;
 }
-export async function callUpdateData(productId : string){
-    await updateExpiredStatus(productId);
+interface FunctionIndexSignature {
+    [x: string]: (productId: string) => Promise<void>;
 }
+
+// Define the type for the index signature
+const functions: FunctionIndexSignature = {
+    allUpdateData: async (productId: string) => {
+        await updateExpiredStatus(productId);
+    },
+    // Add other functions here if needed
+};
 
 export default async function payment({ params }: { params: { auctionId: string } }) {
     const output = await getAuctionDetail(params.auctionId);

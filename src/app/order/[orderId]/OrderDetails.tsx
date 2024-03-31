@@ -40,7 +40,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
         <h2 className="font-semibold mt-4 mb-2">Products ordered</h2>
         <div className="grid grid-cols-4 text-xs gap-4 pb-2 items-center">
         <div className="col-span-2 justify-self-start flex gap-2 md:gap-4">
-            <div className="relative w-[70px] aspect-square">
+            <div className="relative w-[70px]">
                 Product
             </div>
         </div>
