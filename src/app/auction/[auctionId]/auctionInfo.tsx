@@ -102,15 +102,6 @@ export default function ProductInfo(props: any) {
           </h1>
         </div>
 
-        {/* <div className="absolute self-end dropdown dropdown-hover dropdown-left">
-          <div tabIndex={0} role="button" className="btn m-1">History</div>
-          <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-            {cartProduct.bidder_id.map((item, index) => (
-              <li key={index}><a>{item} : {cartProduct.bidding_amount[index]}</a></li>
-            ))}
-          </ul>
-        </div> */}
-
         <div className="flex flex-col gap-6">
           <div className="flex gap-2">
             <h3 className="w-1/12 font-bold">Tag</h3>
@@ -157,7 +148,7 @@ export default function ProductInfo(props: any) {
         ) : (
           <>
             <div className="flex flex-row gap-3 justify-center">
-              <AuctionModal data={auctionData.auction.currentBid} product={auctionData.auction.product.id}/>
+              <AuctionModal data={auctionData.auction.currentBid} product={auctionData.auction.product.id} />
             </div>
           </>
         )}

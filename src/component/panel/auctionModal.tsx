@@ -1,6 +1,6 @@
 "use client";
 
-import { updateNewBid } from "@/api/action/fetch";
+import { getUserandWallet, updateNewBid } from "@/api/action/fetch";
 import { useSession } from "next-auth/react";
 import { revalidatePath } from "next/cache";
 import { useRouter } from "next/navigation";
@@ -23,9 +23,10 @@ export default function AuctionModal(props: any) {
         setIsModalOpen(false);
     };
 
+
     const inputNewValue = () => {
         if (props.data >= bidInput) {
-            setInputError("input for what ???");
+            setInputError("Your Input is Not Enough");
         } else {
             setInputError("");
             updateNewBid(props.product, bidInput, userID);

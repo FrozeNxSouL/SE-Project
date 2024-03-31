@@ -1,8 +1,6 @@
 import ProductInfo from "./productInfo";
-import { productDetails, userData } from "@/component/variables";
 import { notFound } from "next/navigation";
 import { getProductDetail } from "@/api/action/fetch";
-import prisma from "@/lib/prismaDB";
 
 
 
@@ -31,20 +29,20 @@ export default async function product({ params }: { params: { productId: string 
                 <div className="flex flex-row gap-5">
                     <div className="avatar">
                         <div className="w-20 rounded-full">
-                            <img src={seller.picture} />
+                            <img src={productDetails.User?.picture} />
                         </div>
                     </div>
                     <div className="flex flex-col justify-center">
-                        <h1 className="font-bold">{seller.name}</h1>
+                        <h1 className="font-bold">{productDetails.User?.name}</h1>
                         <span className="opacity-80 font-light">
-                            {seller.phone}
+                            {productDetails.User?.phone}
                         </span>
                     </div>
                     <div className="divider lg:divider-horizontal"></div>
                     <div>
-                        <p>selled 8 products {params.productId}</p>
-                        <p>joined for 8 sec</p>
-                        <p>score 1.2</p>
+                        <p>call with {productDetails.User?.phone}</p>
+                        <p>joined for {productDetails.User?.email} </p>
+                        <p>score {productDetails.User?.score}</p>
                     </div>
                     <div className="divider lg:divider-horizontal"></div>
                 </div>

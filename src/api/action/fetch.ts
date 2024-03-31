@@ -107,7 +107,10 @@ export async function getAuctionProduct() {
 }
 
 export const getProducts = async (request: requestProducts) => {
-    const where: any = {};
+    const where: any = {
+        status : "sell"
+    };
+    
     if (request.tag) {
         where.tag = {
             hasSome: [request.tag[0]]
@@ -152,6 +155,9 @@ export async function getProductDetail(productId: string) {
     let productDetails;
     try {
         productDetails = await prisma.product.findUnique({
+            include : {
+                User : true
+            },
             where: {
                 id: productId,
             }
@@ -188,7 +194,11 @@ export async function getAuctionDetail(productId: string) {
             include: {
                 auction: {
                     include: {
-                        product: true
+                        product: {
+                            include: {
+                                User: true
+                            }
+                        }
                     }
                 }
             },
@@ -249,7 +259,7 @@ export async function updateExpiredStatus(productId: string) {
         if (!findInLog) {
             throw error
         }
-        
+
         if (findInLog?.auction.product.price == findInLog?.auction.currentBid) {
             const updatedRecord = await prisma.product.update({
                 where: { id: productId },
@@ -297,6 +307,24 @@ export async function updateExpiredStatus(productId: string) {
 
 export async function updateNewBid(productId: string, inputBid: number, userId: string) {
     try {
+        const findInWallet = await prisma.wallet.findFirst({
+            include: {
+                User: true
+            },
+            where: {
+                User: {
+                    id: userId
+                }
+            },
+        })
+        if (!findInWallet) {
+            throw new Error(`Error`);
+        }
+
+        if (findInWallet.cash - inputBid < 0) {
+            return;
+        }
+
         const findInLog = await prisma.auction_log.findFirst({
             include: {
                 auction: {
@@ -322,7 +350,6 @@ export async function updateNewBid(productId: string, inputBid: number, userId: 
             },
         })
         if (!findInLog) {
-            console.log("error at findInLog")
             throw new Error(`Error`);
         }
 
@@ -351,12 +378,30 @@ export async function updateNewBid(productId: string, inputBid: number, userId: 
             }
         });
 
-        // console.log(updateLog,"LOG")
-
-        // console.log(auctionUpdate,"auction")
-
         revalidatePath(`/auction/${productId}`, "page");
-        // redirect(`/auction/${productId}`);
+
+    } catch (error) {
+        console.error('Error updating record:', error);
+    }
+}
+
+export async function getUserandWallet(userID: string) {
+    try {
+        const findInWallet = await prisma.wallet.findFirst({
+            include: {
+                User: true
+            },
+            where: {
+                User: {
+                    id: userID
+                }
+            },
+        })
+        if (!findInWallet) {
+            throw new Error(`Error`);
+        }
+
+        return findInWallet
 
     } catch (error) {
         console.error('Error updating record:', error);
