@@ -148,8 +148,10 @@ export function DeatailReport(props: any) {
             <button onClick={handleToggle} className="btn btn-ghost btn-xs">
                 details
             </button>
-            <Modal open={showModal}>
-                <button className="absolute top-2 right-5 text-gray-500 text-2xl" onClick={handleToggle}>X</button>
+            <Modal open={showModal} >
+                {/* <button className="absolute top-2 right-5 text-gray-500 text-2xl" onClick={handleToggle}>X</button> */}
+                <button className="absolute top-2 right-5 text-gray-500 text-[30px]" onClick={handleToggle}>x</button>
+
                 {props.data.map((rep: any, index: any) => (
                     <div key={index} className="mb-10 mt-5">
                         {/* {rep.reportStatus === "1" && (  */}
@@ -160,19 +162,18 @@ export function DeatailReport(props: any) {
                                     <h3 className="font-bold text-lg">• {sec}</h3>
                                 </div>
                             ))}
-                            {/* {rep.reportPicture.map((sec: any, index3: any) => (
-                                <div key={index3}>
-                                    <h3 className="font-bold text-lg">{sec}</h3>
+                            {rep.reportPicture.map((sec: string, index3: any) => (
+                                <div key={index3} className="mt-3 mb-3">
                                     <img src={sec} alt={`Report Picture ${index3}`} className="w-50% 50%-w-md" />
                                 </div>
-                            ))} */}
-                            <div className="flex flex-no-wrap overflow-x-auto mb-3 mt-3">
+                            ))}
+                            {/* <div className="flex flex-no-wrap overflow-x-auto mb-3 mt-3">
                                 {rep.reportPicture.map((url: string, index3: number) => ( // Assuming each item in reportPicture array is a URL
                                     <div key={index3} className="w-50 flex-1 mr-2">
                                         <img src={url} alt={`Report Picture ${index3}`} className="w-auto h-auto" />
                                     </div>
                                 ))}
-                            </div>
+                            </div> */}
                             <h3 className="font-bold text-lg">Description: {rep.reportDescription}</h3>
                             <div className="flex flex-col w-full">
                                 <div className="divider divider-primary"></div>
@@ -281,6 +282,7 @@ export function EditTag({ catid, catname, caturl }: editTagProps) {
             <Modal open={showModal}>
                 <div className="modal-top mb-5">
                     <h3 className="font-bold text-lg">Edit</h3>
+                    <button className="absolute top-2 right-5 text-gray-500 text-[25px]" onClick={handleToggle}>x</button>
                 </div>
                 <div className="modal-middle space-y-2">
                     <label className="input input-bordered flex items-center gap-2">
@@ -298,19 +300,18 @@ export function EditTag({ catid, catname, caturl }: editTagProps) {
                         handleToggle()
                         router.refresh()
                     }} className="btn btn-success text-white rounded-lg mr-4">Confirm</button>
-                    <button className="btn btn-error text-white rounded-lg mr-4" onClick={handleToggle}>Cancel</button>
                     <button onClick={() => {
                         deleteTag(catid)
                         handleToggle()
                         router.refresh()
-                    }} className="btn btn-success text-white rounded-lg mr-4">Delete</button>
+                    }} className="btn btn-error text-white rounded-lg mr-4">Delete</button>
                 </div>
             </Modal>
         </>
     )
 }
 
-export function Modal({ children, open }: { children: React.ReactNode, open: boolean }) {
+export function Modal({ children, open }: { children: React.ReactNode, open: boolean}) {
     return (
         <div className={`modal modal-bottom sm:modal-middle ${open && "modal-open"}`}>
             <div className="modal-box">{children}</div>
