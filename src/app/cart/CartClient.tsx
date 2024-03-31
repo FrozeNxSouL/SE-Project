@@ -5,15 +5,12 @@ import Link from "next/link";
 import { MdArrowBack } from "react-icons/md";
 import ItemContent from "./ItemContent";
 import { formatPrice } from "@/utils/formatPrice";
-import { getCurrentSession } from "@/lib/getCurrentSession";
-import { SafeUser } from "@/types";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
-interface CartClientProps{
-  currentUser: SafeUser | null
-}
 
-const CartClient: React.FC<CartClientProps> = ({currentUser}) => {
+const CartClient = () => {
+  const {data: session} = useSession();
   const { cartProducts, handleClearCart, cartTotalAmount} = useCart();
   
   const router = useRouter()
@@ -71,9 +68,9 @@ const CartClient: React.FC<CartClientProps> = ({currentUser}) => {
           </div>
           <p className="text-slate-500">Taxes and shipping calculate at checkout</p>
           <Button 
-            label={currentUser ? 'Checkout': 'Login To Checkout'}
-            outline = {currentUser ? false : true} 
-            onClick={()=>{currentUser ? router.push('/checkout'): router.push('/auth/login')}}
+            label={session?.user ? 'Checkout': 'Login To Checkout'}
+            outline = {session?.user ? false : true} 
+            onClick={()=>{session?.user ? router.push('/checkout'): router.push('/auth/login')}}
           />
           <Link
             href={"/"}

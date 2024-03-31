@@ -2,7 +2,7 @@
 import { signUpForm, signup } from "./signup";
 import { useRef, useState } from "react";
 
-export default function register() {
+export default function Register() {
     const [error, setError] = useState<String | null>(null)
     const email = useRef<HTMLInputElement>(null)
     const name = useRef<HTMLInputElement>(null)
@@ -18,7 +18,7 @@ export default function register() {
         }
         try {
             await signup(formData);
-        } catch (err) {
+        } catch (err: any) {
             setError(err.toString())
         }
     }

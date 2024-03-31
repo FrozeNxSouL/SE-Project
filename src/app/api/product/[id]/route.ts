@@ -1,5 +1,6 @@
 import { getCurrentSession } from "@/lib/getCurrentSession";
 import { NextResponse } from "next/server";
+import prisma from "@/lib/db/prisma";
 
 export async function DELETE(request: Request, {params}: {params: {id:string}}){
     const session = await getCurrentSession();
@@ -8,7 +9,7 @@ export async function DELETE(request: Request, {params}: {params: {id:string}}){
     if(!currentUser || currentUser.role !== "manager"){
         return NextResponse.error();
     }
-    const product = await prisma?.product.delete({
+    const product = await prisma.product.delete({
         where: {id: params.id}
     })
 

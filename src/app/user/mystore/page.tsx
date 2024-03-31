@@ -1,7 +1,7 @@
 import { getCurrentSession } from "@/lib/getCurrentSession";
 import prisma from "@/lib/prismaDB";
 import Link from "next/link";
-import { DeleteButton, EditButton } from "./mystoreFunction";
+import {  EditButton } from "./mystoreFunction";
 
 export default async function Address() {
     const session = await getCurrentSession();

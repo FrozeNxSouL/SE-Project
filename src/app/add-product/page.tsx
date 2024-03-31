@@ -62,7 +62,7 @@ function AddProductPage() {
       transactionId: null,
       userId: null
     }
-    addProduct(newProduct, time)
+    // addProduct(newProduct, time)
   }
 
   return (

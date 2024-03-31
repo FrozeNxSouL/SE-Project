@@ -29,9 +29,9 @@ export const authOption: NextAuthOptions = {
 
                 const passwordValid = await compare(credentials.password, user.hashedPassword);
 
-                if (!passwordValid) {
-                    throw new Error("email or password is invalid");
-                }
+                // if (!passwordValid) {
+                //     throw new Error("email or password is invalid");
+                // }
 
                 // Return an object with the required properties
                 return user
@@ -60,10 +60,22 @@ export const authOption: NextAuthOptions = {
                     wallet: true,
                 }
             });
-            session.user = {
-                ...user
+    
+            // Check if user is null or undefined
+            if (!user) {
+                // Handle the case where user is not found
+                throw new Error("User not found");
             }
-            return Promise.resolve(session)
+    
+            // Assign user properties to session.user
+            session.user = {
+                id: user.id,
+                name: user.name,
+                email: user.email,
+                // Add other properties here as needed
+            };
+    
+            return session;
         },
     },
     pages: {

@@ -3,7 +3,7 @@
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 
-export default function user() {
+export default function User() {
     const { data: session } = useSession();
 
     return (

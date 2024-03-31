@@ -1,9 +1,8 @@
 "use server"
 import prisma from "@/lib/db/prisma";
-import { Auction } from "@prisma/client";
 import { redirect } from "next/navigation";
 import { getCurrentSession } from "@/lib/getCurrentSession";
-import { Product } from "@prisma/client";
+import { Product, Auction } from "@prisma/client";
 
 async function addProduct(formData: Product, time: string | null) {
     const session = await getCurrentSession();

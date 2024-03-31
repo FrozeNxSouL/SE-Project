@@ -4,7 +4,7 @@ import { useState } from "react";
 import { auction } from "@/component/variables";
 import { stringSpliter } from "@/component/panel/auction";
 import { updateExpiredStatus } from "@/api/action/fetch";
-import { callUpdateData } from "@/app/auction/[auctionId]/page";
+import  allUpdateData  from "@/app/auction/[auctionId]/page";
 import { updateExpired } from "@/app/auction/[auctionId]/auctionInfo";
 
 
@@ -18,7 +18,7 @@ export default function CountdownTimer(props: any) {
         if (day == "Ended") {
             setExpired(true)
             updateExpired();
-            callUpdateData(auctionOBJ[0].id)
+            allUpdateData(auctionOBJ[0].id)
             // console.log(props.data, "EXP")
             return
         } else {
@@ -37,7 +37,7 @@ export default function CountdownTimer(props: any) {
                     <h1 className="text-5xl">ฝันดีนะ ปูนปูน</h1>
                 </div>
             )}
-            {!expired && (
+            {/* {!expired && (
                 <div className="grid grid-flow-col gap-5 text-center auto-cols-max">
                     <div className="flex flex-col">
                         <span className="countdown font-mono text-5xl">
@@ -64,7 +64,7 @@ export default function CountdownTimer(props: any) {
                         sec
                     </div>
                 </div>
-            )}
+            )} */}
         </div>
     )
 }
