@@ -74,9 +74,7 @@ export default async function admin({ searchParams }: { searchParams: { search?:
                     <td>{user.id}</td>
                     <td>{user.score}</td>
                     <th>
-                    
                       <DeatailReport data={user.report}></DeatailReport>
-
                     </th>
                   </tr>
                 ))}
