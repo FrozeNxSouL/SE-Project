@@ -3,6 +3,7 @@ import prisma from "@/lib/db/prisma";
 import { redirect } from "next/navigation";
 import { getCurrentSession } from "@/lib/getCurrentSession";
 import { Product, Auction } from "@prisma/client";
+import { validateName } from "../validation/validation";
 
 async function addProduct(formData: Product, time: string | null) {
     const session = await getCurrentSession();
@@ -14,6 +15,8 @@ async function addProduct(formData: Product, time: string | null) {
     if (!formData.name || !formData.description || formData.imageUrl.length === 0 || !formData.price || formData.price == 0 || !formData.tag || !formData.status) {
         throw Error("Missing required fields or price = 0 DDD");
     }
+
+    await validateName(formData.name);
     
     if (formData.status == "auction" && !time) {
         throw Error("The auction product need time to expire");

@@ -1,11 +1,17 @@
 import { Caramel } from "next/font/google";
 import { DeleteButton, SearchButton, Taxchange, EditTag, AddTag, DeatailReport } from "./commandadmin"
 import { getManage, getUser } from "./fetch";
+import getCurrentUser from "../action/getCurentUser";
+import { redirect } from "next/navigation";
+
 export default async function admin({ searchParams }: { searchParams: { search?: string } }) {
   const search = searchParams.search || "";
   const users = await getUser(search)
-  const admin = await getManage()
-  if (!admin) {
+  const admin = await getManage();
+
+  const session = await getCurrentUser();
+
+  if (!admin || !session || session.role !== "manager") {
     return (<div>poon</div>)
   }
   return (
