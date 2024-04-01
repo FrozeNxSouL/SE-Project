@@ -7,6 +7,7 @@ import { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import CheckoutForm from "./CheckoutForm";
 import Button from "@/component/Button";
+import { updateProductsTransaction } from "../admin/fetch";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_TEST_STRIPE_PUBLISHABLE_KEY as string
@@ -69,6 +70,21 @@ const CheckoutClient = () => {
     setPaymentSuccess(value);
   }, []);
 
+  if (paymentSuccess && cartProducts) {
+    const productsToUpdate = cartProducts.map((product) => ({
+      productId: product.id,
+    }));
+  
+    updateProductsTransaction(paymentIntent!, productsToUpdate)
+      .then(() => {
+        console.log('Products transaction updated successfully');
+      })
+      .catch((error) => {
+        console.error('Error updating products transaction:', error);
+        // Handle error if needed
+      });
+  }
+
   return (
     <div className="w-full">
       {clientSecret && cartProducts &&(
@@ -82,7 +98,7 @@ const CheckoutClient = () => {
         <div className="flex items-center flex-col gap-4">
             <div className="text-teal-500 text-center">Payment Success</div>
             <div className="max-w-[220px] w-full">
-                <Button label="View Your Orders" onClick={() => router.push('/order')}/>
+                <Button label="View Your Orders" onClick={() => router.push('/orders')}/>
             </div>
         </div>
         )}
