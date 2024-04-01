@@ -12,7 +12,6 @@ export default async function HomePage() {
   return (
     <div className='mx-auto flex justify-center flex-col gap-5 bg-base-100 max-w-screen-xl px-32'>
       <CategoryList data={category} />
-      <div className="divider text-2xl font-bold">End soon</div>
       <AuctionProducts data={auctionProduct} />
       <div className="divider text-2xl font-bold">All Products</div>
       {category.map((value: any, index: number) => (

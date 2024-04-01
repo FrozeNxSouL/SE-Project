@@ -2,6 +2,7 @@ import ProductInfo from "./auctionInfo";
 import { notFound } from "next/navigation";
 import { getAuctionDetail, getUserDetail, updateExpiredStatus } from "@/api/action/fetch";
 import { webName } from "@/component/variables";
+import Viewshop from "@/component/panel/viewshop";
 
 export interface auctionObject {
     id: string;
@@ -63,10 +64,8 @@ export default async function payment({ params }: { params: { auctionId: string 
                     <div className="divider lg:divider-horizontal"></div>
                 </div>
                 <div className="flex flex-col gap-2 justify-center">
-                    <button className="btn btn-sm btn-error btn-outline">Report</button>
-                    <button className="btn btn-outline btn-sm btn-primary">View Shop</button>
+                    <Viewshop data={output.auction.product.User?.id}/>
                 </div>
-
             </div>
         </div>
     )

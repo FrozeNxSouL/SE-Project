@@ -14,6 +14,7 @@ export default function LatestProducts(props: any) {
     const request: requestProducts = {
         quantity: props.quantity,
         tag: [props.data],
+        status : "sell",
     }
 
     useEffect(() => {

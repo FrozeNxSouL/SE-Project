@@ -143,23 +143,31 @@ export default function AuctionProducts(props: any) {
     const router = useRouter();
 
     return (
-        <div className="flex justify-center gap-2 flex-wrap">
-            {auction.map((item: auction, index) => (
-                <div onClick={() => router.push(`/auction/${item.id}`)} key={index} className="bg-base-100 shadow-xl basis-72 m-2 transition cursor-pointer hover:ring-1 ring-primary">
-                    <div className="absolute m-2 badge badge-primary font-bold">{`${timeFormater(item)}`}</div>
-                    <figure>
-                        <img className="object-cover w-full h-40" src={item.image} alt={item.title} />
-                    </figure>
-                    <div className="card-body p-5 bg-base-100">
-                        <div className="card-title truncate overflow-hidden max-w-60">{item.title}</div>
-                        <div className="card-actions justify-end">
-                            <div>
-                                <p className="text-primary text-xl">฿ {item.price}</p>
+        <>
+            {auction.length != 0 && (
+                <div>
+                    <div className="divider text-2xl font-bold">Auction</div>
+                    <div className="flex justify-center gap-2 flex-wrap my-5">
+                        {auction.map((item: auction, index) => (
+                            <div onClick={() => router.push(`/auction/${item.id}`)} key={index} className="bg-base-100 shadow-xl basis-72 m-2 transition cursor-pointer hover:ring-1 ring-primary">
+                                <div className="absolute m-2 badge badge-primary font-bold">{`${timeFormater(item)}`}</div>
+                                <figure>
+                                    <img className="object-cover w-full h-40" src={item.image} alt={item.title} />
+                                </figure>
+                                <div className="card-body p-5 bg-base-100">
+                                    <div className="card-title truncate overflow-hidden max-w-60">{item.title}</div>
+                                    <div className="card-actions justify-end">
+                                        <div>
+                                            <p className="text-primary text-xl">฿ {item.price}</p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
-            ))}
-        </div>
-    );
+            )
+            }
+        </>
+    )
 }

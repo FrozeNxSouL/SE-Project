@@ -173,6 +173,11 @@ export const getProducts = async (request: requestProducts) => {
 
     if (request.status) {
         where.status = request.status;
+    } else {
+        where.OR = [
+            {status : "sell"},
+            {status : "auction"}
+        ]
     }
 
     if (request.tag) {
@@ -192,9 +197,11 @@ export const getProducts = async (request: requestProducts) => {
             lte: request.price.max
         }
     }
-
     try {
         const list = await prisma.product.findMany({
+            include : {
+                auction : true,
+            },
             take: request.quantity,
             skip: (request.page) ? (request.page - 1) * request.quantity : 0,
             orderBy: {
@@ -470,3 +477,36 @@ export async function getUserandWallet(userID: string) {
         console.error('Error updating record:', error);
     }
 }
+
+export async function productFromSeller(sellerID:string) {
+    const product = await prisma.product.findMany({
+        where: {
+            AND: [
+                {
+                    userId: sellerID
+                },
+                {
+                    OR: [
+                        {
+                            status: "sell"
+                        },
+                        {
+                            status: "auction"
+                        }
+                    ]
+                }
+            ]
+        }
+    })
+    
+    const user = await prisma.user.findFirst({
+        where : {
+            id : sellerID
+        }
+    })
+    if (!product) {
+        throw new Error(`Error`);
+    }
+
+    return {product , user}
+} 

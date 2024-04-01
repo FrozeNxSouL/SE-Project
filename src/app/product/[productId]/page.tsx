@@ -2,6 +2,7 @@ import ProductInfo from "./productInfo";
 import { notFound } from "next/navigation";
 import { getProductDetail } from "@/api/action/fetch";
 import { webName } from "@/component/variables";
+import Viewshop from "@/component/panel/viewshop";
 
 
 
@@ -48,8 +49,7 @@ export default async function product({ params }: { params: { productId: string 
                     <div className="divider lg:divider-horizontal"></div>
                 </div>
                 <div className="flex flex-col gap-2 justify-center">
-                    <button className="btn btn-sm btn-error btn-outline">Report</button>
-                    <button className="btn btn-outline btn-sm btn-primary">View Shop</button>
+                    <Viewshop data={productDetails.User?.id}/>
                 </div>
 
             </div>
