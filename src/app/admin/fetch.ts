@@ -1,15 +1,23 @@
 "use server"
 import prisma from "@/lib/db/prisma";
+import { error } from "console";
 import { revalidatePath } from "next/cache";
 
 
 export async function getManage() {
-    const list = await prisma.management.findFirst({
-        include: {
-            categorys: true,
+    try {
+        const list = await prisma.management.findFirst({
+            include: {
+                categorys: true,
+            }
+        });
+        if(!list){
+            throw error
         }
-    });
-    return list
+        return list
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 export async function changeTax(newtax: number) {
@@ -96,13 +104,21 @@ export async function deleteUser(userid: string) {
     })
 }
 
-export async function statusReport(reportid: string) {
+export async function statusReport(reportid: string, userid: string) {
     await prisma.report.update({
         where: {
             id: reportid
         },
         data: {
             reportStatus: "0"
+        }
+    })
+    await prisma.user.update({
+        where: {
+            id: userid
+        },
+        data: {
+            role: "deleted"
         }
     })
 

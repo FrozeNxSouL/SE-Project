@@ -45,7 +45,7 @@ export function Taxchange({ taxhandle }: managechangeProps) {
     return (
         <>
             <div className="flex justify-end">
-                <button onClick={handleToggle} className="btn btn-error text-white rounded-lg mr-8">Edit</button>
+                <button onClick={handleToggle} className="btn btn-warning text-white rounded-lg mr-8">Edit</button>
             </div>
             <Modal open={showModal}>
                 <div className="flex justify-between">
@@ -148,9 +148,11 @@ export function DeatailReport(props: any) {
     };
 
     const readreport = (read: any) => {
-        {read.map((rep: any,index :any)=>(
-            statusReport(rep.id)
-        ))}
+        {
+            read.map((rep: any, index: any) => (
+                statusReport(rep.id, rep.userId)
+            ))
+        }
     }
     console.log(props.data)
     return (
@@ -158,25 +160,38 @@ export function DeatailReport(props: any) {
             <button onClick={handleToggle} className="btn btn-ghost btn-xs">
                 details
             </button>
-            <Modal open={showModal}>
-                <button className="absolute top-2 right-5 text-gray-500 " onClick={handleToggle}>X</button>
+            <Modal open={showModal} >
+                <button className="absolute top-2 right-5 text-gray-500 text-[30px]" onClick={handleToggle}>x</button>
+
                 {props.data.map((rep: any, index: any) => (
-                    <div key={index} className="mb-5 mt-5">
+                    <div key={index} className="mb-10 mt-5">
                         {/* {rep.reportStatus === "1" && (  */}
                         <>
-                            <h3 className="font-bold text-lg">From: {rep.reportingUserID}</h3>
-                            {rep.reportSelection.map((sec: any, index2: any) => (
+                            <h3 className="font-bold text-2xl">From: {rep.reportingUserID}</h3>
+                            {rep.reportSelection.map((sec: string, index2: number) => (
                                 <div key={index2}>
                                     <h3 className="font-bold text-lg">• {sec}</h3>
                                 </div>
                             ))}
-                            {rep.reportPicture.map((sec: any, index3: any) => (
-                                <div key={index3}>
-                                    <h3 className="font-bold text-lg">{sec}</h3>
-                                </div>
-                            ))}
+                            <div className="my-3 flex flex-row overflow-x-scroll">
+                                {rep.reportPicture.map((sec: string, index3: number) => (
+                                    // <a href={sec} target="_blank">
+                                        <img key={index3} src={sec} alt={`Report Picture ${index3}`} className="object-cover min-w-full h-72" />
+                                    // </a>
+                    
+                                ))}
+                            </div>
+                            {/* <div className="flex flex-no-wrap overflow-x-auto mb-3 mt-3">
+                                {rep.reportPicture.map((url: string, index3: number) => ( // Assuming each item in reportPicture array is a URL
+                                    <div key={index3} className="w-50 flex-1 mr-2">
+                                        <img src={url} alt={`Report Picture ${index3}`} className="w-auto h-auto" />
+                                    </div>
+                                ))}
+                            </div> */}
                             <h3 className="font-bold text-lg">Description: {rep.reportDescription}</h3>
-
+                            <div className="flex flex-col w-full">
+                                <div className="divider divider-primary"></div>
+                            </div>
                             {/* <div className="modal-action">
                                 <button onClick={() => {
                                     handleToggle();
@@ -281,6 +296,7 @@ export function EditTag({ catid, catname, caturl }: editTagProps) {
             <Modal open={showModal}>
                 <div className="modal-top mb-5">
                     <h3 className="font-bold text-lg">Edit</h3>
+                    <button className="absolute top-2 right-5 text-gray-500 text-[25px]" onClick={handleToggle}>x</button>
                 </div>
                 <div className="modal-middle space-y-2">
                     <label className="input input-bordered flex items-center gap-2">
@@ -298,18 +314,16 @@ export function EditTag({ catid, catname, caturl }: editTagProps) {
                         handleToggle()
                         router.refresh()
                     }} className="btn btn-success text-white rounded-lg mr-4">Confirm</button>
-                    <button className="btn btn-error text-white rounded-lg mr-4" onClick={handleToggle}>Cancel</button>
                     <button onClick={() => {
                         deleteTag(catid)
                         handleToggle()
                         router.refresh()
-                    }} className="btn btn-success text-white rounded-lg mr-4">Delete</button>
+                    }} className="btn btn-error text-white rounded-lg mr-4">Delete</button>
                 </div>
             </Modal>
         </>
     )
 }
-
 
 export function Modal({ children, open }: { children: React.ReactNode, open: boolean }) {
     return (
@@ -317,5 +331,5 @@ export function Modal({ children, open }: { children: React.ReactNode, open: boo
             <div className="modal-box">{children}</div>
         </div>
     );
-};
+}
 
