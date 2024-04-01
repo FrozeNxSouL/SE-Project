@@ -1,6 +1,7 @@
 import ProductInfo from "./auctionInfo";
 import { notFound } from "next/navigation";
 import { getAuctionDetail, getUserDetail, updateExpiredStatus } from "@/api/action/fetch";
+import { webName } from "@/component/variables";
 
 export interface auctionObject {
     id: string;
@@ -34,7 +35,7 @@ export default async function payment({ params }: { params: { auctionId: string 
         <div className="max-w-screen-xl mx-auto" >
             <div className="text-sm breadcrumbs">
                 <ul>
-                    <li><a>Nitid</a></li>
+                    <li><a>{webName}</a></li>
                     <li><a href="">{output?.auction.product.tag[0]} </a></li>
                     <li>{output?.auction.product.name}</li>
                 </ul>

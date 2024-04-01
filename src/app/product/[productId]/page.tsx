@@ -1,6 +1,7 @@
 import ProductInfo from "./productInfo";
 import { notFound } from "next/navigation";
 import { getProductDetail } from "@/api/action/fetch";
+import { webName } from "@/component/variables";
 
 
 
@@ -19,7 +20,7 @@ export default async function product({ params }: { params: { productId: string 
         <div className="max-w-screen-xl mx-auto" >
             <div className="text-sm breadcrumbs">
                 <ul>
-                    <li><a>Nitid</a></li>
+                    <li><a>{webName}</a></li>
                     <li><a href="">{productDetails?.tag[0]} </a></li>
                     <li>{productDetails?.name}</li>
                 </ul>
