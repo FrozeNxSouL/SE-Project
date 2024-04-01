@@ -131,11 +131,6 @@ export default function ProductInfo(props: any) {
             <div tabIndex={0} role="button" className="btn rounded-3xl bg-primary w-96">
               <p className="text-white text-lg">by {cartProduct.current_bidder}.</p>
             </div>
-            <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-96">
-              {cartProduct.bidder_id.reverse().slice(0, 5).map((item, index:number) => (
-                <li key={index}><a className="justify-center w-full">{item} : {cartProduct.bidding_amount.reverse()[index]}</a></li>
-              ))}
-            </ul>
           </div>
           <CountdownTimer data={auctionProduct} isExpired={isExpired} setIsExpired={setIsExpired} />
         </div>
