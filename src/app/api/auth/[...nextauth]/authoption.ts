@@ -72,6 +72,7 @@ export const authOption: NextAuthOptions = {
                 id: user.id,
                 name: user.name,
                 email: user.email,
+                phone: user.phone,
                 // Add other properties here as needed
             };
     
