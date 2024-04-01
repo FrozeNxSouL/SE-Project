@@ -40,11 +40,6 @@ export default function ProductInfo(props: any) {
   const { cartTotalQty } = useCart();
   const auctionData = props.data;
 
-  // if (auctionData !=  props.data){
-  // router.refresh();
-  // }
-
-  // console.log(auctionData," in client component")
   const userData = props.user;
   // console.log(userData);
   const [cartProduct, setCartProduct] = useState<CartProductType>({

@@ -13,12 +13,10 @@ export default async function HomePage() {
     <div className='mx-auto flex justify-center flex-col gap-5 bg-base-100 max-w-screen-xl px-32'>
       <CategoryList data={category} />
       <div className="divider text-2xl font-bold">End soon</div>
-      <AuctionProducts data={auctionProduct}/>
+      <AuctionProducts data={auctionProduct} />
       <div className="divider text-2xl font-bold">All Products</div>
       {category.map((value: any, index: number) => (
-        <div className="w-full" key={index}>
-          <LatestProducts data={value.name} quantity={6}/>
-        </div>
+        <LatestProducts key={index} data={value.name} quantity={6} />
       ))}
     </div >
 
