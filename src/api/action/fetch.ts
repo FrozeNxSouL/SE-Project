@@ -14,7 +14,8 @@ export interface requestProducts {
         max: number,
     },
     page?: number,
-    tag?: string[]
+    tag?: string[] | null,
+    status?: string | null,
 }
 
 export interface requestAuctions {
@@ -139,7 +140,6 @@ export async function getProductbyTag(tagInput: string) {
                 ],
             }
         });
-        // console.log(output)
         if (!output) {
             notFound();
         }
@@ -169,9 +169,11 @@ export async function getAuctionProduct() {
 }
 
 export const getProducts = async (request: requestProducts) => {
-    const where: any = {
-        status: "sell"
-    };
+    const where: any = {};
+
+    if (request.status) {
+        where.status = request.status;
+    }
 
     if (request.tag) {
         where.tag = {

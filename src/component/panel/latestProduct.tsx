@@ -78,7 +78,7 @@ export default function LatestProducts(props: any) {
                                 </div>
                             ))}
                         </div>
-                        <Link href="/shop" className="btn btn-primary m-10">View more</Link>
+                        <Link href="/search" className="btn btn-primary m-10">View more</Link>
                     </div>
                 </div>
                 // ) : (
