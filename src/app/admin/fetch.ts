@@ -26,6 +26,88 @@ export async function changeTax(newtax: number) {
         console.log(error)
     }
 }
+export async function updateOwnerScore(itemId: string, newRating: number) {
+    try {
+        // Find the product by itemId
+        const product = await prisma.product.findUnique({
+            where: {
+                id: itemId
+            }
+        });
+
+        if (!product) {
+            throw new Error(`Product with ID ${itemId} not found`);
+        }
+
+        const ownerId = product.userId;
+
+        if (!ownerId) {
+            throw new Error(`Owner ID not found for product with ID ${itemId}`);
+        }
+
+        // Find the existing score of the owner
+        const user = await prisma.user.findUnique({
+            where: {
+                id: ownerId
+            }
+        });
+
+        if (!user) {
+            throw new Error(`User with ID ${ownerId} not found`);
+        }
+
+        // Add the new rating to the existing score
+        const stackedRating = user.score + newRating;
+
+        // Update the owner's score
+        const updatedUser = await prisma.user.update({
+            where: {
+                id: ownerId
+            },
+            data: {
+                score: stackedRating
+            }
+        });
+
+        console.log('Owner score updated successfully:', updatedUser);
+    } catch (error) {
+        console.error('Error updating owner score:', error);
+    }
+}
+
+export async function updateProductsTransaction(paymentIntentId: string, items: { productId: string }[]): Promise<void> {
+    try {
+        // Step 1: Find the transaction with the provided paymentIntentId
+        const transaction = await prisma.transaction.findUnique({
+            where: {
+                paymentIntentId: paymentIntentId
+            }
+        });
+
+        if (!transaction) {
+            throw new Error(`Transaction with paymentIntentId ${paymentIntentId} not found`);
+        }
+
+        const transactionId = transaction.id;
+
+        // Step 2: Update products to have the transactionId
+        for (const item of items) {
+            await prisma.product.update({
+                where: {
+                    id: item.productId
+                },
+                data: {
+                    transactionId: transactionId
+                }
+            });
+        }
+
+        console.log('Products updated with transactionId:', transactionId);
+    } catch (error) {
+        console.error('Error updating products transaction:', error);
+        throw new Error('Failed to update products transaction');
+    }
+}
 
 export async function tagAdd(addname: string, addurl: string, adminid: string) {
     const list = await prisma.category.create({
