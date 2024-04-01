@@ -163,7 +163,6 @@ export function DeatailReport(props: any) {
                             ))}
                             <div className="my-3 flex flex-row overflow-x-scroll">
                                 {rep.reportPicture.map((sec: string, index3: number) => (
-                        
                                     // <a href={sec} target="_blank">
                                         <img key={index3} src={sec} alt={`Report Picture ${index3}`} className="object-cover min-w-full h-72" />
                                     // </a>
