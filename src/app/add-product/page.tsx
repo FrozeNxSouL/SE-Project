@@ -29,7 +29,7 @@ function AddProductPage() {
   const handleProductType = ()=> {
     setAuction(!auction);
   }
-  const handleCategory = (e: React.ChangeEvent<HTMLInputElement>)=> {
+  const handleCategory = (e: React.ChangeEvent<HTMLSelectElement>)=> {
     setCategory(e.target.value)
   }
   const handleTime = (e: React.ChangeEvent<HTMLInputElement>)=> {
@@ -66,6 +66,15 @@ function AddProductPage() {
 
   return (
       <div className="mx-auto max-w-screen-lg min-h-screen bg-base-100">
+        
+        <div className="cursor-pointer size-32 bg-base-200 p-2 ring-1 ring-primary rounded-md">
+          <input type="file" className="absolute size-32 opacity-0 cursor-pointer" accept="image/jpeg" multiple/>
+          <div className="w-full h-full z-1 flex flex-col justify-center items-center">
+            <button className="btn btn-outline btn-sm">Browse</button>
+            <span className="text-center">Drag and drop</span>
+          </div>
+        </div>
+
         <div className="w-full p-10 space-y-2">
           <div className="divider text-xl font-bold">Create new product</div>
           <label className="input input-bordered flex items-center gap-2">
@@ -79,17 +88,12 @@ function AddProductPage() {
             <kbd className="kbd kbd-sm">฿</kbd>
           </label>
           <div className="flex flex-col">
-            <div className="dropdown">
-              <div tabIndex={0} role="button" className="btn m-1 btn-outline">category</div>
-              <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                {categories.map((value, idx) => (
-                  <label className="label cursor-pointer justify-normal" key={idx}>
-                    <input type="radio" name="tag" className="radio checked:bg-blue-500" value={value.label} onChange={handleCategory}/>
-                    <span className="label-text">{value.label}</span>
-                  </label>
-                ))}
-              </ul>
-            </div>
+            <select className="select select-bordered w-full" onChange={handleCategory} defaultValue={"none"}>
+              <option disabled value="none">Category</option>
+              {categories.map((value, idx) => (
+                <option key={idx} value={value.label}>{value.label}</option>
+              ))}
+            </select>
           </div>
           
           <div className="flex flex-row justify-between gap-5">
