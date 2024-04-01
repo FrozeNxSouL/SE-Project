@@ -25,17 +25,19 @@ const OrdersClient: React.FC<OrdersClientProps> = ({
   const router = useRouter();
 
   if (orders) {
-    rows = orders.map((order) => {
-      return {
-        id: order.id,
-        customer: order.user?.name,
-        amount: formatPrice(order.totalPrice),
-        paymentStatus: order.status,
-        date: moment(order.create_transaction_date).fromNow(),
-        deliverStatus: order.deliveryStatus,
-      };
-    });
-  }
+    rows = orders
+        .filter(order => order.status === 'complete') // Filter orders with status 'Completed'
+        .map((order) => {
+            return {
+                id: order.id,
+                customer: order.user?.name,
+                amount: formatPrice(order.totalPrice),
+                paymentStatus: order.status,
+                date: moment(order.create_transaction_date).fromNow(),
+                deliverStatus: order.deliveryStatus,
+            };
+        });
+}
 
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", width: 300 },

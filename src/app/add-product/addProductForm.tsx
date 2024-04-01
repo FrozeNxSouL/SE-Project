@@ -52,7 +52,7 @@ function AddProductForm(props: any) {
             tag: [category],
             transactionId: null,
             userId: null,
-            score:null
+            score: null
         }
         addProduct(newProduct, time);
     }
