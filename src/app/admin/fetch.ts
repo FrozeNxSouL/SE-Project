@@ -34,6 +34,26 @@ export async function changeTax(newtax: number) {
         console.log(error)
     }
 }
+
+export async function isScored(itemId: string): Promise<boolean> {
+    try {
+        // Find the product by itemId
+        const product = await prisma.product.findUnique({
+            where: {
+                id: itemId
+            },
+            select: {
+                score: true
+            }
+        });
+
+        return product?.score !== null;
+    } catch (error) {
+        console.error('Error checking if product is scored:', error);
+        throw error;
+    }
+}
+
 export async function updateOwnerScore(itemId: string, newRating: number) {
     try {
         // Find the product by itemId
@@ -42,7 +62,16 @@ export async function updateOwnerScore(itemId: string, newRating: number) {
                 id: itemId
             }
         });
-
+        const product1 = await prisma.product.update({
+            where: {
+                id: itemId
+            },
+            data: {
+                score: newRating
+            }
+        });
+        console.log(product1)
+        
         if (!product) {
             throw new Error(`Product with ID ${itemId} not found`);
         }
