@@ -12,7 +12,7 @@ export default async function NavBar() {
         <>
             <div className="navbar bg-base-100">
                 <div className="navbar-start">
-                    <a href="/" className="btn btn-ghost text-xl">Nitid Company</a>
+                    <a href="/" className="btn btn-ghost text-xl">Second Hand Product</a>
                 </div>
                 <div className="navbar-center hidden lg:flex w-1/3">
                     <SearchBox></SearchBox>
@@ -32,7 +32,7 @@ export default async function NavBar() {
                     </div>
                     <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
                         {category.map((value, idx) => (
-                            <li key={idx}><Link href={`/${value.url}`}>{value.name}</Link></li>
+                            <li key={idx}><Link href={`/tag/${value.name}`}>{value.name}</Link></li>
                         ))}
                     </ul>
                 </div>

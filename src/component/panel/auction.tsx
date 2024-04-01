@@ -44,55 +44,57 @@ export const stringSpliter = (A: auction, index: number) => {
 }
 
 export default function AuctionProducts(props: any) {
-
-    const [auction, setAuction] = useState<auction[]>([]);
+    const products = props.data
+    // const [auction, setAuction] = useState<auction[]>([]);
     const [loading, setLoading] = useState(true);
 
-    const valuesArray = props.data.map((obj : any) => obj.name);
+    // const request: requestAuctions = {
+    //     quantity: props.quantity,
+    // }
 
-    const request: requestAuctions = {
-        quantity: props.quantity,
-        // tag: [],
-    }
+    // if (props.data) {
+    //     request.tag = props.data
+    // }
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await getAuctions(request)
-                const newData = response.list.map(item => ({
-                    id: item.product.id,
-                    title: item.product.name,
-                    image: item.product.imageUrl[0],
-                    price: item.currentBid,
-                    targetTime: item.updatedAt,
-                    countdown: "",
-                }));
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             const response = await getAuctions(request)
+    //             const newData = response.list.map(item => ({
+    //                 id: item.product.id,
+    //                 title: item.product.name,
+    //                 image: item.product.imageUrl[0],
+    //                 price: item.currentBid,
+    //                 targetTime: (item.updatedAt),
+    //                 countdown: "",
+    //             }));
 
-                console.log(newData);
-                setAuction(newData);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
+    //             console.log(newData);
+    //             setAuction(newData);
+    //         } catch (error) {
+    //             console.error('Error fetching data:', error);
+    //         } finally {
+    //             setLoading(false);
+    //         }
+    //     };
 
-        fetchData();
-    }, []);
-    // const [auction, setAuction] = useState<auction[]>(() => {
-    //     const res: auction[] = [];
-    //     for (let i = 0; i < products.length; i++) {
-    //         res.push({
-    //             id: products[i].product.id,
-    //             title: products[i].product.name,
-    //             image: products[i].product.imageUrl[0],
-    //             price: products[i].currentBid,
-    //             targetTime: products[i].updatedAt,
-    //             countdown: "",
-    //         })
-    //     }
-    //     return res
-    // })
+    //     fetchData();
+    // }, []);
+
+    const [auction, setAuction] = useState<auction[]>(() => {
+        const res: auction[] = [];
+        for (let i = 0; i < products.length; i++) {
+            res.push({
+                id: products[i].product.id,
+                title: products[i].product.name,
+                image: products[i].product.imageUrl[0],
+                price: products[i].currentBid,
+                targetTime: products[i].updatedAt,
+                countdown: "",
+            })
+        }
+        return res
+    })
 
     const setTime = (targetTime: number, index: number, auction: auction[]) => {
 

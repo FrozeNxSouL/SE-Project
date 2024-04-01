@@ -49,9 +49,9 @@ export default function LatestProducts(props: any) {
             {data.length > 0 && (
                 <>
                     <div className="flex flex-col w-1/3 lg:flex-row m-12">
-                        <div className="grid flex-grow h-16 card bg-primary rounded-box place-items-center">Category</div>
+                        <div className="grid flex-grow h-14 card bg-primary rounded-box place-items-center text-xl">Category</div>
                         <div className="divider lg:divider-horizontal"></div>
-                        <div className="grid flex-grow h-16 card rounded-box place-items-center border-white border-2">{props.data}</div>
+                        <div className="grid flex-grow h-14 card rounded-box place-items-center border-white border-2 text-xl">{props.data}</div>
                     </div>
                     <div className="flex flex-col justify-center" >
                         <div className='flex flex-wrap justify-center'>
