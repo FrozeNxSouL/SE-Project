@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 export default function EditProfile() {
     const router = useRouter()
     const { data: session } = useSession();
-    const [id, setid] = useState(session?.user?.id)
+    const [id, setid] = useState(session?.user.id||"")
     console.log(session?.user?.id)
     const [tempProfile, setTempProfile] = useState(session?.user?.image || "");
     const [name, setname] = useState("")
@@ -42,19 +42,19 @@ export default function EditProfile() {
                 <div className="space-y-2 w-full">
                     <label className="input input-bordered flex items-center gap-2">
                         name
-                        <input type="text" onChange={(e) => handleName(e)} className="grow bg-transparent" placeholder={session?.user?.name || ""} />
+                        <input type="text" value={name} onChange={(e) => handleName(e)} className="grow bg-transparent" placeholder={session?.user?.name || ""} />
                     </label>
                     <label className="input input-bordered flex items-center gap-2">
                         email
-                        <input type="text" onChange={(e) => handleEmail(e)} className="grow bg-transparent" placeholder={session?.user?.email || ""} />
+                        <input type="text" value={email} onChange={(e) => handleEmail(e)} className="grow bg-transparent" placeholder={session?.user?.email || ""} />
                     </label>
                     <label className="input input-bordered flex items-center gap-2">
                         phone
-                        <input type="text" onChange={(e) => handlePhone(e)} className="grow bg-transparent" placeholder={session?.user?.phone || ""} />
+                        <input type="text" value={phone} onChange={(e) => handlePhone(e)} className="grow bg-transparent" placeholder={session?.user?.phone || ""} />
                     </label>
                     <label className="input input-bordered flex items-center gap-2">
                         image
-                        <input type="text" onChange={(e) => handleImage(e)} className="grow bg-transparent" placeholder={session?.user?.picture || ""} />
+                        <input type="text" value={tempProfile} onChange={(e) => handleImage(e)} className="grow bg-transparent" placeholder={session?.user?.picture || ""} />
                     </label>
                 </div>
             </div>
