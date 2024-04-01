@@ -39,10 +39,6 @@ export default function Register() {
         }
     }
 
-    const handleClose = () => {
-        setError(null)
-    }
-
     return (
         <div className="py-10">
             <div className="max-w-lg mx-auto p-12 shadow-xl bg-base-100">

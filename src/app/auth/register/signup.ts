@@ -25,7 +25,7 @@ export async function signup(signUpData: signUpForm) {
     }
     
     if (pass !== rePass) {
-        throw new Error("Password do not match")
+        throw new Error("Password do not match");
     }
 
     const filters = [" "]
