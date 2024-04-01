@@ -35,7 +35,8 @@ const CartClient = () => {
 
   if (!cartProducts || cartProducts.length === 0) {
     return (
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col justify-center items-center min-h-screen">
+        <span className="material-icons opacity-50 !text-9xl">production_quantity_limits</span>
         <div className="text-2xl">Your cart is empty</div>
         <div>
           <Link
@@ -54,7 +55,7 @@ const CartClient = () => {
 
   return (
     <div>
-      <h1 className="font-bold text-3xl text-center py-3">Shopping Cart</h1>
+      <div className="divider divide-primary font-bold text-center p-5 text-xl">Shopping Cart</div>
       <div
         className="grid
             grid-cols-5
@@ -103,13 +104,8 @@ const CartClient = () => {
                 : router.push("/auth/login");
             }}
           />
-          <Link
-            href={"/"}
-            className="
-                        text-slate-500 flex items-center gap-1 mt2
-                    "
-          >
-            <MdArrowBack />
+          <Link href={"/"} className="text-info flex items-center gap-1 mt2">
+            <span className="material-icons">arrow_back</span>
             <span>Keep shopping!</span>
           </Link>
         </div>
