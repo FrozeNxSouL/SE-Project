@@ -18,12 +18,74 @@ export interface requestProducts {
 }
 
 export interface requestAuctions {
-
+    quantity: number,
+    sort?: string,
+    keyword?: string | null,
+    price?: {
+        min: number,
+        max: number,
+    },
+    page?: number,
+    tag?: string[]
 }
 
 
-export const getAuctions = (request: requestAuctions) => {
+export const getAuctions = async (request: requestAuctions) => {
+    const where: any = {
+        product: {
+            status: "auction",
+        }
+    };
 
+    if (request.tag) {
+        where.tag = {
+            product: {
+                hasSome: [request.tag[0]],
+            }
+        }
+    }
+    if (request.keyword) {
+        where.name = {
+            product: {
+                contains: request.keyword,
+                mode: 'insensitive',
+            }
+        }
+    }
+    if (request.price && request.price.min < request.price.max) {
+        where.price = {
+            product: {
+                gte: request.price.min,
+                lte: request.price.max,
+            }
+        }
+    }
+
+    try {
+        const list = await prisma.auction.findMany({
+            include: {
+                product: true
+            },
+            take: request.quantity,
+            skip: (request.page) ? (request.page - 1) * request.quantity : 0,
+            orderBy: {
+                updatedAt: (request.sort == "asc") ? "asc" : "desc"
+            },
+            where,
+        })
+        const count = await prisma.auction.count({
+            orderBy: {
+                updatedAt: (request.sort == "asc") ? "asc" : "desc"
+            },
+            where,
+        })
+
+        // console.log(list,"list")
+        return { list, count }
+    } catch (error) {
+        console.log(error)
+        throw new Error("Can't get product from database")
+    }
 }
 export async function getAuctionProductbyTag(tagInput: string) {
     try {
@@ -108,9 +170,9 @@ export async function getAuctionProduct() {
 
 export const getProducts = async (request: requestProducts) => {
     const where: any = {
-        status : "sell"
+        status: "sell"
     };
-    
+
     if (request.tag) {
         where.tag = {
             hasSome: [request.tag[0]]
@@ -155,8 +217,8 @@ export async function getProductDetail(productId: string) {
     let productDetails;
     try {
         productDetails = await prisma.product.findUnique({
-            include : {
-                User : true
+            include: {
+                User: true
             },
             where: {
                 id: productId,
