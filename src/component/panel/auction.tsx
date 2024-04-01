@@ -6,6 +6,33 @@ import { useRouter } from "next/navigation"
 import allUpdateData from "@/app/auction/[auctionId]/page";
 import { getAuctions, requestAuctions } from '@/api/action/fetch';
 
+export const timeFormater = (item: auction) => {
+    let day = stringSpliter(item, 0), range;
+    let output: string = ""
+    if (day == "Ended") {
+        allUpdateData({ params: { auctionId: item.id } }); // Pass an object with the correct structure
+    } else {
+        for (let i = 0; i < 4; i++) {
+            if (stringSpliter(item, i) != "0") {
+                switch (i) {
+                    case 0:
+                        output += stringSpliter(item, 0) + " D "
+                    case 1:
+                        output += stringSpliter(item, 1) + " H "
+                    case 2:
+                        output += stringSpliter(item, 2) + " M "
+                    case 3:
+                        output += stringSpliter(item, 3) + " S "
+                    default:
+                        break;
+                }
+                break;
+            }
+        }
+        return output
+    }
+}
+
 export const calculateTime = (targetTime: number, index: number, auction: auction[]) => {
     const currentTime = new Date().getTime();
     const timeDifference = targetTime - currentTime
@@ -97,9 +124,7 @@ export default function AuctionProducts(props: any) {
     })
 
     const setTime = (targetTime: number, index: number, auction: auction[]) => {
-
-        setAuction(calculateTime(targetTime, index, auction))
-
+        setAuction(calculateTime(targetTime, index, auction));
     }
 
     useEffect(() => {
@@ -114,33 +139,6 @@ export default function AuctionProducts(props: any) {
         }
 
     }, [])
-
-    const timeFormater = (item: auction) => {
-        let day = stringSpliter(item, 0), range;
-        let output: string = ""
-        if (day == "Ended") {
-            allUpdateData({ params: { auctionId: item.id } }); // Pass an object with the correct structure
-        } else {
-            for (let i = 0; i < 4; i++) {
-                if (stringSpliter(item, i) != "0") {
-                    switch (i) {
-                        case 0:
-                            output += stringSpliter(item, 0) + " D "
-                        case 1:
-                            output += stringSpliter(item, 1) + " H "
-                        case 2:
-                            output += stringSpliter(item, 2) + " M "
-                        case 3:
-                            output += stringSpliter(item, 3) + " S "
-                        default:
-                            break;
-                    }
-                    break;
-                }
-            }
-            return output
-        }
-    }
 
     const router = useRouter();
 
