@@ -7,10 +7,11 @@ import { useRouter } from "next/navigation";
 export default function EditProfile() {
     const router = useRouter()
     const { data: session } = useSession();
+    const [id, setid] = useState(session?.user?.id)
     const [tempProfile, setTempProfile] = useState(session?.user?.image || "");
-    const [name,setname] = useState(session?.user?.name || "")
-    const [email,setemail] = useState(session?.user?.email || "")
-    const [phone,setphone] = useState(session?.user?.phone || "")
+    const [name, setname] = useState("")
+    const [email, setemail] = useState("")
+    const [phone, setphone] = useState("")
     const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
         setTempProfile(e.target.value);
     };
@@ -23,7 +24,11 @@ export default function EditProfile() {
     const handlePhone = (e: React.ChangeEvent<HTMLInputElement>) => {
         setphone(e.target.value);
     };
-
+    const setdefault = ()=>{
+        setname("")
+        setemail("")
+        setphone("")
+    }
     return (
         <div className="flex flex-col items-center bg-base-200 w-full p-5">
             <div className="divider text-2xl font-bold">Edit profile</div>
@@ -32,7 +37,7 @@ export default function EditProfile() {
                     <img className="rounded-full object-cover w-full h-40 ring ring-primary ring-offset-base-100 ring-offset-2" src={tempProfile || session?.user?.image || ""} />
                 </div>
 
-                <div className="divider divider-horizontal"></div> 
+                <div className="divider divider-horizontal"></div>
                 <div className="space-y-2 w-full">
                     <label className="input input-bordered flex items-center gap-2">
                         name
@@ -44,18 +49,19 @@ export default function EditProfile() {
                     </label>
                     <label className="input input-bordered flex items-center gap-2">
                         phone
-                        <input type="text" onChange={(e) => handlePhone(e)} className="grow bg-transparent" placeholder={session?.user?.name || ""} />
+                        <input type="text" onChange={(e) => handlePhone(e)} className="grow bg-transparent" placeholder={session?.user?.phone || ""} />
                     </label>
                     <label className="input input-bordered flex items-center gap-2">
                         image
-                        <input type="text" onChange={(e) => handleImage(e)} className="grow bg-transparent" placeholder={session?.user?.name || ""} />
+                        <input type="text" onChange={(e) => handleImage(e)} className="grow bg-transparent" placeholder={session?.user?.picture || ""} />
                     </label>
                 </div>
             </div>
-            <button onClick={() =>{
-                updateporfile()
+            <button onClick={() => {
+                updateporfile(id, name, email, phone, tempProfile)
+                setdefault()
                 router.refresh()
-            }}className="btn btn-primary btn-wide">save</button>
+            }} className="btn btn-primary btn-wide">save</button>
         </div>
     );
 }
