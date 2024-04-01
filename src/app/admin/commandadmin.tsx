@@ -45,7 +45,7 @@ export function Taxchange({ taxhandle }: managechangeProps) {
     return (
         <>
             <div className="flex justify-end">
-                <button onClick={handleToggle} className="btn btn-error text-white rounded-lg mr-8">Edit</button>
+                <button onClick={handleToggle} className="btn btn-warning text-white rounded-lg mr-8">Edit</button>
             </div>
             <Modal open={showModal}>
                 <div className="flex justify-between">
@@ -161,11 +161,15 @@ export function DeatailReport(props: any) {
                                     <h3 className="font-bold text-lg">• {sec}</h3>
                                 </div>
                             ))}
-                            {rep.reportPicture.map((sec: string, index3: any) => (
-                                <div key={index3} className="mt-3 mb-3">
-                                    <img src={sec} alt={`Report Picture ${index3}`} className="w-50% 50%-w-md" />
-                                </div>
-                            ))}
+                            <div className="my-3 flex flex-row overflow-x-scroll">
+                                {rep.reportPicture.map((sec: string, index3: number) => (
+                        
+                                    // <a href={sec} target="_blank">
+                                        <img key={index3} src={sec} alt={`Report Picture ${index3}`} className="object-cover min-w-full h-72" />
+                                    // </a>
+                    
+                                ))}
+                            </div>
                             {/* <div className="flex flex-no-wrap overflow-x-auto mb-3 mt-3">
                                 {rep.reportPicture.map((url: string, index3: number) => ( // Assuming each item in reportPicture array is a URL
                                     <div key={index3} className="w-50 flex-1 mr-2">
@@ -310,7 +314,7 @@ export function EditTag({ catid, catname, caturl }: editTagProps) {
     )
 }
 
-export function Modal({ children, open }: { children: React.ReactNode, open: boolean}) {
+export function Modal({ children, open }: { children: React.ReactNode, open: boolean }) {
     return (
         <div className={`modal modal-bottom sm:modal-middle ${open && "modal-open"}`}>
             <div className="modal-box">{children}</div>
