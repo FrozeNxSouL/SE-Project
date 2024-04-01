@@ -5,6 +5,7 @@ import getCurrentUser from "../action/getCurentUser";
 import { redirect } from "next/navigation";
 
 export default async function admin({ searchParams }: { searchParams: { search?: string } }) {
+  const currentuser = await getCurrentUser()
   const search = searchParams.search || "";
   const users = await getUser(search)
   const admin = await getManage();
@@ -14,6 +15,9 @@ export default async function admin({ searchParams }: { searchParams: { search?:
   if (!admin || !session || session.role !== "manager") {
     return (<div>poon</div>)
   }
+  if (!admin) {
+    return (<div>server gay</div>)
+  }
   return (
     <div className="mx-auto w-2/3 bg-base-300">
       <div className="mx-auto w-full bg-base-100 shadow-lg">
@@ -21,8 +25,10 @@ export default async function admin({ searchParams }: { searchParams: { search?:
           <span>Manage</span>
         </div>
         <div className="p-5">
-        <div className="badge badge-primary h-10">Tax : {admin?.tax}%</div>
-          <br/>
+          <div className="flex items-center justify-center font-extrabold text-2xl mb-1">TAX</div>
+          <div className="flex items-center justify-center text-6xl">{admin?.tax}%</div>
+          {/* <div className="badge badge-primary h-10 ">Tax : {admin.tax}%</div> */}
+          <br />
           <div className="badge badge-neutral w-24 mt-4 h-10 font-extrabold">Category</div>
           <div className="flex flex-row flex-wrap gap-2 m-3">
             {admin.categorys.map((cat, index) => (
@@ -32,7 +38,7 @@ export default async function admin({ searchParams }: { searchParams: { search?:
             ))}
             <AddTag adminid={admin.id}></AddTag>
           </div>
-          <Taxchange taxhandle={admin?.tax}></Taxchange>
+          <Taxchange taxhandle={admin.tax}></Taxchange>
         </div>
       </div>
       {/* report Manage */}

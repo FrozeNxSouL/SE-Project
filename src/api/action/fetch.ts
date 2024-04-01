@@ -1,5 +1,8 @@
 "use server"
 import prisma from "@/lib/db/prisma";
+import { CartProductType } from "@prisma/client";
+import { error } from "console";
+import { revalidatePath } from "next/cache";
 import { notFound } from "next/navigation"
 
 export interface requestProducts {
@@ -10,9 +13,80 @@ export interface requestProducts {
         min: number,
         max: number,
     },
-    page?: number
+    page?: number,
+    tag?: string[]
 }
 
+export interface requestAuctions {
+    quantity: number,
+    sort?: string,
+    keyword?: string | null,
+    price?: {
+        min: number,
+        max: number,
+    },
+    page?: number,
+    tag?: string[]
+}
+
+
+export const getAuctions = async (request: requestAuctions) => {
+    const where: any = {
+        product: {
+            status: "auction",
+        }
+    };
+
+    if (request.tag) {
+        where.tag = {
+            product: {
+                hasSome: [request.tag[0]],
+            }
+        }
+    }
+    if (request.keyword) {
+        where.name = {
+            product: {
+                contains: request.keyword,
+                mode: 'insensitive',
+            }
+        }
+    }
+    if (request.price && request.price.min < request.price.max) {
+        where.price = {
+            product: {
+                gte: request.price.min,
+                lte: request.price.max,
+            }
+        }
+    }
+
+    try {
+        const list = await prisma.auction.findMany({
+            include: {
+                product: true
+            },
+            take: request.quantity,
+            skip: (request.page) ? (request.page - 1) * request.quantity : 0,
+            orderBy: {
+                updatedAt: (request.sort == "asc") ? "asc" : "desc"
+            },
+            where,
+        })
+        const count = await prisma.auction.count({
+            orderBy: {
+                updatedAt: (request.sort == "asc") ? "asc" : "desc"
+            },
+            where,
+        })
+
+        // console.log(list,"list")
+        return { list, count }
+    } catch (error) {
+        console.log(error)
+        throw new Error("Can't get product from database")
+    }
+}
 export async function getAuctionProductbyTag(tagInput: string) {
     try {
         const output = await prisma.auction.findMany({
@@ -43,7 +117,7 @@ export async function getAuctionProductbyTag(tagInput: string) {
         if (!output) {
             notFound();
         }
-        console.log(output)
+        // console.log(output)
         return output;
     } catch (error) {
         console.log(error);
@@ -65,7 +139,7 @@ export async function getProductbyTag(tagInput: string) {
                 ],
             }
         });
-        console.log(output)
+        // console.log(output)
         if (!output) {
             notFound();
         }
@@ -94,9 +168,16 @@ export async function getAuctionProduct() {
     return products
 }
 
-export const getProducts = async (request: requestProducts)=> {
+export const getProducts = async (request: requestProducts) => {
+    const where: any = {
+        status: "sell"
+    };
 
-    const where: any = {};
+    if (request.tag) {
+        where.tag = {
+            hasSome: [request.tag[0]]
+        }
+    }
     if (request.keyword) {
         where.name = {
             contains: request.keyword,
@@ -125,30 +206,48 @@ export const getProducts = async (request: requestProducts)=> {
             },
             where,
         })
-        return {list, count}
+        return { list, count }
     } catch (error) {
         console.log(error)
         throw new Error("Can't get product from database")
     }
-    
-
 }
 
 export async function getProductDetail(productId: string) {
+    let productDetails;
     try {
-        const productDetails = await prisma.product.findUnique({
+        productDetails = await prisma.product.findUnique({
+            include: {
+                User: true
+            },
             where: {
                 id: productId,
             }
         });
-        if (!productDetails) {
-            return null
-        }
-        return productDetails;
     } catch (error) {
         console.log(error);
         return null
     }
+    if (!productDetails) {
+        throw new Error("This product is not available");
+    }
+    const seller = await prisma.user.findUnique({
+        where: {
+            id: productDetails.userId || "",
+        },
+        select: {
+            id: true,
+            name: true,
+            address: true,
+            email: true,
+            phone: true,
+            picture: true,
+            score: true,
+            role: true,
+        }
+    });
+
+    return { productDetails, seller }
 }
 
 export async function getAuctionDetail(productId: string) {
@@ -157,7 +256,11 @@ export async function getAuctionDetail(productId: string) {
             include: {
                 auction: {
                     include: {
-                        product: true
+                        product: {
+                            include: {
+                                User: true
+                            }
+                        }
                     }
                 }
             },
@@ -214,6 +317,11 @@ export async function updateExpiredStatus(productId: string) {
                 }
             },
         })
+
+        if (!findInLog) {
+            throw error
+        }
+
         if (findInLog?.auction.product.price == findInLog?.auction.currentBid) {
             const updatedRecord = await prisma.product.update({
                 where: { id: productId },
@@ -221,6 +329,7 @@ export async function updateExpiredStatus(productId: string) {
                     status: "expired",
                 },
             });
+
         } else {
             const updatedRecord = await prisma.product.update({
                 where: { id: productId },
@@ -229,13 +338,132 @@ export async function updateExpiredStatus(productId: string) {
                 },
             });
 
-            // const updateTransaction = await prisma.transaction.create({
+            const temp: CartProductType[] = [{
+                id: findInLog?.auction.product.id || "",
+                name: findInLog?.auction.product.name || "",
+                description: findInLog?.auction.product.description || "",
+                quantity: 1,
+                price: findInLog?.auction.product.price || 0,
+                img: findInLog?.auction.product.imageUrl || [],
+                tag: findInLog?.auction.product.tag || [],
+            }]
 
-            // })
+            const orderData = {
+                user: { connect: { id: findInLog.auction.bidderId } },
+                totalPrice: findInLog.auction.currentBid,
+                currency: 'thb',
+                status: "complete",
+                deliveryStatus: "pending",
+                products: temp,
+            };
+            const updateTransaction = await prisma.transaction.create({
+                data: orderData
+            })
         }
 
+    } catch (error) {
+        console.error('Error updating record:', error);
+    }
+}
 
-        //   console.log('Updated record:', updatedRecord);
+export async function updateNewBid(productId: string, inputBid: number, userId: string) {
+    try {
+        const findInWallet = await prisma.wallet.findFirst({
+            include: {
+                User: true
+            },
+            where: {
+                User: {
+                    id: userId
+                }
+            },
+        })
+        if (!findInWallet) {
+            throw new Error(`Error`);
+        }
+
+        if (findInWallet.cash - inputBid < 0) {
+            return;
+        }
+
+        const findInLog = await prisma.auction_log.findFirst({
+            include: {
+                auction: {
+                    include: {
+                        product: true
+                    }
+                }
+            },
+            where: {
+                auction: {
+                    product: {
+                        AND: [
+                            {
+                                id: productId
+                            },
+                            {
+                                status: "auction"
+                            }
+                        ]
+
+                    }
+                }
+            },
+        })
+        if (!findInLog) {
+            throw new Error(`Error`);
+        }
+
+        const arrID = findInLog?.bidder_id
+        arrID?.push(findInLog?.auction?.bidderId);
+        const arrBid = findInLog?.bidding_amount
+        arrBid?.push(findInLog?.auction?.currentBid);
+
+        const updateLog = await prisma.auction_log.update({
+            where: {
+                id: findInLog.id
+            },
+            data: {
+                bidder_id: arrID,
+                bidding_amount: arrBid
+            }
+        })
+
+        const auctionUpdate = await prisma.auction.update({
+            where: {
+                id: findInLog.auction.id
+            },
+            data: {
+                currentBid: inputBid,
+                bidderId: userId
+            }
+        });
+
+        revalidatePath(`/auction/${productId}`, "page");
+
+    } catch (error) {
+        console.error('Error updating record:', error);
+    }
+}
+
+export async function getUserandWallet(userID: string) {
+    try {
+        const findInWallet = await prisma.wallet.findFirst({
+            include: {
+                User: true
+            },
+            where: {
+                User: {
+                    id: userID
+                }
+            },
+        })
+        if (!findInWallet) {
+            throw new Error(`Error`);
+        }
+
+        return findInWallet
+
     } catch (error) {
         console.error('Error updating record:', error);
     }

@@ -12,7 +12,7 @@ import { auction } from "@/component/variables";
 import { calculateTime, stringSpliter } from "@/component/panel/auction";
 import CountdownTimer from "@/component/panel/countdown";
 import { getUserDetail } from "@/api/action/fetch";
-
+import AuctionModal from "@/component/panel/auctionModal";
 
 interface auctionProps {
   productDetails: auctionObject;
@@ -32,17 +32,19 @@ export type CartProductType = {
 
 };
 
-var exp = false;
-
-export function updateExpired() {
-  exp = true;
-}
-
 export default function ProductInfo(props: any) {
+  const router = useRouter();
+
   const { handleAddProductToCart, cartProducts } = useCart();
   const [isExpired, setIsExpired] = useState(false);
   const { cartTotalQty } = useCart();
   const auctionData = props.data;
+
+  // if (auctionData !=  props.data){
+  // router.refresh();
+  // }
+
+  // console.log(auctionData," in client component")
   const userData = props.user;
   // console.log(userData);
   const [cartProduct, setCartProduct] = useState<CartProductType>({
@@ -58,7 +60,7 @@ export default function ProductInfo(props: any) {
     current_bidder: userData.name,
   });
 
-  const [auct, setAuction] = useState<auction[]>(() => {
+  const [auctionProduct, setAuction] = useState<auction[]>(() => {
     const res: auction[] = [];
     for (let i = 0; i < 1; i++) {
       res.push({
@@ -81,17 +83,14 @@ export default function ProductInfo(props: any) {
 
   useEffect(() => {
     {
-      auct.map((item: auction, index: number) => {
-        const countdownInterval = setInterval(() => setTime(new Date(item.targetTime).getTime(), index, auct), 1000);
+      auctionProduct.map((item: auction, index: number) => {
+        const countdownInterval = setInterval(() => setTime(new Date(item.targetTime).getTime(), index, auctionProduct), 1000);
         return () => {
           clearInterval(countdownInterval)
         }
       })
     }
-
-  }, [])
-
-  const router = useRouter()
+  }, [auctionProduct])
 
   return (
     <div className="w-full bg-base-100 flex justify-center flex-row gap-5 px-20 py-10">
@@ -101,15 +100,6 @@ export default function ProductInfo(props: any) {
           <h1 className="text-xl mb-3 text-wrap break-words">
             {cartProduct?.name}
           </h1>
-        </div>
-
-        <div className="absolute self-end dropdown dropdown-hover dropdown-left">
-          <div tabIndex={0} role="button" className="btn m-1">History</div>
-          <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-            {cartProduct.bidder_id.map((item, index) => (
-              <li key={index}><a>{item} : {cartProduct.bidding_amount[index]}</a></li>
-            ))}
-          </ul>
         </div>
 
         <div className="flex flex-col gap-6">
@@ -133,8 +123,8 @@ export default function ProductInfo(props: any) {
 
         <div className="flex flex-col items-center p-3 gap-3">
           <div className=" flex justify-center items-center h-32 w-96 rounded-3xl bg-neutral text-neutral-content">
-            <h2 className="absolute self-auto mr-72 mb-20 text-md">NOW</h2>
-            <h2 className="font-mono text-6xl text-primary">{cartProduct.currentBid} ฿</h2>
+            <h2 className="absolute self-auto mr-72 mb-20 text-md badge badge-outline">NOW</h2>
+            <h2 className="font-mono text-6xl text-primary">{auctionData.auction.currentBid} ฿</h2>
           </div>
 
           <div className="dropdown dropdown-hover dropdown-bottom">
@@ -142,14 +132,14 @@ export default function ProductInfo(props: any) {
               <p className="text-white text-lg">by {cartProduct.current_bidder}.</p>
             </div>
             <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-96">
-              {cartProduct.bidder_id.map((item, index) => (
-                <li key={index}><a className="justify-center w-full">{item} : {cartProduct.bidding_amount[index]}</a></li>
+              {cartProduct.bidder_id.reverse().slice(0, 5).map((item, index:number) => (
+                <li key={index}><a className="justify-center w-full">{item} : {cartProduct.bidding_amount.reverse()[index]}</a></li>
               ))}
             </ul>
           </div>
-          <CountdownTimer data={auct} />
+          <CountdownTimer data={auctionProduct} isExpired={isExpired} setIsExpired={setIsExpired} />
         </div>
-        {exp ? (
+        {isExpired ? (
           <>
             <div className="flex flex-row gap-3 justify-center">
               <button className="btn btn-wide btn-outline">Expired</button>
@@ -158,7 +148,7 @@ export default function ProductInfo(props: any) {
         ) : (
           <>
             <div className="flex flex-row gap-3 justify-center">
-              <button onClick={() => { }} className="btn btn-wide btn-primary">Take Now</button>
+              <AuctionModal data={auctionData.auction.currentBid} product={auctionData.auction.product.id} />
             </div>
           </>
         )}

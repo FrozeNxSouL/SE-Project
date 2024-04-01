@@ -1,10 +1,7 @@
 import ProductInfo from "./auctionInfo";
-import prisma from "@/lib/prismaDB";
-import { productDetails, userData } from "@/component/variables";
 import { notFound } from "next/navigation";
 import { getAuctionDetail, getUserDetail, updateExpiredStatus } from "@/api/action/fetch";
 
-export const dynamic = "force-dynamic";
 export interface auctionObject {
     id: string;
     description: string;
@@ -21,12 +18,10 @@ interface FunctionIndexSignature {
     [x: string]: (productId: string) => Promise<void>;
 }
 
-// Define the type for the index signature
 const functions: FunctionIndexSignature = {
     allUpdateData: async (productId: string) => {
         await updateExpiredStatus(productId);
     },
-    // Add other functions here if needed
 };
 
 export default async function payment({ params }: { params: { auctionId: string } }) {
@@ -49,20 +44,20 @@ export default async function payment({ params }: { params: { auctionId: string 
                 <div className="flex flex-row gap-5">
                     <div className="avatar">
                         <div className="w-20 rounded-full">
-                            <img src={userData.image} />
+                            <img src={output.auction.product.User?.picture} />
                         </div>
                     </div>
                     <div className="flex flex-col justify-center">
-                        <h1 className="font-bold">{userData.username}</h1>
+                        <h1 className="font-bold">{output.auction.product.User?.name}</h1>
                         <span className="opacity-80 font-light">
-                            {userData.tel}
+                            {output.auction.product.User?.phone}
                         </span>
                     </div>
                     <div className="divider lg:divider-horizontal"></div>
                     <div>
-                        <p>selled 8 products {params.auctionId}</p>
-                        <p>joined for 8 sec</p>
-                        <p>score 1.2</p>
+                        <p>call with {output.auction.product.User?.phone}</p>
+                        <p>joined for {output.auction.product.User?.email} </p>
+                        <p>score {output.auction.product.User?.score}</p>
                     </div>
                     <div className="divider lg:divider-horizontal"></div>
                 </div>

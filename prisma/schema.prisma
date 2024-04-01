@@ -38,7 +38,7 @@ model User {
   role           String
   auction        Auction[]
   product        Product[]
-  transactions    Transaction[]
+  transactions   Transaction[]
   report         Report[]
   wallet         Wallet?
 
@@ -61,43 +61,42 @@ model Auction_log {
   id             String   @id @default(auto()) @map("_id") @db.ObjectId
   auctionId      String   @unique @db.ObjectId
   auction        Auction  @relation(fields: [auctionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  bidding_amount String[]
+  bidding_amount Float[]
   bidder_id      String[]
 }
 
 model Transaction {
-  id               String    @id @default(auto()) @map("_id") @db.ObjectId
-  totalPrice       Float
-  currency        String
-  create_transaction_date DateTime @default(now())
-  status           String?
-  userId           String?   @db.ObjectId
-  deliveryStatus  String?
-  paymentIntentId String @unique
-  address Address?
-  products          CartProductType[]
-  product         Product[]
-  user             User?     @relation(fields: [userId], references: [id],onDelete: Cascade)
-  
+  id                      String            @id @default(auto()) @map("_id") @db.ObjectId
+  totalPrice              Float
+  currency                String
+  create_transaction_date DateTime          @default(now())
+  status                  String?
+  userId                  String?           @db.ObjectId
+  deliveryStatus          String?
+  paymentIntentId         String?            @unique
+  address                 Address?
+  products                CartProductType[]
+  product                 Product[]
+  user                    User?             @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 type CartProductType {
-  id String
-  name String
+  id          String
+  name        String
   description String
-  quantity Int
-  price Float
-  img String[]
-  tag  String[]
+  quantity    Int
+  price       Float
+  img         String[]
+  tag         String[]
 }
 
-type Address{
-  city String
-  country String
-  line1 String
-  line2 String?
+type Address {
+  city        String
+  country     String
+  line1       String
+  line2       String?
   postal_code String
-  state String
+  state       String
 }
 
 model Wallet {

@@ -25,7 +25,7 @@ export async function signup(signUpData: signUpForm) {
     }
     
     if (pass !== rePass) {
-        throw new Error("Password do not match")
+        throw new Error("Password do not match");
     }
 
     const filters = [" "]
@@ -57,6 +57,14 @@ export async function signup(signUpData: signUpForm) {
                 score: 0,
                 role : "user",
                 picture: "https://mpics.mgronline.com/pics/Images/557000005527401.JPEG",
+            }
+        })
+
+        const userWallet = await prisma.wallet.create({
+            data : {
+                creditCard : "",
+                cash : 500,
+                userId : a.id,
             }
         })
     } catch (e){

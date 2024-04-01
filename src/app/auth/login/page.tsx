@@ -15,7 +15,7 @@ export default function AuthForm() {
         router.push("/");
     }
 
-    const handleSignIn = async ()=> {
+    const handleSignIn = async () => {
         const res = await signIn("credentials", {
             email: email.current?.value,
             password: password.current?.value,
@@ -39,7 +39,7 @@ export default function AuthForm() {
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="stroke-info shrink-0 w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                         <span>{error}</span>
                         <div>
-                            <button className="btn btn-error btn-sm" onClick={()=> {setError(null)}}><span className="material-icons">close</span></button>
+                            <button className="btn btn-error btn-sm" onClick={() => { setError(null) }}><span className="material-icons">close</span></button>
                         </div>
                     </div>
                 )}
@@ -49,7 +49,7 @@ export default function AuthForm() {
                 </label>
                 <label className="input input-bordered flex items-center gap-2 my-2">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="w-4 h-4 opacity-70"><path fillRule="evenodd" d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z" clipRule="evenodd" /></svg>
-                    <input name="password" type="password" className="grow bg-transparent" placeholder="Password" ref={password}/>
+                    <input name="password" type="password" className="grow bg-transparent" placeholder="Password" ref={password} />
                 </label>
                 <div className="flex flex-col justify-center">
                     <button className="btn btn-primary btn-block my-2" onClick={handleSignIn}>sign in</button>

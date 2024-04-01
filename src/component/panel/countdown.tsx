@@ -5,19 +5,19 @@ import { auction } from "@/component/variables";
 import { stringSpliter } from "@/component/panel/auction";
 import { updateExpiredStatus } from "@/api/action/fetch";
 import  allUpdateData  from "@/app/auction/[auctionId]/page";
-import { updateExpired } from "@/app/auction/[auctionId]/auctionInfo";
+// import { updateExpired } from "@/app/auction/[auctionId]/auctionInfo";
 
 
 export default function CountdownTimer(props: any) {
     // console.log(props.data)
     const auctionOBJ = props.data;
-    const [expired, setExpired] = useState(false)
+    const { isExpired, setIsExpired } = props;
+    // const [expired, setExpired] = useState(false)
 
     const timeFormater = (item: auction) => {
-        let day = stringSpliter(item, 0), range;
+        let day = stringSpliter(item, 0);
         if (day == "Ended") {
-            setExpired(true)
-            updateExpired();
+            setIsExpired(true)
             allUpdateData(auctionOBJ[0].id)
             // console.log(props.data, "EXP")
             return
@@ -26,45 +26,48 @@ export default function CountdownTimer(props: any) {
         }
     }
 
-    if (!expired) {
+    if (!isExpired) {
         timeFormater(auctionOBJ[0]);
     }
 
     return (
         <div>
-            {expired && (
-                <div className="text-center p-3">
-                    <h1 className="text-5xl">ฝันดีนะ ปูนปูน</h1>
+            {!isExpired && (
+                <div className="grid grid-flow-col gap-5 text-center auto-cols-max">
+                    {stringSpliter(auctionOBJ[0], 0) != "0" && (
+                        <div className="flex flex-col">
+                            <span className="font-mono text-5xl">
+                                <span>{stringSpliter(auctionOBJ[0], 0) }</span>
+                            </span>
+                            days
+                        </div>
+                    )}
+                    {stringSpliter(auctionOBJ[0], 1) != "0" && (
+                        <div className="flex flex-col">
+                            <span className=" font-mono text-5xl">
+                                <span>{stringSpliter(auctionOBJ[0], 1) }</span>
+                            </span>
+                            hours
+                        </div>
+                    )}
+                    {stringSpliter(auctionOBJ[0], 2) != "0" && (
+                        <div className="flex flex-col">
+                            <span className=" font-mono text-5xl">
+                                <span>{stringSpliter(auctionOBJ[0], 2)}</span>
+                            </span>
+                            min
+                        </div>
+                    )}
+                    {stringSpliter(auctionOBJ[0], 3) != "0" && (
+                        <div className="flex flex-col">
+                            <span className=" font-mono text-5xl">
+                                <span>{stringSpliter(auctionOBJ[0], 3)}</span>
+                            </span>
+                            sec
+                        </div>
+                    )}
                 </div>
             )}
-            {/* {!expired && (
-                <div className="grid grid-flow-col gap-5 text-center auto-cols-max">
-                    <div className="flex flex-col">
-                        <span className="countdown font-mono text-5xl">
-                            <span style={{ "--value": stringSpliter(auctionOBJ[0], 0) }}></span>
-                        </span>
-                        days
-                    </div>
-                    <div className="flex flex-col">
-                        <span className="countdown font-mono text-5xl">
-                            <span style={{ "--value": stringSpliter(auctionOBJ[0], 1) }}></span>
-                        </span>
-                        hours
-                    </div>
-                    <div className="flex flex-col">
-                        <span className="countdown font-mono text-5xl">
-                            <span style={{ "--value": stringSpliter(auctionOBJ[0], 2) }}></span>
-                        </span>
-                        min
-                    </div>
-                    <div className="flex flex-col">
-                        <span className="countdown font-mono text-5xl">
-                            <span style={{ "--value": stringSpliter(auctionOBJ[0], 3) }}></span>
-                        </span>
-                        sec
-                    </div>
-                </div>
-            )} */}
         </div>
     )
 }

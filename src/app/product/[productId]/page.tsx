@@ -1,24 +1,20 @@
 import ProductInfo from "./productInfo";
-import prisma from "@/lib/prismaDB";
-import { productDetails, userData } from "@/component/variables";
 import { notFound } from "next/navigation";
 import { getProductDetail } from "@/api/action/fetch";
 
-export interface productObject {
-    id: string;
-    description: string;
-    imageUrl: string[];
-    name: string;
-    price: number;
-    tag: string[];
-}
 
 
-export default async function payment({ params }: { params: { productId: string } }) {
-    const productDetails = await getProductDetail(params.productId);
-    if (!productDetails) {
+export default async function product({ params }: { params: { productId: string } }) {
+    const res = await getProductDetail(params.productId);
+    if (!res) {
         notFound();
     }
+    const productDetails = res?.productDetails;
+    const seller = res?.seller;
+    if (!productDetails || !seller) {
+        notFound();
+    }
+
     return (
         <div className="max-w-screen-xl mx-auto" >
             <div className="text-sm breadcrumbs">
@@ -33,20 +29,20 @@ export default async function payment({ params }: { params: { productId: string 
                 <div className="flex flex-row gap-5">
                     <div className="avatar">
                         <div className="w-20 rounded-full">
-                            <img src={userData.image} />
+                            <img src={productDetails.User?.picture} />
                         </div>
                     </div>
                     <div className="flex flex-col justify-center">
-                        <h1 className="font-bold">{userData.username}</h1>
+                        <h1 className="font-bold">{productDetails.User?.name}</h1>
                         <span className="opacity-80 font-light">
-                            {userData.tel}
+                            {productDetails.User?.phone}
                         </span>
                     </div>
                     <div className="divider lg:divider-horizontal"></div>
                     <div>
-                        <p>selled 8 products {params.productId}</p>
-                        <p>joined for 8 sec</p>
-                        <p>score 1.2</p>
+                        <p>call with {productDetails.User?.phone}</p>
+                        <p>joined for {productDetails.User?.email} </p>
+                        <p>score {productDetails.User?.score}</p>
                     </div>
                     <div className="divider lg:divider-horizontal"></div>
                 </div>
