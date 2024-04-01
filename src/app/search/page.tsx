@@ -4,9 +4,8 @@ import { Product, Category } from "@prisma/client";
 import { useEffect, useState } from "react";
 import { requestProducts, getProducts } from "@/api/action/fetch";
 import { useRouter, useSearchParams } from "next/navigation";
-import getCategory from "@/app/action/getCategory";
 
-export default function shop() {
+export default function Shop() {
     const router = useRouter();
     const [products, setProducts] = useState<Product[]>([]);
     const [currentPage, setCurrentPage] = useState(1);

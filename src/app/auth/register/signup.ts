@@ -17,7 +17,11 @@ export async function signup(signUpData: signUpForm) {
     const rePass = signUpData.rePass;
 
     if (!email || !name || !pass || !rePass) {
-        throw new Error("please, Fill all required fields")
+        throw new Error("Please, Fill all required fields")
+    }
+
+    if (!email.includes("@") || !email.includes(".")) {
+        throw new Error("Invalid email");
     }
     
     if (pass !== rePass) {
@@ -42,8 +46,6 @@ export async function signup(signUpData: signUpForm) {
     }
 
     const hashPass: string = hashSync(pass, 10);
-
-    console.log(email, name, pass, rePass)
     try {
         const a = await prisma.user.create({
             data: {
@@ -53,12 +55,12 @@ export async function signup(signUpData: signUpForm) {
                 address: [],
                 phone: "",
                 score: 0,
-                role : "manager",
+                role : "user",
                 picture: "https://mpics.mgronline.com/pics/Images/557000005527401.JPEG",
             }
         })
     } catch (e){
         throw new Error("Prisma error")
     }
-    redirect("/");
+    redirect("/auth/login");
 }

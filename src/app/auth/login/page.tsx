@@ -2,12 +2,18 @@
 import { useRef, useState } from 'react'
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 export default function AuthForm() {
     const [error, setError] = useState<String | null>(null)
     const router = useRouter()
     const email = useRef<HTMLInputElement>(null)
     const password = useRef<HTMLInputElement>(null)
+
+    const session = useSession();
+    if (session.data?.user) {
+        router.push("/");
+    }
 
     const handleSignIn = async ()=> {
         const res = await signIn("credentials", {
