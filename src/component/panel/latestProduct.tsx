@@ -47,7 +47,7 @@ export default function LatestProducts(props: any) {
     return (
         <>
             {data.length > 0 && (
-                <>
+                <div className="w-full">
                     <div className="flex flex-col w-1/3 lg:flex-row m-12">
                         <div className="grid flex-grow h-14 card bg-primary rounded-box place-items-center text-xl">Category</div>
                         <div className="divider lg:divider-horizontal"></div>
@@ -80,11 +80,11 @@ export default function LatestProducts(props: any) {
                         </div>
                         <Link href="/search" className="btn btn-primary m-10">View more</Link>
                     </div>
-                </>
-            // ) : (
-            //     <div className="flex justify-center items-center">
-            //         <p>No products available.</p>
-            //     </div>
+                </div>
+                // ) : (
+                //     <div className="flex justify-center items-center">
+                //         <p>No products available.</p>
+                //     </div>
             )}
         </>
     )

@@ -114,3 +114,5 @@ export interface auction {
     targetTime: string,
     countdown: string
 }
+
+export const webName: string = "Second Hand Product";

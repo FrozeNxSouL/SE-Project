@@ -5,6 +5,7 @@ import SearchBox from "./searchBox";
 import { revalidatePath } from "next/cache";
 import UserProfile from "./userProfile";
 import Link from "next/link";
+import { webName } from "../variables";
 
 export default async function NavBar() {
     const category = await getCategory();
@@ -12,7 +13,7 @@ export default async function NavBar() {
         <>
             <div className="navbar bg-base-100">
                 <div className="navbar-start">
-                    <a href="/" className="btn btn-ghost text-xl">Second Hand Product</a>
+                    <a href="/" className="btn btn-ghost text-xl">{webName}</a>
                 </div>
                 <div className="navbar-center hidden lg:flex w-1/3">
                     <SearchBox></SearchBox>

@@ -22,10 +22,10 @@ export type CartProductType = {
   quantity: number;
   price: number;
   img: string[];
-  tag : string[];
+  tag: string[];
 };
 
-export default function ProductInfo({productDetails} : any) {
+export default function ProductInfo({ productDetails }: any) {
   const session = useSession()
   const { handleAddProductToCart, cartProducts } = useCart();
   const [isProductInCart, setIsProductInCart] = useState(false);
@@ -38,10 +38,10 @@ export default function ProductInfo({productDetails} : any) {
     img: productDetails.imageUrl,
     name: productDetails.name,
     price: productDetails.price,
-    tag : productDetails.tag,
+    tag: productDetails.tag,
   });
   const router = useRouter()
-  
+
 
   useEffect(() => {
     setIsProductInCart(false);
@@ -91,13 +91,13 @@ export default function ProductInfo({productDetails} : any) {
         {isProductInCart ? (
           <>
             <p className="mb-2 text-slate-500 flex items-enter gap-1">
-                <MdCheckCircle className= "text-teal-400"size = {20}/>
-                <span>Product added to cart</span>
+              <MdCheckCircle className="text-teal-400" size={20} />
+              <span>Product added to cart</span>
             </p>
             <div className="max-w-[300px]">
-                <Button label="View Cart" outline onClick={() =>{
-                    router.push('/cart');
-                }} />
+              <Button label="View Cart" outline onClick={() => {
+                router.push('/cart');
+              }} />
             </div>
           </>
         ) : (
@@ -107,7 +107,6 @@ export default function ProductInfo({productDetails} : any) {
                 label="Add to cart"
                 onClick={() => handleAddProductToCart(cartProduct)}
               />
-              <button className="btn btn-wide btn-primary">Buy Now</button>
             </div>
           </>
         )}

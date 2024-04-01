@@ -1,10 +1,10 @@
 "use client"
 import { signOut } from "next-auth/react";
-import { redirect } from "next/navigation";
 
 export default function SignOutButton() {
 
     const handleSignOut = async () => {
+        localStorage.clear()
         await signOut({
           callbackUrl: '/' // Redirect to the login page after logout
         })
