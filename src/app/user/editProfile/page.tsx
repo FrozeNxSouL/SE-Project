@@ -6,9 +6,9 @@ import { useRouter } from "next/navigation";
 
 export default function EditProfile() {
     const router = useRouter()
-    const session = useSession();
-    const [id, setid] = useState(session?.data?.user.id || "")
-    const [tempProfile, setTempProfile] = useState(session?.data?.user.image || "");
+    const {data : session} = useSession()
+    const [id, setid] = useState(session?.user.id || "")
+    const [tempProfile, setTempProfile] = useState(session?.user.image || "");
     const [name, setname] = useState("")
     const [email, setemail] = useState("")
     const [phone, setphone] = useState("")
@@ -34,26 +34,26 @@ export default function EditProfile() {
             <div className="divider text-2xl font-bold">Edit profile</div>
             <div className="flex flex-row p-5 w-full">
                 <div className="max-w-40 min-w-40">
-                    <img className="rounded-full object-cover w-full h-40 ring ring-primary ring-offset-base-100 ring-offset-2" src={tempProfile || session?.data?.user?.image || ""} />
+                    <img className="rounded-full object-cover w-full h-40 ring ring-primary ring-offset-base-100 ring-offset-2" src={tempProfile || session?.user?.image || ""} />
                 </div>
 
                 <div className="divider divider-horizontal"></div>
                 <div className="space-y-2 w-full">
                     <label className="input input-bordered flex items-center gap-2">
                         name
-                        <input type="text" onChange={(e) => handleName(e)} className="grow bg-transparent" placeholder={session?.data?.user?.name || ""} />
+                        <input type="text" onChange={(e) => handleName(e)} className="grow bg-transparent" placeholder={session?.user?.name || ""} />
                     </label>
                     <label className="input input-bordered flex items-center gap-2">
                         email
-                        <input type="text" onChange={(e) => handleEmail(e)} className="grow bg-transparent" placeholder={session?.data?.user?.email || ""} />
+                        <input type="text" onChange={(e) => handleEmail(e)} className="grow bg-transparent" placeholder={session?.user?.email || ""} />
                     </label>
                     <label className="input input-bordered flex items-center gap-2">
                         phone
-                        <input type="text" onChange={(e) => handlePhone(e)} className="grow bg-transparent" placeholder={session?.data?.user?.phone || ""} />
+                        <input type="text" onChange={(e) => handlePhone(e)} className="grow bg-transparent" placeholder={session?.user?.phone || ""} />
                     </label>
                     <label className="input input-bordered flex items-center gap-2">
                         image
-                        <input type="text" onChange={(e) => handleImage(e)} className="grow bg-transparent" placeholder={session?.data?.user?.picture || ""} />
+                        <input type="text" onChange={(e) => handleImage(e)} className="grow bg-transparent" placeholder={session?.user?.picture || ""} />
                     </label>
                 </div>
             </div>
