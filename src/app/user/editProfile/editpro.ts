@@ -1,24 +1,32 @@
 "use server"
 import prisma from "@/lib/db/prisma";
-import { error } from "console";
-import { revalidatePath } from "next/cache";
 
-export async function updateporfile(userid: string,username: string,useremail :string,userphone :string,userpic :string) {
+export async function updateporfile(userid: string | undefined,username: string,useremail :string,userphone :string,userpic :string | undefined) {
+    if (!userid) {
+        throw new Error("Go login");
+    }
+
     try {
-        // console.log(userid)
+        const data: any = {};
+        if (useremail !== "") {
+            data.email = useremail;
+        }
+        if (username !== "") {
+            data.name = username;
+        }
+        if (userphone !== "") {
+            data.phone = userphone;
+        }
+
+        data.picture = userpic;
+
         const a = await prisma.user.update({
             where:{
                 id: userid
             },
-            data:{
-                name: username,
-                email: useremail,
-                phone: userphone,
-                picture: userpic
-            }
+            data
         });
-        // console.log(a)
-    } catch (error) {
-        console.log(error)
+    } catch (error: any) {
+        throw new Error(error.message);
     }
 }
