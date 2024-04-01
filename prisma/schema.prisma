@@ -22,6 +22,7 @@ model Product {
   transactionId String?      @db.ObjectId
   User          User?        @relation(fields: [userId], references: [id])
   userId        String?      @db.ObjectId
+  score           Int?
 
   @@map("products")
 }
@@ -78,7 +79,7 @@ model Transaction {
   products                CartProductType[]
   product                 Product[]
   user                    User?             @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
+
 }
 
 type CartProductType {

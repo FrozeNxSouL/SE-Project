@@ -31,7 +31,8 @@ async function addProduct(formData: Product, time: string | null) {
                 price: formData.price,
                 tag: formData.tag,
                 status: formData.status,
-                userId: byUser
+                userId: byUser,
+                score: 0,
             },
         });
         if (formData.status == "auction") {
