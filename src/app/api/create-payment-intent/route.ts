@@ -5,6 +5,7 @@ import { CartProductType } from '@/app/product/[productId]/productInfo';
 import getCurrentUser from '@/app/action/getCurentUser';
 import { connect } from 'http2';
 import { getManage } from '@/app/admin/fetch';
+import { getCurrentSession } from '@/lib/getCurrentSession';
 
 const stripe = new Stripe(process.env.STRIPE_TEST_SECRET_KEY as string,
     {
@@ -58,8 +59,11 @@ export async function POST(request: Request){
                 prisma.transaction.findFirst({
                     where: {paymentIntentId: payment_intent_id}
                 }),
+
                 prisma.transaction.update({
-                    where: {paymentIntentId: payment_intent_id},
+                    where: {
+                        paymentIntentId: payment_intent_id,
+                    },
                     data: {
                         totalPrice: total/100,
                         products: items,

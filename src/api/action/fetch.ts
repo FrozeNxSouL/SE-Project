@@ -292,7 +292,6 @@ export async function updateExpiredStatus(productId: string) {
                 currency: 'thb',
                 status: "complete",
                 deliveryStatus: "pending",
-                paymentIntentId: "",
                 products: temp,
             };
             const updateTransaction = await prisma.transaction.create({

@@ -12,13 +12,6 @@ export default function Register() {
     const repassword = useRef<HTMLInputElement>(null)
     const password = useRef<HTMLInputElement>(null)
 
-    const router = useRouter();
-    const session = useSession();
-
-    if (session.data?.user) {
-        router.push("/");
-    }
-
     const handleSignUp = async () => {
         const formData: signUpForm = {
             email: email.current?.value || "",

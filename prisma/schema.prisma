@@ -73,7 +73,7 @@ model Transaction {
   status                  String?
   userId                  String?           @db.ObjectId
   deliveryStatus          String?
-  paymentIntentId         String            
+  paymentIntentId         String?            @unique
   address                 Address?
   products                CartProductType[]
   product                 Product[]

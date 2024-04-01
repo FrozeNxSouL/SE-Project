@@ -15,11 +15,6 @@ export default function AuthForm() {
         router.push("/");
     }
 
-    const session = useSession();
-    if (session.data?.user) {
-        router.push("/");
-    }
-
     const handleSignIn = async () => {
         const res = await signIn("credentials", {
             email: email.current?.value,
