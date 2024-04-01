@@ -8,6 +8,7 @@ export default function EditProfile() {
     const router = useRouter()
     const { data: session } = useSession();
     const [id, setid] = useState(session?.user?.id)
+    console.log(session?.user?.id)
     const [tempProfile, setTempProfile] = useState(session?.user?.image || "");
     const [name, setname] = useState("")
     const [email, setemail] = useState("")
@@ -59,6 +60,7 @@ export default function EditProfile() {
             </div>
             <button onClick={() => {
                 updateporfile(id, name, email, phone, tempProfile)
+                
                 setdefault()
                 router.refresh()
             }} className="btn btn-primary btn-wide">save</button>
