@@ -38,7 +38,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
       <div>Date: {moment(order.create_transaction_date).format('MMMM Do YYYY, h:mm:ss a')}</div>
       <div>
         <h2 className="font-semibold mt-4 mb-2">Products ordered</h2>
-        <div className="grid grid-cols-4 text-xs gap-4 pb-2 items-center">
+        <div className="grid grid-cols-5 text-xs gap-4 pb-2 items-center">
         <div className="col-span-2 justify-self-start flex gap-2 md:gap-4">
             <div className="relative w-[70px]">
                 Product
@@ -46,6 +46,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
         </div>
         <div className="justify-self-center">Price</div>
         <div className="justify-self-end font-semibold">Report</div>
+        <div className="justify-self-end font-semibold">Score</div>
         </div>
         {order.products && order.products.map(item => {
             return <OrderItem key={item.id} item={item}></OrderItem>;
