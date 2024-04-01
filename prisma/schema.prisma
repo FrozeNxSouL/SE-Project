@@ -78,6 +78,7 @@ model Transaction {
   products                CartProductType[]
   product                 Product[]
   user                    User?             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
 }
 
 type CartProductType {
