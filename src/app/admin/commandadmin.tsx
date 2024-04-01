@@ -148,9 +148,11 @@ export function DeatailReport(props: any) {
     };
 
     const readreport = (read: any) => {
-        {read.map((rep: any,index :any)=>(
-            statusReport(rep.id)
-        ))}
+        {
+            read.map((rep: any, index: any) => (
+                statusReport(rep.id, rep.userId)
+            ))
+        }
     }
     console.log(props.data)
     return (
@@ -159,24 +161,34 @@ export function DeatailReport(props: any) {
                 details
             </button>
             <Modal open={showModal}>
-                <button className="absolute top-2 right-5 text-gray-500 " onClick={handleToggle}>X</button>
+                <button className="absolute top-2 right-5 text-gray-500 text-2xl" onClick={handleToggle}>X</button>
                 {props.data.map((rep: any, index: any) => (
-                    <div key={index} className="mb-5 mt-5">
+                    <div key={index} className="mb-10 mt-5">
                         {/* {rep.reportStatus === "1" && (  */}
                         <>
-                            <h3 className="font-bold text-lg">From: {rep.reportingUserID}</h3>
-                            {rep.reportSelection.map((sec: any, index2: any) => (
+                            <h3 className="font-bold text-2xl">From: {rep.reportingUserID}</h3>
+                            {rep.reportSelection.map((sec: string, index2: number) => (
                                 <div key={index2}>
                                     <h3 className="font-bold text-lg">• {sec}</h3>
                                 </div>
                             ))}
-                            {rep.reportPicture.map((sec: any, index3: any) => (
+                            {/* {rep.reportPicture.map((sec: any, index3: any) => (
                                 <div key={index3}>
                                     <h3 className="font-bold text-lg">{sec}</h3>
+                                    <img src={sec} alt={`Report Picture ${index3}`} className="w-50% 50%-w-md" />
                                 </div>
-                            ))}
+                            ))} */}
+                            <div className="flex flex-no-wrap overflow-x-auto mb-3 mt-3">
+                                {rep.reportPicture.map((url: string, index3: number) => ( // Assuming each item in reportPicture array is a URL
+                                    <div key={index3} className="w-50 flex-1 mr-2">
+                                        <img src={url} alt={`Report Picture ${index3}`} className="w-auto h-auto" />
+                                    </div>
+                                ))}
+                            </div>
                             <h3 className="font-bold text-lg">Description: {rep.reportDescription}</h3>
-
+                            <div className="flex flex-col w-full">
+                                <div className="divider divider-primary"></div>
+                            </div>
                             {/* <div className="modal-action">
                                 <button onClick={() => {
                                     handleToggle();
