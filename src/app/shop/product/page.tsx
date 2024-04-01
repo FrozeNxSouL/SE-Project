@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { requestProducts, getProducts } from "@/api/action/fetch";
 import { useRouter } from "next/navigation";
 
-export default function shop() {
+export default function Shop() {
     const router = useRouter();
     const [products, setProducts] = useState<Product[]>([]);
     const [searchKey, setSearchKey] = useState("");
