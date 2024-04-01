@@ -33,6 +33,7 @@ export default function LatestProducts(props: any) {
                     transactionId: null,
                     User: null,
                     userId: null,
+                    score: null,
                 }));
                 setData(newData);
             } catch (error) {
