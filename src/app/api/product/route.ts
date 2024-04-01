@@ -15,7 +15,8 @@ export async function POST(request: Request){
                 price,
                 tag: [tag],
                 status,
-                userId: currentUser?.id
+                userId: currentUser?.id,
+                score: 0,
         }
 
     });

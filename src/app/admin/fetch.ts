@@ -1,5 +1,6 @@
 "use server"
 import prisma from "@/lib/db/prisma";
+import { Product } from "@prisma/client";
 import { error } from "console";
 import { revalidatePath } from "next/cache";
 
@@ -43,11 +44,11 @@ export async function isScored(itemId: string): Promise<boolean> {
                 id: itemId
             },
             select: {
-                score: true
+                score: true,
             }
         });
 
-        return product?.score !== null;
+        return product?.score !== 0;
     } catch (error) {
         console.error('Error checking if product is scored:', error);
         throw error;
