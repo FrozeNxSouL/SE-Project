@@ -29,9 +29,9 @@ export const authOption: NextAuthOptions = {
 
                 const passwordValid = await compare(credentials.password, user.hashedPassword);
 
-                // if (!passwordValid) {
-                //     throw new Error("email or password is invalid");
-                // }
+                if (!passwordValid) {
+                    throw new Error("email or password is invalid");
+                }
 
                 // Return an object with the required properties
                 return user
