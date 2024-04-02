@@ -3,7 +3,6 @@ import prisma from "@/lib/db/prisma";
 import { redirect } from "next/navigation";
 import { getCurrentSession } from "@/lib/getCurrentSession";
 import { Product, Auction } from "@prisma/client";
-import { validateName } from "../validation/validation";
 
 async function addProduct(formData: Product, time: string | null) {
     const session = await getCurrentSession();
