@@ -69,11 +69,13 @@ const CheckoutClient = () => {
 
   useEffect(() => {
     const fetchTransactionId = async () => {
-        if (cartProducts && cartProducts.length > 0 && paymentSuccess) {
+        if (cartProducts && cartProducts.length > 0) {
             const transactionId = await scanForTrans(cartProducts[0].id!);
             console.log("Gay");
             console.log(transactionId);
-            updateProductsInTransaction(transactionId!);
+            if(paymentSuccess){
+              updateProductsInTransaction(transactionId!);
+            }
         }
     };
 
