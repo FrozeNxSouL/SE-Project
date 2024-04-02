@@ -13,6 +13,7 @@ type CartContextType = {
     handleAddProductToCart: (product: CartProductType) => void;
     handleRemoveProductFromCart: (product: CartProductType) => void;
     handleClearCart: () => void;
+    cartItems: any;
     paymentIntent: string | null;
     handleSetPaymentIntent: (val: string | null) => void;
 };
@@ -29,7 +30,7 @@ export const CartContextProvider = (props: Props) => {
     const [cartTotalAmount, setCartTotalAmount] = useState(1)
     const [cartProducts, setCartProducts] = useState<CartProductType[] | null>(null);
     const [paymentIntent, setPaymentIntent] = useState<string | null>(null)
-    // const [transactionID, settrans] = useState<string | null>(null)
+    const [cartItems, setCartItems] = useState<any[]>([]);
     const session = useSession();
 
     useEffect(() => {
@@ -39,6 +40,8 @@ export const CartContextProvider = (props: Props) => {
         const paymentIntent: string = JSON.parse(eShopPaymentIntent) 
         setCartProducts(cProducts)
         setPaymentIntent(paymentIntent);
+
+        setCartItems(cProducts ?? []);
     }, [])
 
     useEffect(() => {
@@ -122,6 +125,7 @@ export const CartContextProvider = (props: Props) => {
         handleRemoveProductFromCart,
         handleClearCart,
         paymentIntent,
+        cartItems,
         handleSetPaymentIntent,
         // handleSetTransactionID,
         // transactionID,

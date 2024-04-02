@@ -7,14 +7,15 @@ import { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import CheckoutForm from "./CheckoutForm";
 import Button from "@/component/Button";
-import { updateProductsTransaction } from "../admin/fetch";
+import { updateProductsInTransaction } from "../admin/fetch";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_TEST_STRIPE_PUBLISHABLE_KEY as string
 );
 
 const CheckoutClient = () => {
-  const { cartProducts,paymentIntent, handleSetPaymentIntent} = useCart();
+  const { cartProducts, paymentIntent, handleSetPaymentIntent } = useCart();
+  console.log(cartProducts);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [clientSecret, setClientSecret] = useState("");
@@ -64,25 +65,7 @@ const CheckoutClient = () => {
 
   const paymentHandler = useCallback((value: boolean) => {
     setPaymentSuccess(value);
-    if (value && cartProducts) {
-      const productsToUpdate = cartProducts.map((product) => ({
-        productId: product.id,
-      }));
-      // const { paymentIntent } = useCart();
-      // console.log(transactionID , "payment")
-      updateProductsTransaction(paymentIntent||"", productsToUpdate)
-
-        .then(() => {
-          console.log('Products transaction updated successfully');
-          router.push('/orders');
-        })
-        .catch((error) => {
-          console.error('Error updating products transaction:', error);
-          // Handle error if needed
-        });
-    }
   }, []);
-
 
 
   return (

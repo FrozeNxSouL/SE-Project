@@ -10,7 +10,7 @@ import {
 } from "@stripe/react-stripe-js";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { getAddressByUserId, getManage } from "../admin/fetch";
+import { getManage, getProductById, updateWalletForCartItems } from "../admin/fetch";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 interface CheckoutFormProps {
@@ -22,25 +22,13 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
   clientSecret,
   handleSetPaymentSuccess,
 }) => {
-  const { cartTotalAmount, handleClearCart, handleSetPaymentIntent } =
-    useCart();
+  const { cartTotalAmount, handleClearCart, handleSetPaymentIntent , cartItems } =
+    useCart();  
   const stripe = useStripe();
   const elements = useElements();
   const [isLoading, setIsLoading] = useState(false);
   const [tax, setTax] = useState<number | null>(null);
-  //   const router = useRouter();
-
-  // const [defaultAddress, setDefaultAddress] = useState({
-  //   name: "RRR",
-  //   address: {
-  //     line1: "RRR",
-  //     line2: "RRR",
-  //     city: "RRR",
-  //     state: "RRR",
-  //     postal_code: "12312",
-  //     country: "TH",
-  //   },
-  // });
+  const session = useSession();
   const formattedPrice =
     tax != null ? formatPrice(cartTotalAmount * tax + cartTotalAmount) : null;
 
@@ -61,37 +49,6 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
     fetchTax();
   }, []);
 
-  // const session = useSession();
-  // const userId = session?.data?.user.id ?? "";
-  //   console.log(userId);
-  // useEffect(() => {
-  //   const fetchAddress = async () => {
-  //     try {
-  //       // Fetch addresses from the backend based on the user ID
-  //       const addresses = await getAddressByUserId(userId); // Replace this with your actual API call
-  //       console.log(addresses);
-  //       // Use the first address as the default value
-
-  //       const firstAddress = addresses;
-  //       setDefaultAddress({
-  //         name: session?.data?.user?.name ?? "", // Provide a default value if session?.data?.user?.name is undefined
-  //         address: {
-  //           line1: firstAddress.address?.line1 ?? "",
-  //           line2: firstAddress.address?.line2 ?? "",
-  //           city: firstAddress.address?.city ?? "",
-  //           state: firstAddress.address?.state ?? "",
-  //           postal_code: firstAddress.address?.postal_code ?? "",
-  //           country: firstAddress.address?.country ?? "",
-  //         },
-  //       });
-  //       console.log(defaultAddress)
-  //     } catch (error) {
-  //       console.error("Error fetching addresses:", error);
-  //     }
-  //   };
-
-  //   fetchAddress();
-  // }, [userId]);
 
   useEffect(() => {
     if (!stripe) {
@@ -117,12 +74,14 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
         elements,
         redirect: "if_required",
       })
-      .then((result) => {
+      .then(async(result) => {
         if (!result.error) {
           toast.success("Checkout Success");
 
           handleClearCart();
           handleSetPaymentSuccess(true);
+          const money = (formattedPrice?.replace(/[^\d.]/g, ''));
+          await updateWalletForCartItems(cartItems);
           handleSetPaymentIntent(null);
         }
         setIsLoading(false);
@@ -140,7 +99,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
         options={{
           mode: "shipping",
           defaultValues: {
-            name: 'Jane Doe',
+            name: session.data?.user.name,
             address: {
               line1: '354 Oyster Point Blvd',
               line2: '',
