@@ -510,3 +510,17 @@ export async function productFromSeller(sellerID:string) {
 
     return {product , user}
 } 
+
+export async function getProductByTransactionId(transactionId: string | undefined){
+    try{
+        const orders = await prisma.product.findMany({
+            where: {
+                transactionId: transactionId
+            },
+        })
+
+        return orders
+    }catch(error: any){
+
+    }
+}

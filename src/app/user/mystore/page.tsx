@@ -31,10 +31,10 @@ export default async function Address() {
                                     ))}
                                     
                                 </div>
-                                <div className="card-title truncate overflow-hidden max-w-60">{item.name}</div>
+                                <div className="card-title truncate overflow-hidden max-w-60 font-bold">{item.name}</div>
                                 <div className="card-actions justify-between">
-                                    <div>
-                                        <p className="text-primary text-xl">฿ {item.price}</p>
+                                    <div className="w-full">
+                                        <p className="font-semibold text-primary text-xl text-right">฿ {item.price}</p>
                                     </div>
                                 </div>
                             </div>

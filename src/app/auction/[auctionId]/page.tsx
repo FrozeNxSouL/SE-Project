@@ -50,7 +50,7 @@ export default async function payment({ params }: { params: { auctionId: string 
                         </div>
                     </div>
                     <div className="flex flex-col justify-center">
-                        <h1 className="font-bold">{output.auction.product.User?.name}</h1>
+                        <h1 className="font-bold text-lg">{output.auction.product.User?.name}</h1>
                         <span className="opacity-80 font-light">
                             {output.auction.product.User?.phone}
                         </span>
