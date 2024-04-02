@@ -70,10 +70,11 @@ const CheckoutClient = () => {
     const productsToUpdate = cartProducts.map((product) => ({
       productId: product.id,
     }));
-  
+
     updateProductsTransaction(paymentIntent!, productsToUpdate)
       .then(() => {
         console.log('Products transaction updated successfully');
+        router.push('/orders');
       })
       .catch((error) => {
         console.error('Error updating products transaction:', error);
@@ -83,21 +84,21 @@ const CheckoutClient = () => {
 
   return (
     <div className="w-full">
-      {clientSecret && cartProducts &&(
+      {clientSecret && cartProducts && (
         <Elements options={options} stripe={stripePromise}>
-          <CheckoutForm clientSecret={clientSecret} handleSetPaymentSuccess={handleSetPaymentSuccess}/>
+          <CheckoutForm clientSecret={clientSecret} handleSetPaymentSuccess={handleSetPaymentSuccess} />
         </Elements>
       )}
       {loading && <div className="text-center">Loading Checkout</div>}
       {error && <div className="text-center text-rose-500">Something went wrong...</div>}
       {paymentSuccess && (
         <div className="flex items-center flex-col gap-4">
-            <div className="text-teal-500 text-center">Payment Success</div>
-            <div className="max-w-[220px] w-full">
-                <Button label="View Your Orders" onClick={() => router.push('/orders')}/>
-            </div>
+          <div className="text-teal-500 text-center">Payment Success</div>
+          <div className="max-w-[220px] w-full">
+            <Button label="View Your Orders" onClick={() => router.push('/orders')} />
+          </div>
         </div>
-        )}
+      )}
     </div>
   );
 };
