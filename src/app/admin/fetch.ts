@@ -368,7 +368,8 @@ export async function updateProductsInTransaction(transacId: string): Promise<vo
                     id: product.id
                 },
                 data: {
-                    transactionId: transactionId
+                    transactionId: transactionId,
+                    status: "finished,"
                 }
             });
         }

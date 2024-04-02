@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import CheckoutForm from "./CheckoutForm";
 import Button from "@/component/Button";
 import { scanForTrans, updateProductsInTransaction } from "../admin/fetch";
+import { useSession } from "next-auth/react";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_TEST_STRIPE_PUBLISHABLE_KEY as string
@@ -20,9 +21,11 @@ const CheckoutClient = () => {
   const [error, setError] = useState(false);
   const [clientSecret, setClientSecret] = useState("");
   const [paymentSuccess, setPaymentSuccess] = useState(false);
+  const [transac, setTransac] = useState<string>("");
+  const { data: session, status: sessionStatus } = useSession();
 
   const router = useRouter();
-
+  
   useEffect(() => {
     if (cartProducts) {
       setLoading(true);
@@ -66,22 +69,28 @@ const CheckoutClient = () => {
   const handleSetPaymentSuccess = useCallback((value: boolean) => {
     setPaymentSuccess(value);
   }, []);
-
   useEffect(() => {
     const fetchTransactionId = async () => {
         if (cartProducts && cartProducts.length > 0) {
             const transactionId = await scanForTrans(cartProducts[0].id!);
             console.log("Gay");
             console.log(transactionId);
-            if(paymentSuccess){
-              updateProductsInTransaction(transactionId!);
-            }
+            setTransac(transactionId!);
         }
     };
 
     fetchTransactionId();
-}, [cartProducts, paymentSuccess]);
-
+}, [cartProducts,paymentSuccess]);
+useEffect(() => {
+  console.log("SHIT")
+  console.log(transac)
+  const a = async () => {
+    if(paymentSuccess){
+      await updateProductsInTransaction(transac);
+    }
+  };
+  a();
+}, [paymentSuccess, transac]);
   return (
     <div className="w-full">
       {clientSecret && cartProducts && (
