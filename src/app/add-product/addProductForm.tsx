@@ -73,7 +73,6 @@ function AddProductForm(props: any) {
             const newFileDataUrls: string[] = [];
             const readers: FileReader[] = [];
             for (let i = 0; i < files.length; i++) {
-                console.log(files[i].size);
                 if (files[i].size > 200000) {
                     throw new Error(`Image number ${i + 1} is too big (under 200kb)`);
                 }

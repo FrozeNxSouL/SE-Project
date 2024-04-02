@@ -11,13 +11,10 @@ export default async function getCurrentUser() {
                     email : session?.user?.email,
                 },
             })
-            // console.log("Current User:", currentUser);
             return {
                 ...currentUser
             };
         } else {
-            // No user logged in
-            // console.log("No user logged in.");
             return null;
         }
     } catch (error) {

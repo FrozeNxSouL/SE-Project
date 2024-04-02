@@ -1,7 +1,7 @@
 "use server"
 
 const filter: string[] = [];
-const validInputRegex = /^[a-zA-Z0-9_]*$/;
+const validInputRegex = /^[a-zA-Z0-9_\u0E00-\u0E7F\s]*$/;
 
 export async function validateName(str: string) {
     filter.forEach(word => {

@@ -15,10 +15,8 @@ const stripe = new Stripe(process.env.STRIPE_TEST_SECRET_KEY as string,
 
 const calculateOrderAmount = async (items: CartProductType[]) => {
     const tax1= await getManage();
-    console.log(tax1);
     const totalPrice = items.reduce((acc, item) => {
         const itemTotal = item.price * item.quantity*tax1!.tax + item.price;
-        console.log(acc+itemTotal)
 
         return acc + itemTotal
     }, 0);
@@ -28,7 +26,6 @@ const calculateOrderAmount = async (items: CartProductType[]) => {
 
 export async function POST(request: Request){
     const currentUser = await getCurrentSession()
-    console.log(currentUser)
     if(!currentUser){
         return NextResponse.json({error: 'Unauthorized'}, {status: 401})
     }
@@ -49,7 +46,6 @@ export async function POST(request: Request){
 
     if(payment_intent_id){
         const current_intent = await stripe.paymentIntents.retrieve(payment_intent_id)
-        console.log(payment_intent_id)
         if(current_intent){
             const updated_intent = await stripe.paymentIntents.update(
                 payment_intent_id, {amount: total}

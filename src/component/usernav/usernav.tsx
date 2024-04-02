@@ -15,7 +15,7 @@ export default function UserNav() {
                 </details>
             </li>
             <li><Link href="/user/mystore"><span className="material-icons">storefront</span>My store</Link></li>
-            <li><Link href="/user/mypurchase"><span className="material-icons">receipt_long</span>My purchase</Link></li>
+            <li><Link href="/orders"><span className="material-icons">receipt_long</span>My purchase</Link></li>
         </ul>
     )
 }

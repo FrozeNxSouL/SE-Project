@@ -14,7 +14,8 @@ export interface requestProducts {
         max: number,
     },
     page?: number,
-    tag?: string[]
+    tag?: string[] | null,
+    status?: string | null,
 }
 
 export interface requestAuctions {
@@ -79,8 +80,6 @@ export const getAuctions = async (request: requestAuctions) => {
             },
             where,
         })
-
-        // console.log(list,"list")
         return { list, count }
     } catch (error) {
         console.log(error)
@@ -117,7 +116,6 @@ export async function getAuctionProductbyTag(tagInput: string) {
         if (!output) {
             notFound();
         }
-        // console.log(output)
         return output;
     } catch (error) {
         console.log(error);
@@ -139,7 +137,6 @@ export async function getProductbyTag(tagInput: string) {
                 ],
             }
         });
-        // console.log(output)
         if (!output) {
             notFound();
         }
@@ -169,9 +166,16 @@ export async function getAuctionProduct() {
 }
 
 export const getProducts = async (request: requestProducts) => {
-    const where: any = {
-        status: "sell"
-    };
+    const where: any = {};
+
+    if (request.status) {
+        where.status = request.status;
+    } else {
+        where.OR = [
+            {status : "sell"},
+            {status : "auction"}
+        ]
+    }
 
     if (request.tag) {
         where.tag = {
@@ -190,9 +194,11 @@ export const getProducts = async (request: requestProducts) => {
             lte: request.price.max
         }
     }
-
     try {
         const list = await prisma.product.findMany({
+            include : {
+                auction : true,
+            },
             take: request.quantity,
             skip: (request.page) ? (request.page - 1) * request.quantity : 0,
             orderBy: {
@@ -466,5 +472,52 @@ export async function getUserandWallet(userID: string) {
 
     } catch (error) {
         console.error('Error updating record:', error);
+    }
+}
+
+export async function productFromSeller(sellerID:string) {
+    const product = await prisma.product.findMany({
+        where: {
+            AND: [
+                {
+                    userId: sellerID
+                },
+                {
+                    OR: [
+                        {
+                            status: "sell"
+                        },
+                        {
+                            status: "auction"
+                        }
+                    ]
+                }
+            ]
+        }
+    })
+    
+    const user = await prisma.user.findFirst({
+        where : {
+            id : sellerID
+        }
+    })
+    if (!product) {
+        throw new Error(`Error`);
+    }
+
+    return {product , user}
+} 
+
+export async function getProductByTransactionId(transactionId: string | undefined){
+    try{
+        const orders = await prisma.product.findMany({
+            where: {
+                transactionId: transactionId
+            },
+        })
+
+        return orders
+    }catch(error: any){
+
     }
 }

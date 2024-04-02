@@ -40,11 +40,6 @@ export default function ProductInfo(props: any) {
   const { cartTotalQty } = useCart();
   const auctionData = props.data;
 
-  // if (auctionData !=  props.data){
-  // router.refresh();
-  // }
-
-  // console.log(auctionData," in client component")
   const userData = props.user;
   // console.log(userData);
   const [cartProduct, setCartProduct] = useState<CartProductType>({
@@ -97,15 +92,15 @@ export default function ProductInfo(props: any) {
       <ProductCarousel data={auctionData.auction.product} />
       <div className="flex flex-col justify-between w-2/3">
         <div>
-          <h1 className="text-xl mb-3 text-wrap break-words">
+          <h1 className="font-bold text-4xl mb-3 text-wrap break-words">
             {cartProduct?.name}
           </h1>
         </div>
 
         <div className="flex flex-col gap-6">
           <div className="flex gap-2">
-            <h3 className="w-1/12 font-bold">Tag</h3>
-            <div className="flex gap-2">
+            <h3 className="w-1/12 font-bold text-lg">Tag</h3>
+            <div className="flex items-center gap-2">
               {cartProduct.tag.map((item: any, index: number) => (
                 <Link className="badge badge-primary" href="/" key={index}>
                   {item}
@@ -114,7 +109,7 @@ export default function ProductInfo(props: any) {
             </div>
           </div>
           <div className="flex gap-2">
-            <h3 className="w-1/12 font-bold">Detail</h3>
+            <h3 className="w-1/12 font-bold text-lg">Detail</h3>
             <div className="flex gap-2 w-11/12 min-h-20 text-wrap break-words">
               <p className="w-full">{cartProduct.description}</p>
             </div>
@@ -122,20 +117,15 @@ export default function ProductInfo(props: any) {
         </div>
 
         <div className="flex flex-col items-center p-3 gap-3">
-          <div className=" flex justify-center items-center h-32 w-96 rounded-3xl bg-neutral text-neutral-content">
+          <div className=" flex justify-center items-center h-32 w-96 rounded-3xl bg-accent text-primary">
             <h2 className="absolute self-auto mr-72 mb-20 text-md badge badge-outline">NOW</h2>
-            <h2 className="font-mono text-6xl text-primary">{auctionData.auction.currentBid} ฿</h2>
+            <h2 className="font-sans font-semibold text-6xl tracking-wider text-base-100">{auctionData.auction.currentBid}</h2>
           </div>
 
           <div className="dropdown dropdown-hover dropdown-bottom">
             <div tabIndex={0} role="button" className="btn rounded-3xl bg-primary w-96">
               <p className="text-white text-lg">by {cartProduct.current_bidder}.</p>
             </div>
-            <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-96">
-              {cartProduct.bidder_id.reverse().slice(0, 5).map((item, index:number) => (
-                <li key={index}><a className="justify-center w-full">{item} : {cartProduct.bidding_amount.reverse()[index]}</a></li>
-              ))}
-            </ul>
           </div>
           <CountdownTimer data={auctionProduct} isExpired={isExpired} setIsExpired={setIsExpired} />
         </div>

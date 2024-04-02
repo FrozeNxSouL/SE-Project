@@ -1,6 +1,8 @@
 import ProductInfo from "./auctionInfo";
 import { notFound } from "next/navigation";
 import { getAuctionDetail, getUserDetail, updateExpiredStatus } from "@/api/action/fetch";
+import { webName } from "@/component/variables";
+import Viewshop from "@/component/panel/viewshop";
 
 export interface auctionObject {
     id: string;
@@ -34,7 +36,7 @@ export default async function payment({ params }: { params: { auctionId: string 
         <div className="max-w-screen-xl mx-auto" >
             <div className="text-sm breadcrumbs">
                 <ul>
-                    <li><a>Nitid</a></li>
+                    <li><a>{webName}</a></li>
                     <li><a href="">{output?.auction.product.tag[0]} </a></li>
                     <li>{output?.auction.product.name}</li>
                 </ul>
@@ -48,7 +50,7 @@ export default async function payment({ params }: { params: { auctionId: string 
                         </div>
                     </div>
                     <div className="flex flex-col justify-center">
-                        <h1 className="font-bold">{output.auction.product.User?.name}</h1>
+                        <h1 className="font-bold text-lg">{output.auction.product.User?.name}</h1>
                         <span className="opacity-80 font-light">
                             {output.auction.product.User?.phone}
                         </span>
@@ -62,10 +64,8 @@ export default async function payment({ params }: { params: { auctionId: string 
                     <div className="divider lg:divider-horizontal"></div>
                 </div>
                 <div className="flex flex-col gap-2 justify-center">
-                    <button className="btn btn-sm btn-error btn-outline">Report</button>
-                    <button className="btn btn-outline btn-sm btn-primary">View Shop</button>
+                    <Viewshop data={output.auction.product.User?.id}/>
                 </div>
-
             </div>
         </div>
     )

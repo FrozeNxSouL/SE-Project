@@ -38,7 +38,6 @@ export default function ReportForm({ productId }: ReportFormProps) {
   useEffect(() => {
     const fetchUsername = async () => {
       const result = await getproductanduser(productId);
-      console.log(result);
       setusername(result?.User?.name);
       // const product = await getproduct("65f03a822e0ab3a001a62fe4");
       setProductImgUrl(result?.imageUrl);
@@ -90,7 +89,6 @@ export default function ReportForm({ productId }: ReportFormProps) {
             newFileDataUrls.push(dataUrl);
             if (newFileDataUrls.length === files.length) {
               setFileDataUrls(newFileDataUrls);
-              console.log(fileDataUrls);
             }
           }
         };
