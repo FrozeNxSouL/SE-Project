@@ -120,10 +120,10 @@ function AddProductForm(props: any) {
                 
                 <label className="input input-bordered flex items-center gap-2">
                     Name
-                    <input required name="name" className="grow bg-transparent" maxLength={64} onChange={handleName} />
+                    <input required name="name" className="grow bg-transparent" maxLength={100} onChange={handleName} />
                     <kbd className="kbd kbd-sm">{name.length}</kbd>
                 </label>
-                <textarea name="description" className="textarea textarea-bordered w-full h-40" maxLength={300} placeholder="Product description" onChange={handleDescription} required></textarea>
+                <textarea name="description" className="textarea textarea-bordered w-full h-40" maxLength={600} placeholder="Product description" onChange={handleDescription} required></textarea>
                 <label className="input input-bordered flex items-center gap-2">
                     Price
                     <input required name="price" type="number" step={0.01} className="grow bg-transparent text-right" onChange={handlePrice} />
