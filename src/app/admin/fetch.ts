@@ -143,12 +143,15 @@ export async function updateOwnerScore(itemId: string, newRating: number) {
     }
 }
 
-export async function updateProductsTransaction(paymentIntentId: string, items: { productId: string }[]): Promise<void> {
+export async function updateProductsInTransaction(paymentIntentId: string): Promise<void> {
     try {
         // Step 1: Find the transaction with the provided paymentIntentId
         const transaction = await prisma.transaction.findUnique({
             where: {
                 paymentIntentId: paymentIntentId
+            },
+            include: {
+                product: true // Include associated products
             }
         });
 
@@ -157,12 +160,13 @@ export async function updateProductsTransaction(paymentIntentId: string, items: 
         }
 
         const transactionId = transaction.id;
+        const productsToUpdate = transaction.products;
 
         // Step 2: Update products to have the transactionId
-        for (const item of items) {
+        for (const product of productsToUpdate) {
             await prisma.product.update({
                 where: {
-                    id: item.productId
+                    id: product.id
                 },
                 data: {
                     transactionId: transactionId
@@ -170,10 +174,10 @@ export async function updateProductsTransaction(paymentIntentId: string, items: 
             });
         }
 
-        console.log('Products updated with transactionId:', transactionId);
+        console.log('Products in transaction updated successfully with transactionId:', transactionId);
     } catch (error) {
-        console.error('Error updating products transaction:', error);
-        throw new Error('Failed to update products transaction');
+        console.error('Error updating products in transaction:', error);
+        throw new Error('Failed to update products in transaction');
     }
 }
 
