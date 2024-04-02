@@ -36,7 +36,7 @@ export default function CountdownTimer(props: any) {
                 <div className="grid grid-flow-col gap-5 text-center auto-cols-max">
                     {stringSpliter(auctionOBJ[0], 0) != "0" && (
                         <div className="flex flex-col">
-                            <span className="font-mono text-5xl">
+                            <span className="font-medium font-sans text-5xl">
                                 <span>{stringSpliter(auctionOBJ[0], 0) }</span>
                             </span>
                             days
@@ -44,7 +44,7 @@ export default function CountdownTimer(props: any) {
                     )}
                     {stringSpliter(auctionOBJ[0], 1) != "0" && (
                         <div className="flex flex-col">
-                            <span className=" font-mono text-5xl">
+                            <span className=" font-medium font-sans text-5xl">
                                 <span>{stringSpliter(auctionOBJ[0], 1) }</span>
                             </span>
                             hours
@@ -52,7 +52,7 @@ export default function CountdownTimer(props: any) {
                     )}
                     {stringSpliter(auctionOBJ[0], 2) != "0" && (
                         <div className="flex flex-col">
-                            <span className=" font-mono text-5xl">
+                            <span className=" font-medium font-sans text-5xl">
                                 <span>{stringSpliter(auctionOBJ[0], 2)}</span>
                             </span>
                             min
@@ -60,7 +60,7 @@ export default function CountdownTimer(props: any) {
                     )}
                     {stringSpliter(auctionOBJ[0], 3) != "0" && (
                         <div className="flex flex-col">
-                            <span className=" font-mono text-5xl">
+                            <span className=" font-medium font-sans text-5xl">
                                 <span>{stringSpliter(auctionOBJ[0], 3)}</span>
                             </span>
                             sec

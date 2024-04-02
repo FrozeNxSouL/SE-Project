@@ -34,28 +34,54 @@ export default async function SellerPage({ params }: { params: IParams }) {
             </div>
             <div className="min-h-full">
                 <div className="divider text-2xl font-bold">{output.user?.name} Store</div>
-                <div className="w-full grid grid-cols-4 justify-items-center gap-y-5">
-                    {output.product.map((item, index) => (
-                        <div key={index} className="bg-base-100 shadow-xl basis-60 transition cursor-pointer hover:ring-1 ring-primary w-56">
-                            {/* <EditButton data={item} /> */}
-                            <figure>
-                                <img className="object-cover w-full h-40" src={item.imageUrl[0]} alt={item.name} />
-                            </figure>
-                            <div className="card-body p-5 bg-base-100">
-                                <div className="flex flex-wrap gap-2">
-                                    {item.tag.map((t, idx) => (
-                                        <div key={idx} className="badge badge-outline">{t}</div>
-                                    ))}
+                <div className="w-full grid grid-cols-4 justify-items-center gap-5">
+                    {output.product.map((item: any, index: number) => (
+                        <>
+                            {item.status == "sell" ? (
+                                <div key={index} className="bg-base-100 shadow-xl basis-60 transition cursor-pointer hover:ring-1 ring-primary w-56">
+                                    <figure>
+                                    <div className="absolute badge m-2 badge-primary">{item.status}</div>
+                                        <img className="object-cover w-full h-40" src={item.imageUrl[0]} alt={item.name} />
+                                    </figure>
+                                    <div className="card-body p-5 bg-base-100">
+                                        <div className="flex flex-wrap gap-2">
+                                            {item.tag.map((t:string, idx:number) => (
+                                                <div key={idx} className="badge badge-outline">{t}</div>
+                                            ))}
 
-                                </div>
-                                <div className="card-title truncate overflow-hidden max-w-60">{item.name}</div>
-                                <div className="card-actions justify-between">
-                                    <div>
-                                        <p className="text-primary text-xl">฿ {item.price}</p>
+                                        </div>
+                                        <div className="card-title truncate overflow-hidden max-w-60 font-bold">{item.name}</div>
+                                        <div className="card-actions justify-between">
+                                            <div className="w-full">
+                                                <p className="font-semibold text-primary text-xl text-right">฿ {item.price}</p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
+                            ) : (
+                                <div key={index} className="bg-base-100 shadow-xl basis-60 transition cursor-pointer hover:ring-1 ring-neutral w-56">
+                                    <figure>
+                                    <div className="absolute badge m-2 badge-neutral">{item.status}</div>
+                                        <img className="object-cover w-full h-40" src={item.imageUrl[0]} alt={item.name} />
+                                    </figure>
+                                    <div className="card-body p-5 bg-base-100">
+                                        <div className="flex flex-wrap gap-2">
+                                            {item.tag.map((t:string, idx:number) => (
+                                                <div key={idx} className="badge badge-outline">{t}</div>
+                                            ))}
+
+                                        </div>
+                                        <div className="card-title truncate overflow-hidden max-w-60 font-bold">{item.name}</div>
+                                        <div className="card-actions justify-between">
+                                            <div className="w-full">
+                                                <p className="font-semibold text-neutral text-xl text-right">฿ {item.price}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                        </>
                     ))}
                 </div>
             </div>

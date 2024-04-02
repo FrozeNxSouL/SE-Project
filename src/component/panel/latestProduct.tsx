@@ -51,9 +51,9 @@ export default function LatestProducts(props: any) {
             {data.length > 0 && (
                 <div className="w-full">
                     <div className="flex flex-col w-1/3 lg:flex-row m-12">
-                        <div className="grid flex-grow h-14 card bg-primary rounded-box place-items-center text-xl">Category</div>
+                        <div className="grid flex-grow h-14 card bg-primary rounded-box place-items-center text-xl font-bold text-base-100">Category</div>
                         <div className="divider lg:divider-horizontal"></div>
-                        <div className="grid flex-grow h-14 card rounded-box place-items-center border-white border-2 text-xl">{props.data}</div>
+                        <div className="grid flex-grow h-14 card rounded-box place-items-center border-white border-2 text-xl font-semibold">{props.data}</div>
                     </div>
                     <div className="flex flex-col justify-center" >
                         <div className='flex flex-wrap justify-center'>
@@ -70,10 +70,10 @@ export default function LatestProducts(props: any) {
                                                 <div className="badge badge-outline" key={i}>{element}</div>
                                             ))}
                                         </div>
-                                        <div className="card-title truncate overflow-hidden max-w-60">{item.name}</div>
+                                        <div className="card-title truncate overflow-hidden max-w-60 font-bold">{item.name}</div>
                                         <div className="card-actions justify-end">
                                             <div>
-                                                <p className="text-primary text-xl">฿ {item.price}</p>
+                                                <p className="font-semibold text-primary text-xl">฿ {item.price}</p>
                                             </div>
                                         </div>
                                     </div>

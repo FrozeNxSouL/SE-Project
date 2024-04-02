@@ -35,7 +35,7 @@ export default async function product({ params }: { params: { productId: string 
                         </div>
                     </div>
                     <div className="flex flex-col justify-center">
-                        <h1 className="font-bold">{productDetails.User?.name}</h1>
+                        <h1 className="font-bold text-lg">{productDetails.User?.name}</h1>
                         <span className="opacity-80 font-light">
                             {productDetails.User?.phone}
                         </span>

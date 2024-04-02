@@ -22,7 +22,7 @@ function UserProfile() {
                                 <img src={session.data.user?.picture || "https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"} />
                             </div>
                         </div>
-                        <span className="text-center">{session.data.user?.name}</span>
+                        <span className="font-semibold text-lg text-center">{session.data.user?.name}</span>
                     </div>
                     <div className="divider"></div>
                     <li><a href="/user">Account</a></li>
@@ -36,7 +36,7 @@ function UserProfile() {
                 </ul>
             </div>
         ) : (
-            <Link href="/auth/login" className="btn btn-primary btn-outline">sign in</Link>
+            <Link href="/auth/login" className="btn btn-primary btn-outline mx-2">sign in</Link>
         )}
         </>
     )

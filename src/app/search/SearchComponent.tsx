@@ -145,14 +145,14 @@ export default function SearchComponent({ tagList }: SearchComponentProps) {
                       </div>
 
                       <div>
-                        <p className="text-primary text-lg">฿ {item.price}</p>
+                        <p className="font-semibold text-primary text-lg">฿ {item.price}</p>
                       </div>
                     </div>
                   </div>
                 </div>
               ) : (
-                <div onClick={() => router.push(`/auction/${item.id}`)} key={index} className="bg-base-100 shadow-xl transition cursor-pointer hover:ring-1 ring-primary w-56">
-                  <div className="absolute badge m-2 badge-secondary">{item.status}</div>
+                <div onClick={() => router.push(`/auction/${item.id}`)} key={index} className="bg-base-100 shadow-xl transition cursor-pointer hover:ring-1 ring-neutral w-56">
+                  <div className="absolute badge m-2 badge-neutral">{item.status}</div>
                   <img className="object-cover w-full h-40" src={item.imageUrl[0]} alt={item.name} />
                   <div className="card-body p-5 bg-base-100">
                     <span className="overflow-hidden max-w-60 truncate block font-bold">{item.name}</span>
@@ -163,7 +163,7 @@ export default function SearchComponent({ tagList }: SearchComponentProps) {
                         ))}
                       </div>
                       <div>
-                        <p className="text-secondary text-lg">฿ {item.price}</p>
+                        <p className="font-semibold text-neutral text-lg">฿ {item.price}</p>
                       </div>
                     </div>
                   </div>
@@ -178,9 +178,9 @@ export default function SearchComponent({ tagList }: SearchComponentProps) {
         </div>
         <div className="flex justify-center p-5">
           <div className="join">
-            <button onClick={() => handlePageChange(0)} className="join-item btn btn-primary" disabled={currentPage <= 1}>«</button>
-            <button className="join-item btn btn-primary">Page {currentPage}</button>
-            <button onClick={() => handlePageChange(1)} className="join-item btn btn-primary" disabled={currentPage >= maxPage}>»</button>
+            <button onClick={() => handlePageChange(0)} className="join-item btn btn-accent" disabled={currentPage <= 1}>«</button>
+            <button className="join-item btn">Page {currentPage}</button>
+            <button onClick={() => handlePageChange(1)} className="join-item btn btn-accent" disabled={currentPage >= maxPage}>»</button>
           </div>
         </div>
 

@@ -92,15 +92,15 @@ export default function ProductInfo(props: any) {
       <ProductCarousel data={auctionData.auction.product} />
       <div className="flex flex-col justify-between w-2/3">
         <div>
-          <h1 className="text-xl mb-3 text-wrap break-words">
+          <h1 className="font-bold text-4xl mb-3 text-wrap break-words">
             {cartProduct?.name}
           </h1>
         </div>
 
         <div className="flex flex-col gap-6">
           <div className="flex gap-2">
-            <h3 className="w-1/12 font-bold">Tag</h3>
-            <div className="flex gap-2">
+            <h3 className="w-1/12 font-bold text-lg">Tag</h3>
+            <div className="flex items-center gap-2">
               {cartProduct.tag.map((item: any, index: number) => (
                 <Link className="badge badge-primary" href="/" key={index}>
                   {item}
@@ -109,7 +109,7 @@ export default function ProductInfo(props: any) {
             </div>
           </div>
           <div className="flex gap-2">
-            <h3 className="w-1/12 font-bold">Detail</h3>
+            <h3 className="w-1/12 font-bold text-lg">Detail</h3>
             <div className="flex gap-2 w-11/12 min-h-20 text-wrap break-words">
               <p className="w-full">{cartProduct.description}</p>
             </div>
@@ -117,9 +117,9 @@ export default function ProductInfo(props: any) {
         </div>
 
         <div className="flex flex-col items-center p-3 gap-3">
-          <div className=" flex justify-center items-center h-32 w-96 rounded-3xl bg-neutral text-neutral-content">
+          <div className=" flex justify-center items-center h-32 w-96 rounded-3xl bg-accent text-primary">
             <h2 className="absolute self-auto mr-72 mb-20 text-md badge badge-outline">NOW</h2>
-            <h2 className="font-mono text-6xl text-primary">{auctionData.auction.currentBid} ฿</h2>
+            <h2 className="font-sans font-semibold text-6xl tracking-wider text-base-100">{auctionData.auction.currentBid}</h2>
           </div>
 
           <div className="dropdown dropdown-hover dropdown-bottom">
