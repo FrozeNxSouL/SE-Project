@@ -192,6 +192,7 @@ function AddProductForm(props: any) {
                 <label className="input input-bordered flex items-center gap-2">
                     Name
                     <input required name="name" className="grow bg-transparent" onChange={handleName} />
+                    <kbd className="kbd kbd-sm">{name.length}</kbd>
                 </label>
                 <textarea name="description" className="textarea textarea-bordered w-full" placeholder="Product description" onChange={handleDescription} required></textarea>
                 <label className="input input-bordered flex items-center gap-2">
