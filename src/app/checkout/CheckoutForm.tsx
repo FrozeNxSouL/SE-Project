@@ -76,11 +76,11 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({clientSecret, handleSetPayme
                 Enter your details to complete checkout
             </h1>
         </div>
-        <h2 className="font-semibold mb-2">Address Information</h2>
+        {/* <h2 className="font-semibold mb-2">Address Information</h2>
         <AddressElement options={{
             mode: 'shipping',
             allowedCountries: ["US", "TH"]
-        }}/>
+        }}/> */}
         <h2 className="font-semibold mt-4 mb-2">Payment Information</h2>
         <PaymentElement id="payment-element" options={{layout: 'tabs'}}/>
         <div className="py-4 text-center text-slate-700 text-xl font-bold">

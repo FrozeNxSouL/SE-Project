@@ -21,6 +21,20 @@ export async function getManage() {
     }
 }
 
+export async function getProductById(productId: string) {
+    try {
+        const product = await prisma.product.findUnique({
+            where: {
+                id: productId
+            }
+        });
+        return product?.userId;
+    } catch (error) {
+        console.error('Error fetching product:', error);
+        throw error;
+    }
+}
+
 export async function changeTax(newtax: number) {
     try {
         const list = await prisma.management.update({
