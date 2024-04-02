@@ -7,7 +7,7 @@ import { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import CheckoutForm from "./CheckoutForm";
 import Button from "@/component/Button";
-import { updateProductsTransaction } from "../admin/fetch";
+import { scanForTrans, updateProductsInTransaction } from "../admin/fetch";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_TEST_STRIPE_PUBLISHABLE_KEY as string
@@ -15,6 +15,7 @@ const stripePromise = loadStripe(
 
 const CheckoutClient = () => {
   const { cartProducts, paymentIntent, handleSetPaymentIntent } = useCart();
+  console.log(cartProducts);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [clientSecret, setClientSecret] = useState("");
@@ -66,21 +67,20 @@ const CheckoutClient = () => {
     setPaymentSuccess(value);
   }, []);
 
-  if (paymentSuccess && cartProducts) {
-    const productsToUpdate = cartProducts.map((product) => ({
-      productId: product.id,
-    }));
+  useEffect(() => {
+    const fetchTransactionId = async () => {
+        if (cartProducts && cartProducts.length > 0) {
+            const transactionId = await scanForTrans(cartProducts[0].id!);
+            console.log("Gay");
+            console.log(transactionId);
+            if(paymentSuccess){
+              updateProductsInTransaction(transactionId!);
+            }
+        }
+    };
 
-    updateProductsTransaction(paymentIntent!, productsToUpdate)
-      .then(() => {
-        console.log('Products transaction updated successfully');
-        router.push('/orders');
-      })
-      .catch((error) => {
-        console.error('Error updating products transaction:', error);
-        // Handle error if needed
-      });
-  }
+    fetchTransactionId();
+}, []);
 
   return (
     <div className="w-full">

@@ -4,6 +4,14 @@ import { Product } from "@prisma/client";
 import { error } from "console";
 import { revalidatePath } from "next/cache";
 
+interface CartItemType {
+    quantity: number;
+    id: string;
+    description: string;
+    img: string[];
+    name: string;
+    // Add any other properties if needed
+}
 
 export async function getManage() {
     try {
@@ -21,7 +29,149 @@ export async function getManage() {
     }
 }
 
-export async function getProductById(productId: string) {
+export async function scanForTrans(itemId: string) {
+    try {
+        // Find the transaction containing the item with the given itemId
+        const transaction = await prisma.transaction.findFirst({
+            where: {
+                products: {
+                    some: {
+                        id: itemId,
+                    },
+                },
+            },
+            select: {
+                id: true,
+            },
+        });
+
+        if (transaction) {
+            return transaction.id; // Return the transaction ID if found
+        } else {
+            return null; // Return null if no transaction is found
+        }
+    } catch (error) {
+        console.error('Error scanning for transaction:', error);
+        throw error;
+    }
+}
+
+export async function updateWalletForCartItems(cartItems: CartItemType[]) {
+    try {
+        // Create a map to store the total amount for each product owner
+        const ownerTotalMap: { [userId: string]: number } = {};
+
+        // Calculate the total amount for each product owner
+        for (const item of cartItems) {
+            // Step 1: Find the product owner's userId
+            const product = await prisma.product.findUnique({
+                where: {
+                    id: item.id,
+                },
+                select: {
+                    userId: true,
+                    price: true,
+                },
+            });
+
+            if (!product || !product.userId) {
+                console.error(`Product with id ${item.id} or its owner not found`);
+                continue; // Skip to the next item
+            }
+
+            const userId = product.userId;
+
+            // Calculate the total amount for the product owner
+            if (ownerTotalMap[userId]) {
+                ownerTotalMap[userId] += item.quantity * product.price;
+            } else {
+                ownerTotalMap[userId] = item.quantity * product.price;
+            }
+        }
+
+        // Update the wallet for each product owner
+        for (const userId of Object.keys(ownerTotalMap)) {
+            const totalAmount = ownerTotalMap[userId];
+
+            // Step 2: Retrieve the current cash amount from the user's wallet
+            const user = await prisma.user.findUnique({
+                where: {
+                    id: userId,
+                },
+                select: {
+                    wallet: {
+                        select: {
+                            cash: true,
+                        },
+                    },
+                },
+            });
+
+            if (!user || !user.wallet) {
+                console.error(`User with id ${userId} or their wallet not found`);
+                continue; // Skip to the next user
+            }
+
+            const currentCash = user.wallet.cash;
+
+            // Step 3: Update the user's wallet with the new cash amount
+            const newCash = currentCash + totalAmount;
+            await prisma.wallet.update({
+                where: {
+                    userId: userId,
+                },
+                data: {
+                    cash: newCash,
+                },
+            });
+
+            console.log(`Wallet updated for user with id ${userId}`);
+        }
+    } catch (error) {
+        console.error('Error updating wallet for cart items:', error);
+    } finally {
+        await prisma.$disconnect();
+    }
+}
+
+
+
+export async function findUserByProductId(productId: string) {
+    try {
+        // Step 1: Find the product owner's userId
+        const product = await prisma.product.findUnique({
+            where: {
+                id: productId,
+            },
+            include: {
+                User: true, // Include the owner (user) details
+            },
+        });
+
+        if (!product) {
+            console.error(`Product with id ${productId} not found`);
+            return null;
+        }
+
+        // Step 2: Access the user details from the product
+        const user = product.User;
+
+        if (!user) {
+            console.error(`User not found for product with id ${productId}`);
+            return null;
+        }
+
+        console.log('Owner User:', user);
+        return user;
+    } catch (error) {
+        console.error('Error finding user by product id:', error);
+        return null;
+    } finally {
+        await prisma.$disconnect();
+    }
+}
+
+export async function getProductById(productId: string|undefined) {
     try {
         const product = await prisma.product.findUnique({
             where: {
@@ -143,38 +293,81 @@ export async function updateOwnerScore(itemId: string, newRating: number) {
     }
 }
 
-export async function updateProductsTransaction(paymentIntentId: string, items: { productId: string }[]): Promise<void> {
+export async function updateProductsInTransaction(transacId: string): Promise<void> {
     try {
         // Step 1: Find the transaction with the provided paymentIntentId
-        const transaction = await prisma.transaction.findUnique({
+        const transaction = await prisma.transaction.findFirst({
             where: {
-                paymentIntentId: paymentIntentId
+                id: transacId,
+            },
+            include: {
+                product: true // Include associated products
             }
         });
 
         if (!transaction) {
-            throw new Error(`Transaction with paymentIntentId ${paymentIntentId} not found`);
+            throw new Error;
         }
 
         const transactionId = transaction.id;
+        const productsToUpdate = transaction.products;
 
         // Step 2: Update products to have the transactionId
-        for (const item of items) {
+        for (const product of productsToUpdate) {
             await prisma.product.update({
                 where: {
-                    id: item.productId
+                    id: product.id
                 },
                 data: {
-                    status:"finished",
                     transactionId: transactionId
                 }
             });
         }
 
-        console.log('Products updated with transactionId:', transactionId);
+        console.log('Products in transaction updated successfully with transactionId:', transactionId);
     } catch (error) {
-        console.error('Error updating products transaction:', error);
-        throw new Error('Failed to update products transaction');
+        console.error('Error updating products in transaction:', error);
+        throw new Error('Failed to update products in transaction');
+    }
+}
+
+export async function updateWallet(userId: string, formattedPrice: number | null): Promise<void> {
+    try {
+        if (formattedPrice === null) {
+            console.log('Formatted price is null. No update to wallet needed.');
+            return; // Return early if formattedPrice is null
+        }
+
+        // Find the wallet associated with the userId
+        const wallet = await prisma.wallet.findUnique({
+            where: {
+                userId: userId
+            }
+        });
+
+        if (!wallet) {
+            throw new Error(`Wallet for user ${userId} not found`);
+        }
+
+        // Calculate the new cash amount
+        const newCashAmount = (wallet.cash ?? 0) + formattedPrice;
+
+        // Update the cash in the wallet with the new amount
+        await prisma.wallet.update({
+            where: {
+                id: wallet.id
+            },
+            data: {
+                cash: newCashAmount
+            }
+        });
+
+        console.log(`Wallet updated successfully for user ${userId}`);
+    } catch (error) {
+        console.error('Error updating wallet:', error);
+        throw new Error('Failed to update wallet');
+    } finally {
+        await prisma.$disconnect();
     }
 }
 
