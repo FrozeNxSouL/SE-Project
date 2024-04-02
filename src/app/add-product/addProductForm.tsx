@@ -20,12 +20,12 @@ function AddProductForm(props: any) {
 
 
     const handleName = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.value.length <= 100) {
+        if (e.target.value.length <= 64) {
             setName(e.target.value);
         }
     }
     const handleDescription = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        if (e.target.value.length <= 300) {
+        if (e.target.value.length <= 160) {
             setDescription(e.target.value);
         }
     }
@@ -58,7 +58,12 @@ function AddProductForm(props: any) {
             userId: null,
             score: 0
         }
-        addProduct(newProduct, time);
+        try {
+            addProduct(newProduct, time);
+        } catch (e: any) {
+            setError(e.message);
+        }
+        
     }
     const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files; // Get the selected files
@@ -79,7 +84,7 @@ function AddProductForm(props: any) {
             let fileSum = 0;
             for (let i = 0; i < files.length; i++) {
                 fileSum += files[i].size;
-
+                console.log(files[i].size)
                 const reader = new FileReader();
                 readers.push(reader);
                 reader.onload = (e) => {
@@ -94,9 +99,10 @@ function AddProductForm(props: any) {
                 };
                 reader.readAsDataURL(files[i]); // Read the file as a data URL
             }
-            if (fileSum > 9000000) {
-                throw new Error("All image size could not exceed 900kb");
+            if (fileSum > 800000) {
+                throw new Error("All image size could not exceed 800kb");
             }
+            console.log(fileSum);
         }
     }
 
@@ -133,10 +139,10 @@ function AddProductForm(props: any) {
                 </div>
                 <label className="input input-bordered flex items-center gap-2">
                     Name
-                    <input required name="name" className="grow bg-transparent" maxLength={100} onChange={handleName} />
+                    <input required name="name" className="grow bg-transparent" maxLength={64} onChange={handleName} />
                     <kbd className="kbd kbd-sm">{name.length}</kbd>
                 </label>
-                <textarea name="description" className="textarea textarea-bordered w-full h-40" maxLength={300} placeholder="Product description" onChange={handleDescription} required></textarea>
+                <textarea name="description" className="textarea textarea-bordered w-full h-40" maxLength={160} placeholder="Product description" onChange={handleDescription} required></textarea>
                 <label className="input input-bordered flex items-center gap-2">
                     Price
                     <input required name="price" type="number" step={0.01} className="grow bg-transparent text-right" onChange={handlePrice} />
