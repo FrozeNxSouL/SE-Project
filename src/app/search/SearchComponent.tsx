@@ -34,6 +34,7 @@ export default function SearchComponent({ tagList }: SearchComponentProps) {
 
   const applyFilters = async () => {
     setLoading(true);
+    setProducts([]);
     const request: requestProducts = {
       keyword: (searchKey == "") ? null : searchKey,
       quantity: 20,
