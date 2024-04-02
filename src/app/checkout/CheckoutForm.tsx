@@ -30,17 +30,17 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
   const [tax, setTax] = useState<number | null>(null);
 //   const router = useRouter();
 
-  const [defaultAddress, setDefaultAddress] = useState({
-    name: "",
-    address: {
-      line1: "",
-      line2: "",
-      city: "",
-      state: "",
-      postal_code: "",
-      country: "",
-    },
-  });
+  // const [defaultAddress, setDefaultAddress] = useState({
+  //   name: "RRR",
+  //   address: {
+  //     line1: "RRR",
+  //     line2: "RRR",
+  //     city: "RRR",
+  //     state: "RRR",
+  //     postal_code: "12312",
+  //     country: "TH",
+  //   },
+  // });
   const formattedPrice =
     tax != null ? formatPrice(cartTotalAmount * tax + cartTotalAmount) : null;
 
@@ -61,37 +61,37 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
     fetchTax();
   }, []);
 
-  const session = useSession();
-  const userId = session?.data?.user.id ?? "";
+  // const session = useSession();
+  // const userId = session?.data?.user.id ?? "";
 //   console.log(userId);
-  useEffect(() => {
-    const fetchAddress = async () => {
-      try {
-        // Fetch addresses from the backend based on the user ID
-        const addresses = await getAddressByUserId(userId); // Replace this with your actual API call
-        console.log(addresses);
-        // Use the first address as the default value
+  // useEffect(() => {
+  //   const fetchAddress = async () => {
+  //     try {
+  //       // Fetch addresses from the backend based on the user ID
+  //       const addresses = await getAddressByUserId(userId); // Replace this with your actual API call
+  //       console.log(addresses);
+  //       // Use the first address as the default value
 
-        const firstAddress = addresses;
-        setDefaultAddress({
-          name: session?.data?.user?.name ?? "", // Provide a default value if session?.data?.user?.name is undefined
-          address: {
-            line1: firstAddress.address?.line1 ?? "",
-            line2: firstAddress.address?.line2 ?? "",
-            city: firstAddress.address?.city ?? "",
-            state: firstAddress.address?.state ?? "",
-            postal_code: firstAddress.address?.postal_code ?? "",
-            country: firstAddress.address?.country ?? "",
-          },
-        });
-        console.log(defaultAddress)
-      } catch (error) {
-        console.error("Error fetching addresses:", error);
-      }
-    };
+  //       const firstAddress = addresses;
+  //       setDefaultAddress({
+  //         name: session?.data?.user?.name ?? "", // Provide a default value if session?.data?.user?.name is undefined
+  //         address: {
+  //           line1: firstAddress.address?.line1 ?? "",
+  //           line2: firstAddress.address?.line2 ?? "",
+  //           city: firstAddress.address?.city ?? "",
+  //           state: firstAddress.address?.state ?? "",
+  //           postal_code: firstAddress.address?.postal_code ?? "",
+  //           country: firstAddress.address?.country ?? "",
+  //         },
+  //       });
+  //       console.log(defaultAddress)
+  //     } catch (error) {
+  //       console.error("Error fetching addresses:", error);
+  //     }
+  //   };
 
-    fetchAddress();
-  }, [userId]);
+  //   fetchAddress();
+  // }, [userId]);
 
   useEffect(() => {
     if (!stripe) {
@@ -139,7 +139,17 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
       <AddressElement
         options={{
           mode: "shipping",
-          defaultValues: defaultAddress,
+          defaultValues: {
+            name: 'Jane Doe',
+            address: {
+              line1: '354 Oyster Point Blvd',
+              line2: '',
+              city: 'South San Francisco',
+              state: 'CA',
+              postal_code: '94080',
+              country: 'US',
+            },
+          },
         }}
       />
       <h2 className="font-semibold mt-4 mb-2">Payment Information</h2>
