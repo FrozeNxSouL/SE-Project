@@ -280,7 +280,7 @@ export async function updateProductsInTransaction(paymentIntentId: string): Prom
         });
 
         if (!transaction) {
-            throw new Error(`Transaction with paymentIntentId ${transID} not found`);
+            throw new Error(`Transaction with paymentIntentId ${paymentIntentId} not found`);
         }
 
         const transactionId = transaction.id;
