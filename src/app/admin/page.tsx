@@ -2,7 +2,7 @@ import { Caramel } from "next/font/google";
 import { DeleteButton, SearchButton, Taxchange, EditTag, AddTag, DeatailReport } from "./commandadmin"
 import { getManage, getUser } from "./fetch";
 import getCurrentUser from "../action/getCurentUser";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 export default async function admin({ searchParams }: { searchParams: { search?: string } }) {
   const currentuser = await getCurrentUser()
@@ -13,10 +13,10 @@ export default async function admin({ searchParams }: { searchParams: { search?:
   const session = await getCurrentUser();
 
   if (!admin || !session || session.role !== "manager") {
-    return (<div>poon</div>)
+    notFound()
   }
   if (!admin) {
-    return (<div>server gay</div>)
+    notFound()
   }
   return (
     <div className="mx-auto w-2/3 bg-base-300">
@@ -24,21 +24,26 @@ export default async function admin({ searchParams }: { searchParams: { search?:
         <div className="font-semibold p-5 border-b-2">
           <span>Manage</span>
         </div>
-        <div className="p-5">
-          <div className="flex items-center justify-center font-extrabold text-2xl mb-1">TAX</div>
-          <div className="flex items-center justify-center text-6xl">{admin?.tax}%</div>
-          {/* <div className="badge badge-primary h-10 ">Tax : {admin.tax}%</div> */}
-          <br />
-          <div className="badge badge-neutral w-24 mt-4 h-10 font-extrabold">Category</div>
-          <div className="flex flex-row flex-wrap gap-2 m-3">
-            {admin.categorys.map((cat, index) => (
-              <div key={cat.id}>
-                <EditTag catid={cat.id} catname={cat.name} caturl={cat.url}></EditTag>
-              </div>
-            ))}
-            <AddTag adminid={admin.id}></AddTag>
+        <div className="flex flex-col p-5 items-center">
+          <div className="flex flex-col w-full gap-3 justify-center my-10">
+            <div className="flex items-center justify-center font-bold text-2xl mb-1">TAX</div>
+            <div className="flex items-center justify-center text-6xl">{admin?.tax}%</div>
+            {/* <div className="badge badge-primary h-10 ">Tax : {admin.tax}%</div> */}
+            <Taxchange taxhandle={admin.tax}></Taxchange>
           </div>
-          <Taxchange taxhandle={admin.tax}></Taxchange>
+          <div className="flex flex-col justify-center items-center w-5/6">
+            <div className="flex justify-center">
+              <div className="flex items-center justify-center font-bold text-2xl mb-1">Category</div>
+            </div>
+            <div className="flex flex-row flex-wrap gap-2 m-3">
+              {admin.categorys.map((cat, index) => (
+                <div key={cat.id}>
+                  <EditTag catid={cat.id} catname={cat.name} caturl={cat.url}></EditTag>
+                </div>
+              ))}
+              <AddTag adminid={admin.id}></AddTag>
+            </div>
+          </div>
         </div>
       </div>
       {/* report Manage */}

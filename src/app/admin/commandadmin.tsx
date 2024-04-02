@@ -26,31 +26,15 @@ export function Taxchange({ taxhandle }: managechangeProps) {
         setShowModal((prev) => !prev)
     };
 
-    // return (
-    //     <>
-    //         <label className="input input-bordered input-sm flex items-center gap-2">
-    //             <form onSubmit={(e) => {
-    //                 changeTax(tax)
-    //                 router.refresh()
-    //             }}>
-    //                 <input
-    //                     type="number"
-    //                     className="grow bg-transparent"
-    //                     onChange={(e) => handleTaxChange(e)} // Update tax when input changes
-    //                 />
-    //             </form>
-    //         </label></>
-    // )
-
     return (
         <>
-            <div className="flex justify-end">
-                <button onClick={handleToggle} className="btn btn-warning text-white rounded-lg mr-8">Edit</button>
+            <div className="flex justify-center">
+                <button onClick={handleToggle} className="btn btn-warning text-white rounded-lg w-1/12">Edit</button>
             </div>
             <Modal open={showModal}>
                 <div className="flex justify-between">
                     <div>
-                        <span className="font-bold text-lg">tax :</span>
+                        <span className="font-bold text-lg">Tax :</span>
                     </div>
                     <label className="input input-bordered input-sm items-center gap-2">
                         <input type="number" value={tax} className="grow bg-transparent" onChange={(e) => handleTaxChange(e)} />
@@ -154,10 +138,9 @@ export function DeatailReport(props: any) {
             ))
         }
     }
-    console.log(props.data)
     return (
         <>
-            <button onClick={handleToggle} className="btn btn-ghost btn-xs">
+            <button onClick={handleToggle} className="btn btn-accent btn-xs">
                 details
             </button>
             <Modal open={showModal} >
@@ -166,14 +149,14 @@ export function DeatailReport(props: any) {
                 {props.data.map((rep: any, index: any) => (
                     <div key={index} className="mb-10 mt-5">
                         {/* {rep.reportStatus === "1" && (  */}
-                        <>
-                            <h3 className="font-bold text-2xl">From: {rep.reportingUserID}</h3>
+                        <div className="flex flex-col size-full my-5 p-5 bg-gray-100">
+                            <h3 className="font-bold text-xl">From: {rep.reportingUserID}</h3>
                             {rep.reportSelection.map((sec: string, index2: number) => (
                                 <div key={index2}>
-                                    <h3 className="font-bold text-lg">• {sec}</h3>
+                                    <h3 className="font-sans font-semibold text-lg">• {sec}</h3>
                                 </div>
                             ))}
-                            <div className="my-3 flex flex-row overflow-x-scroll">
+                            <div className="my-3 p-10 flex flex-row overflow-x-scroll">
                                 {rep.reportPicture.map((sec: string, index3: number) => (
                                     // <a href={sec} target="_blank">
                                         <img key={index3} src={sec} alt={`Report Picture ${index3}`} className="object-cover min-w-full h-72" />
@@ -188,7 +171,10 @@ export function DeatailReport(props: any) {
                                     </div>
                                 ))}
                             </div> */}
-                            <h3 className="font-bold text-lg">Description: {rep.reportDescription}</h3>
+                            <h3 className="font-bold text-lg my-2">Description</h3>
+                            <div className="w-full min-h-32 bg-gray-200 text-wrap p-5">
+                             <h4>{rep.reportDescription}</h4>
+                            </div>
                             <div className="flex flex-col w-full">
                                 <div className="divider divider-primary"></div>
                             </div>
@@ -198,7 +184,7 @@ export function DeatailReport(props: any) {
                                     router.refresh();
                                 }} className="btn btn-success text-white rounded-lg mr-4">Confirm</button>
                             </div> */}
-                        </>
+                        </div>
                         {/* )} */}
                     </div>
                 ))}
@@ -236,7 +222,7 @@ export function AddTag({ adminid }: addtagProps) {
     }
     return (
         <>
-            <button onClick={handleToggle} className="btn btn-success">
+            <button onClick={handleToggle} className="btn btn-accent">
                 <span className="material-icons">add</span>
             </button>
             <Modal open={showModal}>
@@ -290,7 +276,7 @@ export function EditTag({ catid, catname, caturl }: editTagProps) {
 
     return (
         <>
-            <button onClick={handleToggle} className="btn btn-primary btn-outline">
+            <button onClick={handleToggle} className="btn btn-accent btn-outline">
                 {catname}
             </button>
             <Modal open={showModal}>
