@@ -29,8 +29,31 @@ export async function getManage() {
     }
 }
 
-export async function scanForTrans(itemId: string){
-    
+export async function scanForTrans(itemId: string) {
+    try {
+        // Find the transaction containing the item with the given itemId
+        const transaction = await prisma.transaction.findFirst({
+            where: {
+                products: {
+                    some: {
+                        id: itemId,
+                    },
+                },
+            },
+            select: {
+                id: true,
+            },
+        });
+
+        if (transaction) {
+            return transaction.id; // Return the transaction ID if found
+        } else {
+            return null; // Return null if no transaction is found
+        }
+    } catch (error) {
+        console.error('Error scanning for transaction:', error);
+        throw error;
+    }
 }
 
 export async function updateWalletForCartItems(cartItems: CartItemType[]) {
@@ -110,6 +133,8 @@ export async function updateWalletForCartItems(cartItems: CartItemType[]) {
         await prisma.$disconnect();
     }
 }
+
+
 
 export async function findUserByProductId(productId: string) {
     try {
@@ -268,11 +293,12 @@ export async function updateOwnerScore(itemId: string, newRating: number) {
     }
 }
 
-export async function updateProductsInTransaction(paymentIntentId: string): Promise<void> {
+export async function updateProductsInTransaction(transacId: string): Promise<void> {
     try {
-        const transaction = await prisma.transaction.findUnique({
+        // Step 1: Find the transaction with the provided paymentIntentId
+        const transaction = await prisma.transaction.findFirst({
             where: {
-                paymentIntentId: paymentIntentId
+                id: transacId,
             },
             include: {
                 product: true // Include associated products
@@ -280,7 +306,7 @@ export async function updateProductsInTransaction(paymentIntentId: string): Prom
         });
 
         if (!transaction) {
-            throw new Error(`Transaction with paymentIntentId ${paymentIntentId} not found`);
+            throw new Error;
         }
 
         const transactionId = transaction.id;
@@ -293,7 +319,6 @@ export async function updateProductsInTransaction(paymentIntentId: string): Prom
                     id: product.id
                 },
                 data: {
-                    status:"finished",
                     transactionId: transactionId
                 }
             });
@@ -380,14 +405,12 @@ export async function getUser(usersearch: string) {
     try {
         const list = await prisma.user.findMany({
             include: {
-                // report: true,
                 report: { where: { reportStatus: "1" } },
                 product: {where: { status: "sell"}}
             },
             where: {
                 AND: [
                     { name: { contains: usersearch } },
-                    // { report: { some: {} } }
                     {
                         report: {
                             some: {

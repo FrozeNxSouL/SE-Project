@@ -7,7 +7,7 @@ import { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import CheckoutForm from "./CheckoutForm";
 import Button from "@/component/Button";
-import { updateProductsInTransaction } from "../admin/fetch";
+import { scanForTrans, updateProductsInTransaction } from "../admin/fetch";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_TEST_STRIPE_PUBLISHABLE_KEY as string
@@ -67,6 +67,20 @@ const CheckoutClient = () => {
     setPaymentSuccess(value);
   }, []);
 
+  useEffect(() => {
+    const fetchTransactionId = async () => {
+        if (cartProducts && cartProducts.length > 0) {
+            const transactionId = await scanForTrans(cartProducts[0].id!);
+            console.log("Gay");
+            console.log(transactionId);
+            if(paymentSuccess){
+              updateProductsInTransaction(transactionId!);
+            }
+        }
+    };
+
+    fetchTransactionId();
+}, []);
 
   return (
     <div className="w-full">

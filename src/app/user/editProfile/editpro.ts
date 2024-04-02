@@ -17,6 +17,9 @@ export async function updateporfile(userid: string | undefined,username: string,
         if (userphone !== "") {
             data.phone = userphone;
         }
+        if (userpic !== "") {
+            data.picture = userpic;
+        }
 
         data.picture = userpic;
 
@@ -26,6 +29,8 @@ export async function updateporfile(userid: string | undefined,username: string,
             },
             data
         });
+
+        return "Profile updated successfully";
     } catch (error: any) {
         throw new Error(error.message);
     }

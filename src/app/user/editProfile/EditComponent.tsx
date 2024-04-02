@@ -14,7 +14,7 @@ export default function EditProfile(props: any) {
     const [email, setemail] = useState("");
     const [phone, setphone] = useState("");
     const [error, setError] = useState<string | null>(null);
-    const fileInputRef = useRef<HTMLInputElement>(null);
+    const [success, setSuccess] = useState<string | null>(null);
 
     useEffect(() => {
         if (sessionStatus === 'authenticated') {
@@ -31,39 +31,16 @@ export default function EditProfile(props: any) {
     const handlePhone = (e: React.ChangeEvent<HTMLInputElement>) => {
         setphone(e.target.value);
     };
-
-    const handleButtonClick = () => {
-        if (!fileInputRef) {
-            throw new Error("");
-        }
-        fileInputRef.current?.click();
-    };
-    const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0]; // Get the selected files
-        try {
-            applyImage(file);
-        } catch (e: any) {
-            setError(e.message);
+    const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.value != session?.user.picture) {
+            setTempProfile(e.target.value);
         }
     };
-
-    const applyImage = (file: File | undefined) => {
-        if (file) {
-            if (file.size > 200000) {
-                throw new Error(`Image is too big (under 200kb)`);
-            }
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setTempProfile(reader.result as string);
-            };
-            reader.readAsDataURL(file);
-        }
-    }
-
     const handleSubmit = async ()=> {
         try {
             await validateName(name);
-            await updateporfile(session?.user.id, name, email, phone, tempProfile);
+            const res = await updateporfile(session?.user.id, name, email, phone, tempProfile);
+            setSuccess(res);
         } catch (e: any) {
             setError(e.message);
         }
@@ -82,18 +59,31 @@ export default function EditProfile(props: any) {
                     </div>
                 </div>
             )}
-            <div className="flex flex-row p-5 w-full">
+            {success && (
+                <div role="alert" className="alert alert-success m-5">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    <span>{success}</span>
+                    <div>
+                        <button className="btn btn-error btn-sm" onClick={() => { setSuccess(null) }}><span className="material-icons">close</span></button>
+                    </div>
+                </div>
+            )}
+            <div className="w-full flex flex-col justify-center items-center gap-2">
                 <div className="avatar">
                     <div className="size-48 rounded">
-                        <button className="size-48 opacity-0 hover:opacity-50 bg-base-100 absolute flex items-center justify-center cursor-pointer transition" onClick={handleButtonClick}>
-                        <span className="material-icons !text-8xl">drive_folder_upload</span>
-                        </button>
-                        <input ref={fileInputRef} onChange={handleFileSelect} type="file" className="hidden" accept="image/jpeg" />
                         <img src={tempProfile} />
                     </div>
                 </div>
-
-                <div className="divider divider-horizontal"></div>
+                <div className="flex flex-row justify-start items-center">
+                    <label className="input input-bordered flex items-center gap-2 w-full">
+                        Image
+                        <kbd className="kbd kbd-sm"><span className="material-icons">link</span></kbd>
+                        <input className="grow bg-transparent" onChange={handleImage}/>
+                    </label>
+                </div>
+            </div>
+            <div className="divider"></div>
+            <div className="flex flex-row p-5 w-full">
                 <div className="space-y-2 w-full">
                     <label className="input input-bordered flex items-center gap-2">
                         name
