@@ -33,7 +33,7 @@ export default function LatestProducts(props: any) {
                     Transaction: null,
                     transactionId: null,
                     User: null,
-                    userId: null,
+                    userId: "",
                     score: 0,
                 }));
                 setData(newData);

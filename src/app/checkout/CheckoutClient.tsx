@@ -80,7 +80,7 @@ const CheckoutClient = () => {
     };
 
     fetchTransactionId();
-}, []);
+}, [cartProducts, paymentSuccess]);
 
   return (
     <div className="w-full">
