@@ -67,7 +67,7 @@ export default async function admin({ searchParams }: { searchParams: { search?:
                   <tr key={index}>
                     <th>
                       <label>
-                        <DeleteButton userid={user.id} username={user.name} props={user.report}></DeleteButton>
+                        <DeleteButton userid={user.id} username={user.name} props={user.report} product={user.product}></DeleteButton>
                       </label>
                     </th>
                     <td>
