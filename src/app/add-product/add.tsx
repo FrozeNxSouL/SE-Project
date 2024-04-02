@@ -3,7 +3,6 @@ import prisma from "@/lib/db/prisma";
 import { redirect } from "next/navigation";
 import { getCurrentSession } from "@/lib/getCurrentSession";
 import { Product, Auction } from "@prisma/client";
-import { validateName } from "../validation/validation";
 
 async function addProduct(formData: Product, time: string | null) {
     const session = await getCurrentSession();
@@ -16,11 +15,16 @@ async function addProduct(formData: Product, time: string | null) {
         throw Error("Missing required fields or price = 0");
     }
 
+    if (formData.name.length > 100) {
+        throw new Error("Product name cannot be longer than 100 characters");
+    }
+    if (formData.description.length > 600) {
+        throw new Error("Product detail cannot be longer than 600 characters");
+    }
+
     if (formData.imageUrl.length > 5) {
         throw new Error("Cannot upload more than 5 images");
     }
-
-    await validateName(formData.name);
     
     if (formData.status == "auction" && !time) {
         throw Error("The auction product need time to expire");
