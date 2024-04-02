@@ -14,8 +14,8 @@ export default async function Address() {
     return (
         <div className="flex flex-col items-center bg-base-200 w-full p-5 gap-2">
             <div className="divider text-2xl font-bold">My store</div>
-            <div className="w-full">
-                <Link className="btn btn-primary join-item" href="/add-product">Sell</Link>
+            <div className="flex justify-center w-full">
+                <Link className="btn btn-primary w-1/5" href="/add-product">Create Product</Link>
             </div>
             <div className="w-full grid grid-cols-4 justify-items-center gap-y-5">
                     {product.map((item, index)=> (

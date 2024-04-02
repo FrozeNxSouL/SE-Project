@@ -14,14 +14,14 @@ export default async function getOrdersByUserId(userId: string | undefined){
             }
         })
 
-        const update = await prisma.product.updateMany({
-            where: {
-                transactionId: orders[0].id,
-            },
-            data : {
-                status:"poon"
-            }
-        })
+        // const update = await prisma.product.updateMany({
+        //     where: {
+        //         transactionId: orders[0].id,
+        //     },
+        //     data : {
+        //         status:"poon"
+        //     }
+        // })
 
         return orders
     }catch(error: any){
