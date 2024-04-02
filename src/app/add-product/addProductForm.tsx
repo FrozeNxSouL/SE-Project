@@ -20,10 +20,14 @@ function AddProductForm(props: any) {
 
 
     const handleName = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setName(e.target.value)
+        if (e.target.value.length <= 100) {
+            setName(e.target.value);
+        }
     }
     const handleDescription = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setDescription(e.target.value)
+        if (e.target.value.length <= 300) {
+            setDescription(e.target.value);
+        }
     }
     const handlePrice = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPrice(parseFloat(e.target.value))
@@ -72,10 +76,9 @@ function AddProductForm(props: any) {
             }
             const newFileDataUrls: string[] = [];
             const readers: FileReader[] = [];
+            let fileSum = 0;
             for (let i = 0; i < files.length; i++) {
-                if (files[i].size > 200000) {
-                    throw new Error(`Image number ${i + 1} is too big (under 200kb)`);
-                }
+                fileSum += files[i].size;
 
                 const reader = new FileReader();
                 readers.push(reader);
@@ -91,74 +94,13 @@ function AddProductForm(props: any) {
                 };
                 reader.readAsDataURL(files[i]); // Read the file as a data URL
             }
+            if (fileSum > 9000000) {
+                throw new Error("All image size could not exceed 900kb");
+            }
         }
     }
 
     return (
-        // <div className="mx-auto max-w-screen-lg min-h-screen bg-base-100">
-        //     <div className="w-full p-10 space-y-2">
-        //         <div className="divider text-xl font-bold">Create new product</div>
-        //         <label className="input input-bordered flex items-center gap-2">
-        //             Name
-        //             <input required name="name" className="grow bg-transparent" onChange={handleName} />
-        //         </label>
-        //         <textarea name="description" className="textarea textarea-bordered w-full" placeholder="Product description" onChange={handleDescription} required></textarea>
-        //         <label className="input input-bordered flex items-center gap-2">
-        //             Price
-        //             <input required name="price" type="number" step={0.01} className="grow bg-transparent text-right" onChange={handlePrice} />
-        //             <kbd className="kbd kbd-sm">฿</kbd>
-        //         </label>
-        //         <div className="flex flex-row">
-        //             <div className="dropdown">
-        //                 {category != "" ? (
-        //                     <div tabIndex={0} role="button" className="btn m-1 btn-primary w-28">{category}</div>
-        //                 ) : (
-        //                     <div tabIndex={0} role="button" className="btn m-1 btn-outline w-28">Category</div>
-        //                 )}
-        //                 <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-        //                     {categoryInput.map((value: any, idx: number) => (
-        //                         <label className="label cursor-pointer w-full" key={idx}>
-        //                             <input type="radio" name="tag" className="radio checked:bg-blue-500 mx-4" value={value.name} onChange={handleCategory} />
-        //                             <span className="label-text w-5/6">{value.name}</span>
-        //                         </label>
-        //                     ))}
-        //                 </ul>
-        //             </div>
-
-        //         </div>
-
-        //         <div className="flex flex-row justify-between gap-5">
-        //             <div className="form-control w-52">
-        //                 <label className="cursor-pointer label">
-        //                     <span className="label-text">Place in auction</span>
-        //                     <input name="status" type="checkbox" className="toggle toggle-primary" checked={auction} onChange={handleProductType} />
-        //                 </label>
-        //             </div>
-        //             {auction && (
-        //                 <label className="input input-bordered input-primary flex items-center gap-2 grow">
-        //                     Due Time
-        //                     <input required name="Time" type="datetime-local" className="grow bg-transparent" onChange={handleTime} />
-        //                 </label>
-        //             )}
-        //         </div>
-        //         <div className="flex flex-wrap justify-center gap-3">
-        //             {productImage.map((image, index) => (
-        //                 <div className="size-28 rounded-lg" key={index}>
-        //                     <button className="btn btn-error size-28 opacity-0 hover:opacity-70 absolute active:ring ring-opacity-100 ring-error" onClick={() => handleRemoveImage(index)}>
-        //                         <span className="material-icons">delete</span>
-        //                     </button>
-        //                     <img className="object-cover size-full rounded-lg" src={image} />
-        //                 </div>
-        //             ))}
-        //         </div>
-        //         <div className="join w-full">
-        //             <input required name="imageUrl" type="text" className="input input-bordered w-full join-item" placeholder="Image url" onChange={handleImageField} />
-        //             <button className="btn btn-outline join-item w-1/12" onClick={handleAddImage}>+</button>
-        //         </div>
-        //         <button className="btn btn-primary btn-block" onClick={handleSubmit}>Add Product</button>
-        //     </div>
-        // </div>
-
 
         <div className="mx-auto max-w-screen-lg min-h-screen bg-base-100">
             <div className="w-full p-10 space-y-2">
@@ -191,36 +133,36 @@ function AddProductForm(props: any) {
                 </div>
                 <label className="input input-bordered flex items-center gap-2">
                     Name
-                    <input required name="name" className="grow bg-transparent" onChange={handleName} />
+                    <input required name="name" className="grow bg-transparent" maxLength={100} onChange={handleName} />
                     <kbd className="kbd kbd-sm">{name.length}</kbd>
                 </label>
-                <textarea name="description" className="textarea textarea-bordered w-full" placeholder="Product description" onChange={handleDescription} required></textarea>
+                <textarea name="description" className="textarea textarea-bordered w-full h-40" maxLength={300} placeholder="Product description" onChange={handleDescription} required></textarea>
                 <label className="input input-bordered flex items-center gap-2">
                     Price
                     <input required name="price" type="number" step={0.01} className="grow bg-transparent text-right" onChange={handlePrice} />
                     <kbd className="kbd kbd-sm">฿</kbd>
                 </label>
-                <div className="flex flex-col items-center">
-                    <select className="select select-bordered w-1/3" onChange={handleCategory} defaultValue={""}>
+                <div className="flex flex-row gap-3 items-center">
+                    <select className="select select-bordered w-full" onChange={handleCategory} defaultValue={""}>
                         <option disabled value="">Category</option>
                         {categoryInput.map((value: any, idx: number) => (
                             <option key={idx} value={value.name}>{value.name}</option>
                         ))}
                     </select>
-                </div>
-                <div className="flex flex-row justify-between gap-5">
-                    <div className="form-control w-52">
-                        <label className="cursor-pointer label">
-                            <span className="label-text">Place in auction</span>
-                            <input name="status" type="checkbox" className="toggle toggle-primary" checked={auction} onChange={handleProductType} />
-                        </label>
+                    <div className="flex flex-row justify-between gap-5">
+                        <div className="form-control w-52">
+                            <label className="cursor-pointer label">
+                                <span className="label-text">Place in auction</span>
+                                <input name="status" type="checkbox" className="toggle toggle-primary" checked={auction} onChange={handleProductType} />
+                            </label>
+                        </div>
+                        {auction && (
+                            <label className="input input-bordered input-primary flex items-center gap-2 grow">
+                                Due Time
+                                <input required name="Time" type="datetime-local" className="grow bg-transparent" onChange={handleTime} />
+                            </label>
+                        )}
                     </div>
-                    {auction && (
-                        <label className="input input-bordered input-primary flex items-center gap-2 grow">
-                            Due Time
-                            <input required name="Time" type="datetime-local" className="grow bg-transparent" onChange={handleTime} />
-                        </label>
-                    )}
                 </div>
                 <button className="btn btn-primary btn-block" onClick={handleSubmit}>Add Product</button>
             </div>
