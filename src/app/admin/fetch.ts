@@ -143,17 +143,17 @@ export async function updateOwnerScore(itemId: string, newRating: number) {
     }
 }
 
-export async function updateProductsTransaction(paymentIntentId: string, items: { productId: string }[]): Promise<void> {
+export async function updateProductsTransaction(transID: string, items: { productId: string }[]): Promise<void> {
+    console.log("retid")
     try {
-        // Step 1: Find the transaction with the provided paymentIntentId
         const transaction = await prisma.transaction.findUnique({
             where: {
-                paymentIntentId: paymentIntentId
+                id: transID
             }
         });
 
         if (!transaction) {
-            throw new Error(`Transaction with paymentIntentId ${paymentIntentId} not found`);
+            throw new Error(`Transaction with paymentIntentId ${transID} not found`);
         }
 
         const transactionId = transaction.id;

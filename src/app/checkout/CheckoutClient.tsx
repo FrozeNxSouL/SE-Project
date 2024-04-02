@@ -14,7 +14,7 @@ const stripePromise = loadStripe(
 );
 
 const CheckoutClient = () => {
-  const { cartProducts, paymentIntent, handleSetPaymentIntent } = useCart();
+  const { cartProducts,paymentIntent, handleSetPaymentIntent} = useCart();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [clientSecret, setClientSecret] = useState("");
@@ -26,7 +26,7 @@ const CheckoutClient = () => {
     if (cartProducts) {
       setLoading(true);
       setError(false);
-
+      // console.log(paymentIntent,"POON")
       fetch("/api/create-payment-intent", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -62,31 +62,34 @@ const CheckoutClient = () => {
     },
   };
 
-  const handleSetPaymentSuccess = useCallback((value: boolean) => {
+  const paymentHandler = useCallback((value: boolean) => {
     setPaymentSuccess(value);
+    if (value && cartProducts) {
+      const productsToUpdate = cartProducts.map((product) => ({
+        productId: product.id,
+      }));
+      // const { paymentIntent } = useCart();
+      // console.log(transactionID , "payment")
+      updateProductsTransaction(paymentIntent||"", productsToUpdate)
+
+        .then(() => {
+          console.log('Products transaction updated successfully');
+          router.push('/orders');
+        })
+        .catch((error) => {
+          console.error('Error updating products transaction:', error);
+          // Handle error if needed
+        });
+    }
   }, []);
 
-  if (paymentSuccess && cartProducts) {
-    const productsToUpdate = cartProducts.map((product) => ({
-      productId: product.id,
-    }));
 
-    updateProductsTransaction(paymentIntent!, productsToUpdate)
-      .then(() => {
-        console.log('Products transaction updated successfully');
-        router.push('/orders');
-      })
-      .catch((error) => {
-        console.error('Error updating products transaction:', error);
-        // Handle error if needed
-      });
-  }
 
   return (
     <div className="w-full">
       {clientSecret && cartProducts && (
         <Elements options={options} stripe={stripePromise}>
-          <CheckoutForm clientSecret={clientSecret} handleSetPaymentSuccess={handleSetPaymentSuccess} />
+          <CheckoutForm clientSecret={clientSecret} handleSetPaymentSuccess={paymentHandler} />
         </Elements>
       )}
       {loading && <div className="text-center">Loading Checkout</div>}

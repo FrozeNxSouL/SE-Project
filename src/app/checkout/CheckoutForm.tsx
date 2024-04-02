@@ -28,7 +28,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
   const elements = useElements();
   const [isLoading, setIsLoading] = useState(false);
   const [tax, setTax] = useState<number | null>(null);
-//   const router = useRouter();
+  //   const router = useRouter();
 
   // const [defaultAddress, setDefaultAddress] = useState({
   //   name: "RRR",
@@ -63,7 +63,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
 
   // const session = useSession();
   // const userId = session?.data?.user.id ?? "";
-//   console.log(userId);
+  //   console.log(userId);
   // useEffect(() => {
   //   const fetchAddress = async () => {
   //     try {

@@ -1,9 +1,10 @@
 "use client"
 import { getProductById } from "@/app/admin/fetch";
+import payment from "@/app/payment/page";
 import { CartProductType } from "@/app/product/[productId]/productInfo";
 import { useSession } from "next-auth/react";
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
-import {toast} from 'react-hot-toast'
+import { toast } from 'react-hot-toast'
 
 type CartContextType = {
     cartTotalQty: number;
@@ -18,35 +19,35 @@ type CartContextType = {
 
 export const CartContext = createContext<CartContextType | null>(null);
 
-interface Props{
+interface Props {
     [propName: string]: any;
 }
 
-export const CartContextProvider = (props: Props) =>{
-    
+export const CartContextProvider = (props: Props) => {
+
     const [cartTotalQty, setCartTotalQty] = useState(0);
     const [cartTotalAmount, setCartTotalAmount] = useState(1)
     const [cartProducts, setCartProducts] = useState<CartProductType[] | null>(null);
     const [paymentIntent, setPaymentIntent] = useState<string | null>(null)
+    // const [transactionID, settrans] = useState<string | null>(null)
     const session = useSession();
 
-    useEffect(()=>{
+    useEffect(() => {
         const cartItems: any = localStorage.getItem('eShopCartItems')
         const cProducts: CartProductType[] | null = JSON.parse(cartItems)
-        const eShopPaymentIntent:any = localStorage.getItem('eShopPaymentIntent')
-        const paymentIntent: string | null = JSON.parse(eShopPaymentIntent)
-
+        const eShopPaymentIntent: any = localStorage.getItem('eShopPaymentIntent')
+        const paymentIntent: string = JSON.parse(eShopPaymentIntent) 
         setCartProducts(cProducts)
         setPaymentIntent(paymentIntent);
     }, [])
 
-    useEffect(()=>{
-        const getTotals = () =>{
-            
-            if(cartProducts){
-                const {total, qty} = cartProducts?.reduce((acc, item)=>{
+    useEffect(() => {
+        const getTotals = () => {
+
+            if (cartProducts) {
+                const { total, qty } = cartProducts?.reduce((acc, item) => {
                     const itemTotal = item.price
-    
+
                     acc.total += itemTotal
                     acc.qty += item.quantity
                     return acc
@@ -62,15 +63,15 @@ export const CartContextProvider = (props: Props) =>{
 
         getTotals();
     }, [cartProducts])
-    
+
     const handleAddProductToCart = useCallback(async (product: CartProductType) => {
         try {
             const fetchedProduct = await getProductById(product.id);
-            
+
             if (fetchedProduct && session.data?.user.id !== fetchedProduct) {
                 setCartProducts((prev) => {
                     const updatedCart = prev ? [...prev, product] : [product];
-    
+
                     toast.success('Product added to cart');
                     localStorage.setItem('eShopCartItems', JSON.stringify(updatedCart));
                     return updatedCart;
@@ -85,29 +86,33 @@ export const CartContextProvider = (props: Props) =>{
     }, [session.data?.user.id]);
     const handleRemoveProductFromCart = useCallback((
         product: CartProductType
-    ) =>{
-        if(cartProducts){
+    ) => {
+        if (cartProducts) {
             const filteredProducts = cartProducts.filter
-            ((item) => {
-                return item.id != product.id
-            })
+                ((item) => {
+                    return item.id != product.id
+                })
 
             setCartProducts(filteredProducts)
             toast.success('Product removed');
-            localStorage.setItem('eShopCartItems',JSON.stringify(filteredProducts))
+            localStorage.setItem('eShopCartItems', JSON.stringify(filteredProducts))
         }
     }, [cartProducts])
 
-    const handleClearCart = useCallback(()=>{
+    const handleClearCart = useCallback(() => {
         setCartProducts(null)
         toast.success('Product removed');
-        localStorage.setItem('eShopCartItems',JSON.stringify(null))
+        localStorage.setItem('eShopCartItems', JSON.stringify(null))
     }, [cartProducts])
 
-    const handleSetPaymentIntent = useCallback((val: string | null) =>{
+    const handleSetPaymentIntent = useCallback((val: string | null) => {
         setPaymentIntent(val)
         localStorage.setItem('eShopPaymentIntent', JSON.stringify(val));
     }, [paymentIntent]);
+
+    // const handleSetTransactionID = useCallback((val: string | null) => {
+    //     settrans(val)
+    // }, [transactionID]);
 
     const value = {
         cartTotalQty,
@@ -118,17 +123,22 @@ export const CartContextProvider = (props: Props) =>{
         handleClearCart,
         paymentIntent,
         handleSetPaymentIntent,
+        // handleSetTransactionID,
+        // transactionID,
     };
 
-    return <CartContext.Provider value={value} {...props}/>
+    console.log(value);
+
+    // console.log(value,"value");
+    return <CartContext.Provider value={value} {...props} />
 };
 
-export const useCart = () =>{
+export const useCart = () => {
     const context = useContext(CartContext);
 
-    if(context === null){
+    if (context === null) {
         throw new Error("useCart must be used within a CartContextProvider")
     }
-
+    console.log(context,"context")
     return context
 };
