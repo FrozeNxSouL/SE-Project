@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import addProduct from "./add";
 import FormSubmitButton from "@/component/nav/FormSubmitButton";
 import { Product } from "@prisma/client";
@@ -18,6 +18,7 @@ function AddProductForm(props: any) {
     const [imageField, setImageField] = useState("");
     const [productImage, setProductImage] = useState<string[]>([]);
     const [error, setError] = useState<string | null>(null);
+    const imageFieldRef = useRef<HTMLInputElement>(null);
 
 
     const handleName = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,6 +54,9 @@ function AddProductForm(props: any) {
             const newImage: string[] = [...productImage];
             newImage.push(imageField);
             setProductImage(newImage);
+            if (imageFieldRef.current) {
+                imageFieldRef.current.value = "";
+            }
         }
 
     }
@@ -109,7 +113,7 @@ function AddProductForm(props: any) {
                     <label className="input input-bordered flex items-center gap-2 join-item w-full">
                         Image
                         <kbd className="kbd kbd-sm"><span className="material-icons">link</span></kbd>
-                        <input required name="name" className="grow bg-transparent" onChange={handleImageURL} />
+                        <input ref={imageFieldRef} name="imageField" className="grow bg-transparent" onChange={handleImageURL} />
                     </label>
                     <button className="btn btn-primary join-item" onClick={handleAddImage}>Click to add</button>
                 </div>
@@ -119,7 +123,7 @@ function AddProductForm(props: any) {
                     <input required name="name" className="grow bg-transparent" maxLength={64} onChange={handleName} />
                     <kbd className="kbd kbd-sm">{name.length}</kbd>
                 </label>
-                <textarea name="description" className="textarea textarea-bordered w-full h-40" maxLength={160} placeholder="Product description" onChange={handleDescription} required></textarea>
+                <textarea name="description" className="textarea textarea-bordered w-full h-40" maxLength={300} placeholder="Product description" onChange={handleDescription} required></textarea>
                 <label className="input input-bordered flex items-center gap-2">
                     Price
                     <input required name="price" type="number" step={0.01} className="grow bg-transparent text-right" onChange={handlePrice} />
