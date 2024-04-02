@@ -72,7 +72,7 @@ const CartClient = () => {
       </div>
       <div>
         {cartProducts &&
-          cartProducts.map((item) => {
+          cartProducts.map((item:any) => {
             return <ItemContent key={item.id} item={item} />;
           })}
       </div>

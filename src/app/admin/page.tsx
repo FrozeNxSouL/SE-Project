@@ -1,4 +1,3 @@
-import { Caramel } from "next/font/google";
 import { DeleteButton, SearchButton, Taxchange, EditTag, AddTag, DeatailReport } from "./commandadmin"
 import { getManage, getUser } from "./fetch";
 import getCurrentUser from "../action/getCurentUser";
@@ -28,7 +27,6 @@ export default async function admin({ searchParams }: { searchParams: { search?:
           <div className="flex flex-col w-full gap-3 justify-center my-10">
             <div className="flex items-center justify-center font-bold text-2xl mb-1">TAX</div>
             <div className="flex items-center justify-center text-6xl">{admin?.tax}%</div>
-            {/* <div className="badge badge-primary h-10 ">Tax : {admin.tax}%</div> */}
             <Taxchange taxhandle={admin.tax}></Taxchange>
           </div>
           <div className="flex flex-col justify-center items-center w-5/6">

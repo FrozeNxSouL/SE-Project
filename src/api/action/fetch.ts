@@ -172,8 +172,8 @@ export const getProducts = async (request: requestProducts) => {
         where.status = request.status;
     } else {
         where.OR = [
-            {status : "sell"},
-            {status : "auction"}
+            { status: "sell" },
+            { status: "auction" }
         ]
     }
 
@@ -196,8 +196,8 @@ export const getProducts = async (request: requestProducts) => {
     }
     try {
         const list = await prisma.product.findMany({
-            include : {
-                auction : true,
+            include: {
+                auction: true,
             },
             take: request.quantity,
             skip: (request.page) ? (request.page - 1) * request.quantity : 0,
@@ -365,6 +365,33 @@ export async function updateExpiredStatus(productId: string) {
             const updateTransaction = await prisma.transaction.create({
                 data: orderData
             })
+
+            const wallet = await prisma.wallet.findFirst({
+                where: {
+                    User: {
+                        id: findInLog?.auction.bidderId,
+                    }
+                },
+                include: {
+                    User: true
+                },
+            })
+
+            if (!wallet) {
+                throw new Error
+            }
+
+            const updateWallet = await prisma.wallet.update({
+                where: {
+                    id: wallet?.id,
+                },
+                include: {
+                    User: true
+                },
+                data: {
+                    cash: wallet?.cash - findInLog?.auction.currentBid,
+                }
+            })
         }
 
     } catch (error) {
@@ -475,7 +502,7 @@ export async function getUserandWallet(userID: string) {
     }
 }
 
-export async function productFromSeller(sellerID:string) {
+export async function productFromSeller(sellerID: string) {
     const product = await prisma.product.findMany({
         where: {
             AND: [
@@ -495,29 +522,91 @@ export async function productFromSeller(sellerID:string) {
             ]
         }
     })
-    
+
     const user = await prisma.user.findFirst({
-        where : {
-            id : sellerID
+        where: {
+            id: sellerID
         }
     })
     if (!product) {
         throw new Error(`Error`);
     }
 
-    return {product , user}
-} 
+    return { product, user }
+}
 
-export async function getProductByTransactionId(transactionId: string | undefined){
-    try{
+export async function getOrderProduct(userID: string) {
+    try {
         const orders = await prisma.product.findMany({
             where: {
-                transactionId: transactionId
+                status: "finished",
+                User: {
+                    id: userID
+                }
             },
+            include: {
+                Transaction : true
+            }
+        })
+        return orders
+    } catch (error: any) {
+        throw new error
+    }
+}
+
+export async function getPendingProduct(userID: string) {
+    try {
+        const orders = await prisma.product.findMany({
+            where: {
+                status: "pending",
+                User: {
+                    id: userID
+                }
+            },
+            include: {
+                Transaction : true
+            }
         })
 
         return orders
-    }catch(error: any){
+    } catch (error: any) {
+        throw new error
+    }
+}
 
+export async function getCompletedProduct(userID: string) {
+    try {
+        const orders = await prisma.product.findMany({
+            where: {
+                status: "completed",
+                User: {
+                    id: userID
+                }
+            },
+            include: {
+                Transaction : true
+            }
+        })
+
+        return orders
+    } catch (error: any) {
+        throw new error
+    }
+}
+
+export async function updateProductStatus(productID: string) {
+    try {
+        const orders = await prisma.product.update({
+            where: {
+                id: productID
+            },
+            data: {
+                status: "pending"
+            }
+        })
+
+        return orders
+    } catch (error: any) {
+        throw new error
     }
 }

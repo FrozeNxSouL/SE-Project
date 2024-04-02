@@ -168,7 +168,7 @@ export default function SearchComponent({ tagList }: SearchComponentProps) {
                         ))}
                       </div>
                       <div>
-                        <p className="font-semibold text-neutral text-lg">฿ {item.price}</p>
+                        <p className="font-semibold text-neutral text-sm">ON AUCTION</p>
                       </div>
                     </div>
                   </div>

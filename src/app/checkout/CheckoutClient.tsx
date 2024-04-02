@@ -30,7 +30,7 @@ const CheckoutClient = () => {
     if (cartProducts) {
       setLoading(true);
       setError(false);
-
+      // console.log(paymentIntent,"POON")
       fetch("/api/create-payment-intent", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -66,7 +66,7 @@ const CheckoutClient = () => {
     },
   };
 
-  const handleSetPaymentSuccess = useCallback((value: boolean) => {
+  const paymentHandler = useCallback((value: boolean) => {
     setPaymentSuccess(value);
   }, []);
   useEffect(() => {
@@ -95,7 +95,7 @@ useEffect(() => {
     <div className="w-full">
       {clientSecret && cartProducts && (
         <Elements options={options} stripe={stripePromise}>
-          <CheckoutForm clientSecret={clientSecret} handleSetPaymentSuccess={handleSetPaymentSuccess} />
+          <CheckoutForm clientSecret={clientSecret} handleSetPaymentSuccess={paymentHandler} />
         </Elements>
       )}
       {loading && <div className="text-center">Loading Checkout</div>}

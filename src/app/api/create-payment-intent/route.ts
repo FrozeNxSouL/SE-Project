@@ -6,6 +6,7 @@ import getCurrentUser from '@/app/action/getCurentUser';
 import { connect } from 'http2';
 import { getManage } from '@/app/admin/fetch';
 import { getCurrentSession } from '@/lib/getCurrentSession';
+import { useCart } from '@/hooks/useCart';
 
 const stripe = new Stripe(process.env.STRIPE_TEST_SECRET_KEY as string,
     {
@@ -14,29 +15,30 @@ const stripe = new Stripe(process.env.STRIPE_TEST_SECRET_KEY as string,
 
 
 const calculateOrderAmount = async (items: CartProductType[]) => {
-    const tax1= await getManage();
+    const tax1 = await getManage();
     const totalPrice = items.reduce((acc, item) => {
-        const itemTotal = item.price * item.quantity*tax1!.tax + item.price;
+        const itemTotal = item.price * item.quantity * tax1!.tax + item.price;
 
         return acc + itemTotal
     }, 0);
-    
+
     return totalPrice;
 };
 
-export async function POST(request: Request){
+export async function POST(request: Request) {
     const currentUser = await getCurrentSession()
-    if(!currentUser){
-        return NextResponse.json({error: 'Unauthorized'}, {status: 401})
+    // const { handleSetTransactionID } = useCart();
+    if (!currentUser) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
     const body = await request.json()
-    const {items, payment_intent_id} = body
-    let total = Math.round(await calculateOrderAmount(items)*100)
+    const { items, payment_intent_id } = body
+    let total = Math.round(await calculateOrderAmount(items) * 100)
 
     const orderData = {
-        user: {connect: {id: currentUser.user.id}},
-        totalPrice: total/100,
+        user: { connect: { id: currentUser.user.id } },
+        totalPrice: total / 100,
         currency: 'thb',
         status: "pending",
         deliveryStatus: "pending",
@@ -44,16 +46,16 @@ export async function POST(request: Request){
         products: items
     };
 
-    if(payment_intent_id){
+    if (payment_intent_id) {
         const current_intent = await stripe.paymentIntents.retrieve(payment_intent_id)
-        if(current_intent){
+        if (current_intent) {
             const updated_intent = await stripe.paymentIntents.update(
-                payment_intent_id, {amount: total}
+                payment_intent_id, { amount: total }
             );
             //update the order
             const [existing_order, update_order] = await Promise.all([
                 prisma.transaction.findFirst({
-                    where: {paymentIntentId: payment_intent_id}
+                    where: { paymentIntentId: payment_intent_id }
                 }),
 
                 prisma.transaction.update({
@@ -61,35 +63,37 @@ export async function POST(request: Request){
                         paymentIntentId: payment_intent_id,
                     },
                     data: {
-                        totalPrice: total/100,
+                        totalPrice: total / 100,
                         products: items,
                     }
                 })
             ])
-    
-            if(!existing_order){
-                return NextResponse.json({error: 'Invalid Payment intent'}, {status: 400});
+
+            if (!existing_order) {
+                return NextResponse.json({ error: 'Invalid Payment intent' }, { status: 400 });
             }
-    
+
             return NextResponse.json({ paymentIntent: updated_intent });
 
 
         }
 
-    }else{
+    } else {
         //create the intent
         const paymentIntent = await stripe.paymentIntents.create({
             amount: total,
             currency: "thb",
-            automatic_payment_methods: {enabled: true},
+            automatic_payment_methods: { enabled: true },
         })
-        
+
         //create the order
         orderData.paymentIntentId = paymentIntent.id
 
-        await prisma.transaction.create({
+        const trans = await prisma.transaction.create({
             data: orderData
         })
+
+        // handleSetTransactionID(trans.id);
 
         return NextResponse.json({ paymentIntent });
     }

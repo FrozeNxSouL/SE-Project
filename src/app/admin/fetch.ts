@@ -455,14 +455,12 @@ export async function getUser(usersearch: string) {
     try {
         const list = await prisma.user.findMany({
             include: {
-                // report: true,
                 report: { where: { reportStatus: "1" } },
                 product: {where: { status: "sell"}}
             },
             where: {
                 AND: [
                     { name: { contains: usersearch } },
-                    // { report: { some: {} } }
                     {
                         report: {
                             some: {

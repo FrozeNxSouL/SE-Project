@@ -10,7 +10,7 @@ import { webName } from "../variables";
 export default async function NavBar() {
     const category = await getCategory();
     return (
-        <>
+        <div className="drop-shadow-md">
             <div className="navbar bg-base-100">
                 <div className="navbar-start">
                     <a href="/" className="btn btn-ghost text-xl">{webName}</a>
@@ -50,7 +50,7 @@ export default async function NavBar() {
                     <span>Auction</span>
                 </Link>
             </div>
-        </>
+        </div>
 
     )
 }

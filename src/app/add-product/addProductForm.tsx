@@ -84,6 +84,46 @@ function AddProductForm(props: any) {
         }
         
     }
+    const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const files = event.target.files; // Get the selected files
+        try {
+            applyImage(files);
+        } catch (e: any) {
+            setError(e.message);
+        }
+    };
+
+    const applyImage = (files: FileList | null) => {
+        if (files) {
+            if (files.length > 5) {
+                throw new Error("Can't upload image more than 5");
+            }
+            const newFileDataUrls: string[] = [];
+            const readers: FileReader[] = [];
+            let fileSum = 0;
+            for (let i = 0; i < files.length; i++) {
+                fileSum += files[i].size;
+                // console.log(files[i].size)
+                const reader = new FileReader();
+                readers.push(reader);
+                reader.onload = (e) => {
+                    if (e.target) {
+                        const dataUrl = e.target.result as string;
+                        newFileDataUrls.push(dataUrl);
+
+                        if (newFileDataUrls.length === files.length) {
+                            setProductImage(newFileDataUrls);
+                        }
+                    }
+                };
+                reader.readAsDataURL(files[i]); // Read the file as a data URL
+            }
+            if (fileSum > 800000) {
+                throw new Error("All image size could not exceed 800kb");
+            }
+            // console.log(fileSum);
+        }
+    }
 
     return (
 
