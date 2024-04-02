@@ -15,6 +15,7 @@ function AddProductForm(props: any) {
     const [description, setDescription] = useState("")
     const [price, setPrice] = useState(0);
     const [category, setCategory] = useState("");
+    const [imageField, setImageField] = useState("");
     const [productImage, setProductImage] = useState<string[]>([]);
     const [error, setError] = useState<string | null>(null);
 
@@ -41,7 +42,21 @@ function AddProductForm(props: any) {
     const handleTime = (e: React.ChangeEvent<HTMLInputElement>) => {
         setTime(e.target.value ?? null)
     }
-    const handleRemoveImage = (idx: number) => {
+
+    const handleImageURL = (e: React.ChangeEvent<HTMLInputElement>)=> {
+        setImageField(e.target.value);
+    }
+    const handleAddImage = ()=> {
+        if (productImage.length == 5) {
+            setError("Cannot upload more than 5 images");
+        } else {
+            const newImage: string[] = [...productImage];
+            newImage.push(imageField);
+            setProductImage(newImage);
+        }
+
+    }
+    const handleRemoveImage = (idx: number)=> {
         const arr: string[] = productImage.filter((img, index) => index !== idx);
         setProductImage(arr)
     }
@@ -65,46 +80,6 @@ function AddProductForm(props: any) {
         }
         
     }
-    const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const files = event.target.files; // Get the selected files
-        try {
-            applyImage(files);
-        } catch (e: any) {
-            setError(e.message);
-        }
-    };
-
-    const applyImage = (files: FileList | null) => {
-        if (files) {
-            if (files.length > 5) {
-                throw new Error("Can't upload image more than 5");
-            }
-            const newFileDataUrls: string[] = [];
-            const readers: FileReader[] = [];
-            let fileSum = 0;
-            for (let i = 0; i < files.length; i++) {
-                fileSum += files[i].size;
-                console.log(files[i].size)
-                const reader = new FileReader();
-                readers.push(reader);
-                reader.onload = (e) => {
-                    if (e.target) {
-                        const dataUrl = e.target.result as string;
-                        newFileDataUrls.push(dataUrl);
-
-                        if (newFileDataUrls.length === files.length) {
-                            setProductImage(newFileDataUrls);
-                        }
-                    }
-                };
-                reader.readAsDataURL(files[i]); // Read the file as a data URL
-            }
-            if (fileSum > 800000) {
-                throw new Error("All image size could not exceed 800kb");
-            }
-            console.log(fileSum);
-        }
-    }
 
     return (
 
@@ -121,22 +96,24 @@ function AddProductForm(props: any) {
                 )}
                 <div className="divider text-xl font-bold">Create new product</div>
                 <div className="flex flex-wrap justify-center gap-3">
-                    <div className="cursor-pointer size-32 bg-base-200 transition hover:ring-1 hover:ring-primary rounded-md">
-                        <input type="file" onChange={handleFileSelect} className="absolute size-32 opacity-0 cursor-pointer" accept="image/jpeg" multiple />
-                        <div className="w-full h-full z-1 flex flex-col justify-center items-center">
-                            <button className="btn btn-outline btn-sm">Browse</button>
-                            <span className="text-center">Drag and drop</span>
-                        </div>
+                {productImage.map((image, index) => (
+                    <div className="size-32 rounded-lg" key={index}>
+                        <button className="btn btn-error size-32 opacity-0 hover:opacity-70 absolute active:ring ring-opacity-100 ring-error" onClick={() => handleRemoveImage(index)}>
+                            <span className="material-icons">delete</span>
+                        </button>
+                        <img className="object-cover size-full rounded-lg" src={image} />
                     </div>
-                    {productImage.map((image, index) => (
-                        <div className="size-32 rounded-lg" key={index}>
-                            <button className="btn btn-error size-32 opacity-0 hover:opacity-70 absolute active:ring ring-opacity-100 ring-error" onClick={() => handleRemoveImage(index)}>
-                                <span className="material-icons">delete</span>
-                            </button>
-                            <img className="object-cover size-full rounded-lg" src={image} />
-                        </div>
-                    ))}
+                ))}
                 </div>
+                <div className="join w-full">
+                    <label className="input input-bordered flex items-center gap-2 join-item w-full">
+                        Image
+                        <kbd className="kbd kbd-sm"><span className="material-icons">link</span></kbd>
+                        <input required name="name" className="grow bg-transparent" onChange={handleImageURL} />
+                    </label>
+                    <button className="btn btn-primary join-item" onClick={handleAddImage}>Click to add</button>
+                </div>
+                
                 <label className="input input-bordered flex items-center gap-2">
                     Name
                     <input required name="name" className="grow bg-transparent" maxLength={64} onChange={handleName} />

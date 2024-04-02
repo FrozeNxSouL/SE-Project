@@ -13,7 +13,11 @@ async function addProduct(formData: Product, time: string | null) {
     const byUser = session?.user?.id;
 
     if (!formData.name || !formData.description || formData.imageUrl.length === 0 || !formData.price || formData.price == 0 || !formData.tag || !formData.status) {
-        throw Error("Missing required fields or price = 0 DDD");
+        throw Error("Missing required fields or price = 0");
+    }
+
+    if (formData.imageUrl.length > 5) {
+        throw new Error("Cannot upload more than 5 images");
     }
 
     await validateName(formData.name);
