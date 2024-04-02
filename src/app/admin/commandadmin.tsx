@@ -8,8 +8,6 @@ interface editTagProps { catid: string, catname: string, caturl: string }
 interface addtagProps { adminid: string }
 interface searchButtonProps { search: string }
 interface managechangeProps { taxhandle: number }
-interface reportdetailProps { userid: string }
-
 
 export function Taxchange({ taxhandle }: managechangeProps) {
     const [tax, setTax] = useState<number>(taxhandle);
@@ -63,7 +61,6 @@ export function SearchButton({ search }: searchButtonProps) {
     const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        // Check if searchParams is not null
         if (searchParams !== null) {
             const params = new URLSearchParams(searchParams);
 
@@ -119,7 +116,6 @@ export function DeleteButton({ userid, username, props, product }: deleteButtonP
                 <h3 className="font-bold text-lg">Are you sure to delete user {username} ?</h3>
                 <div className="modal-action">
                     <button onClick={() => {
-                        // deleteUser(userid)
                         del(userid, props, product)
                         handleToggle()
                         router.refresh()
@@ -132,10 +128,8 @@ export function DeleteButton({ userid, username, props, product }: deleteButtonP
 }
 
 export function DeatailReport(props: any) {
-    // export function DeatailReport({userid}: reportdetailProps) {
     const [showModal, setShowModal] = useState<boolean>(false);
     const router = useRouter()
-    // const userreport = getReport(userid)
     const handleToggle = () => {
         setShowModal((prev) => !prev)
     };
@@ -167,19 +161,9 @@ export function DeatailReport(props: any) {
                             ))}
                             <div className="my-3 p-10 flex flex-row overflow-x-scroll">
                                 {rep.reportPicture.map((sec: string, index3: number) => (
-                                    // <a href={sec} target="_blank">
                                     <img key={index3} src={sec} alt={`Report Picture ${index3}`} className="object-cover min-w-full h-72" />
-                                    // </a>
-
                                 ))}
                             </div>
-                            {/* <div className="flex flex-no-wrap overflow-x-auto mb-3 mt-3">
-                                {rep.reportPicture.map((url: string, index3: number) => ( // Assuming each item in reportPicture array is a URL
-                                    <div key={index3} className="w-50 flex-1 mr-2">
-                                        <img src={url} alt={`Report Picture ${index3}`} className="w-auto h-auto" />
-                                    </div>
-                                ))}
-                            </div> */}
                             <h3 className="font-bold text-lg my-2">Description</h3>
                             <div className="w-full min-h-32 bg-gray-200 text-wrap p-5">
                                 <h4>{rep.reportDescription}</h4>
@@ -187,12 +171,6 @@ export function DeatailReport(props: any) {
                             <div className="flex flex-col w-full">
                                 <div className="divider divider-primary"></div>
                             </div>
-                            {/* <div className="modal-action">
-                                <button onClick={() => {
-                                    handleToggle();
-                                    router.refresh();
-                                }} className="btn btn-success text-white rounded-lg mr-4">Confirm</button>
-                            </div> */}
                         </div>
                         {/* )} */}
                     </div>
