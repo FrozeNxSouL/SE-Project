@@ -26,6 +26,9 @@ export const authOption: NextAuthOptions = {
                 if (!user) {
                     throw new Error("email or password is invalid");
                 }
+                if (user.role == "deleted") {
+                    throw new Error("This account has been banned");
+                }
 
                 const passwordValid = await compare(credentials.password, user.hashedPassword);
 

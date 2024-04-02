@@ -32,7 +32,9 @@ export default function ReportForm({ productId }: ReportFormProps) {
   const [username, setusername] = useState<string | undefined>("kkkk");
   const [reportwho, setreportwho] = useState<string | undefined>("");
 
-  const [fileDataUrls, setFileDataUrls] = useState<string[]>([]);
+  const [imageField, setImageField] = useState("");
+  const [reportImage, setreportImage] = useState<string[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   const session = useSession();
   useEffect(() => {
@@ -74,43 +76,36 @@ export default function ReportForm({ productId }: ReportFormProps) {
     // Update the state with the new value from the textarea
     setDes(event.target.value);
   };
-
-  const handleFileSelect = (event: ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files; // Get the selected files
-    if (files) {
-      const newFileDataUrls: string[] = [];
-      const readers: FileReader[] = [];
-      for (let i = 0; i < files.length; i++) {
-        const reader = new FileReader();
-        readers.push(reader);
-        reader.onload = (e) => {
-          if (e.target) {
-            const dataUrl = e.target.result as string;
-            newFileDataUrls.push(dataUrl);
-            if (newFileDataUrls.length === files.length) {
-              setFileDataUrls(newFileDataUrls);
-            }
-          }
-        };
-        reader.readAsDataURL(files[i]); // Read the file as a data URL
+  const handleImageURL = (e: React.ChangeEvent<HTMLInputElement>)=> {
+    setImageField(e.target.value);
+  }
+  const handleAddImage = ()=> {
+      if (reportImage.length == 5) {
+          setError("Cannot upload more than 5 images");
+      } else {
+          const newImage: string[] = [...reportImage];
+          newImage.push(imageField);
+          setreportImage(newImage);
       }
-    }
-  };
 
-  //       const [selectedFile, setSelectedFile] = useState();
-
-  //   const handleFileChange = (event) => {
-  //     const file = event.target.files[0];
-
-  //     // Do something with the selected file (e.g., store it in state)
-  //     setSelectedFile(file);
-
-  //     // You can also perform additional actions with the file, such as uploading it to a server
-  //   };
+  }
+  const handleRemoveImage = (idx: number)=> {
+      const arr: string[] = reportImage.filter((img, index) => index !== idx);
+      setreportImage(arr)
+  }
 
   return (
     <div className="flex bg-base-100 p-6 justify-center max-w-screen-lg mx-auto">
       <div className="w-full shadow-lg flex flex-col bg-base-100 p-6">
+        {error && (
+            <div role="alert" className="alert">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="stroke-info shrink-0 w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <span>{error}</span>
+                <div>
+                    <button className="btn btn-error btn-sm" onClick={() => { setError(null) }}><span className="material-icons">close</span></button>
+                </div>
+            </div>
+        )}
         <h1>รายงาน</h1>
         <div className="flex flex-row flex-wrap justify-between gap-4">
           <div className="flex justify-start m-5">
@@ -206,24 +201,30 @@ export default function ReportForm({ productId }: ReportFormProps) {
               onChange={() => handleCheckboxChange(5)}
             />
           </label>
+          <div className="flex flex-row gap-2 justify-center">
+            {reportImage.map((image, index) => (
+                <div className="size-32 rounded-lg" key={index}>
+                    <button className="btn btn-error size-32 opacity-0 hover:opacity-70 absolute active:ring ring-opacity-100 ring-error" onClick={() => handleRemoveImage(index)}>
+                        <span className="material-icons">delete</span>
+                    </button>
+                    <img className="object-cover size-full rounded-lg" src={image} />
+                </div>
+            ))}
+          </div>
 
-          <h1 className="font-extrabold mt-6">เลือกรูปภาพ</h1>
-          <input
-            multiple
-            type="file"
-            id="fileInput"
-            className="file-input file-input-bordered w-full mt-2"
-            onChange={handleFileSelect}
-          />
-
+          <div className="join w-full">
+              <label className="input input-bordered flex items-center gap-2 join-item w-full">
+                  Image
+                  <kbd className="kbd kbd-sm"><span className="material-icons">link</span></kbd>
+                  <input required name="name" className="grow bg-transparent" onChange={handleImageURL} />
+              </label>
+              <div className="btn btn-primary join-item" onClick={handleAddImage}>Click to add</div>
+          </div>
           <textarea
             className="h-40 textarea textarea-primary mt-4"
-            placeholder="Bio"
+            placeholder="Additional information about report"
             value={des}
-            onChange={handleTextareaChange}
-          ></textarea>
-
-          {/* <button className="btn btn-block btn-primary mt-4" onClick={handleSubmit} >submit</button> */}
+            onChange={handleTextareaChange} />
 
           {session.data?.user?.id && (
             <button
@@ -233,7 +234,7 @@ export default function ReportForm({ productId }: ReportFormProps) {
                   data,
                   session.data?.user?.id,
                   reportwho,
-                  fileDataUrls
+                  reportImage
                 );
               }}
               className="btn btn-block btn-primary mt-4 "

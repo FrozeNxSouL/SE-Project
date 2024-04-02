@@ -12,31 +12,38 @@ interface OrderDetailsProps {
 
 const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
   return (
-    <div className="max-w-[1150px] m-auto flex flex-col gap-2">
-      <div className="mt-8">
-        <h1 className="font-bold text-2xl">Order Details</h1>
+    <div className="max-w-[1150px] m-auto flex flex-col gap-2 justify-center bg-base-100 p-5 rounded-md">
+      <div className="divider text-2xl font-bold">Order details</div>
+      <div className="w-1/2">
+        <table className="table">
+          <tr>
+            <td>Order ID</td>
+            <td>{order.id}</td>
+          </tr>
+          <tr>
+            <td>Total Amount</td>
+            <td>{formatPrice(order.totalPrice)}</td>
+          </tr>
+          <tr>
+            <td>Payment status</td>
+            <td>{order.status === "pending" ? (
+              <h1 className="badge bg-red-600 text-slate-50">Pending</h1>
+              
+            ) : order.status === "complete" ? (
+              <h1 className="badge bg-green-500 text-slate-50">Completed</h1>
+              
+            ) : (
+              <></>
+            )}</td>
+          </tr>
+          <tr>
+            <td>Date</td>
+            <td>{moment(order.create_transaction_date).format('MMMM Do YYYY, h:mm:ss a')}</td>
+          </tr>
+        </table>
       </div>
-      <div>Order ID: {order.id}</div>
-      <div>
-        Total Amount:{" "}
-        <span className="font-bold">{formatPrice(order.totalPrice)}</span>
-      </div>
-      <div className="flex gap-2 items-center">
-        <div>Payment status:</div>
-        <div>
-          {order.status === "pending" ? (
-            <h1 className="bg-red-600 text-slate-50">pending</h1>
-            
-          ) : order.status === "complete" ? (
-            <h1 className="bg-green-500 text-slate-50">completed</h1>
-            
-          ) : (
-            <></>
-          )}
-        </div>
-      </div>
-      <div>Date: {moment(order.create_transaction_date).format('MMMM Do YYYY, h:mm:ss a')}</div>
-      <div>
+      
+      <div className="flex flex-col w-full ring-1 p-5 ring-primary">
         <h2 className="font-semibold mt-4 mb-2">Products ordered</h2>
         <div className="grid grid-cols-5 text-xs gap-4 pb-2 items-center">
         <div className="col-span-2 justify-self-start flex gap-2 md:gap-4">
