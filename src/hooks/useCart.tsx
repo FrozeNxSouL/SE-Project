@@ -143,6 +143,5 @@ export const useCart = () => {
     if (context === null) {
         throw new Error("useCart must be used within a CartContextProvider")
     }
-    console.log(context,"context")
     return context
 };

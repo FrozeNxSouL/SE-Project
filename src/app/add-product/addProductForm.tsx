@@ -84,7 +84,7 @@ function AddProductForm(props: any) {
             let fileSum = 0;
             for (let i = 0; i < files.length; i++) {
                 fileSum += files[i].size;
-                console.log(files[i].size)
+                // console.log(files[i].size)
                 const reader = new FileReader();
                 readers.push(reader);
                 reader.onload = (e) => {
@@ -102,7 +102,7 @@ function AddProductForm(props: any) {
             if (fileSum > 800000) {
                 throw new Error("All image size could not exceed 800kb");
             }
-            console.log(fileSum);
+            // console.log(fileSum);
         }
     }
 
