@@ -85,7 +85,6 @@ export async function updateOwnerScore(itemId: string, newRating: number) {
                 score: newRating
             }
         });
-        console.log(product1)
         
         if (!product) {
             throw new Error(`Product with ID ${itemId} not found`);
