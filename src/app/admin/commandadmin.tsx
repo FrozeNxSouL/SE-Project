@@ -3,7 +3,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { changeTax, deleteTag, deleteUser, editTag, statusReport, tagAdd } from "./fetch";
 import { useEffect, useState } from "react"
 import admin from "./page";
-interface deleteButtonProps { userid: string, username: string }
+interface deleteButtonProps { userid: string, username: string ,props:any}
 interface editTagProps { catid: string, catname: string, caturl: string }
 interface addtagProps { adminid: string }
 interface searchButtonProps { search: string }
@@ -95,13 +95,18 @@ export function SearchButton({ search }: searchButtonProps) {
     );
 }
 
-export function DeleteButton({ userid, username }: deleteButtonProps) {
+export function DeleteButton({ userid, username,props }: deleteButtonProps) {
     const [showModal, setShowModal] = useState<boolean>(false);
     const router = useRouter()
     const handleToggle = () => {
         setShowModal((prev) => !prev)
     };
-
+    const del=(userid :string,props :any)=>{
+        deleteUser(userid)
+        props.map((rep: any, index: any) => (
+            statusReport(rep.id)
+        ))
+    }
     return (
         <>
             <button onClick={handleToggle} className="btn btn-error ">
@@ -111,7 +116,8 @@ export function DeleteButton({ userid, username }: deleteButtonProps) {
                 <h3 className="font-bold text-lg">Are you sure to delete user {username} ?</h3>
                 <div className="modal-action">
                     <button onClick={() => {
-                        deleteUser(userid)
+                        // deleteUser(userid)
+                        del(userid,props)
                         handleToggle()
                         router.refresh()
                     }} className="btn btn-success text-white rounded-lg mr-4">Confirm</button>
@@ -134,7 +140,7 @@ export function DeatailReport(props: any) {
     const readreport = (read: any) => {
         {
             read.map((rep: any, index: any) => (
-                statusReport(rep.id, rep.userId)
+                statusReport(rep.id)
             ))
         }
     }
@@ -193,7 +199,7 @@ export function DeatailReport(props: any) {
                         readreport(props.data)
                         handleToggle();
                         router.refresh();
-                    }} className="btn btn-error text-white rounded-lg mr-4">Delete</button>
+                    }} className="btn btn-error text-white rounded-lg mr-4">Done</button>
                 </div>
             </Modal>
         </>

@@ -22,9 +22,6 @@ const CheckoutClient = () => {
 
   const router = useRouter();
 
-  console.log("paymentIntent", paymentIntent);
-  console.log("clientSecret", clientSecret);
-
   useEffect(() => {
     if (cartProducts) {
       setLoading(true);
@@ -46,7 +43,6 @@ const CheckoutClient = () => {
           return res.json();
         })
         .then((data) => {
-          console.log(data);
           setClientSecret(data.paymentIntent.client_secret);
           handleSetPaymentIntent(data.paymentIntent.id);
         })

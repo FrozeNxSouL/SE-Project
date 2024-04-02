@@ -80,8 +80,6 @@ export const getAuctions = async (request: requestAuctions) => {
             },
             where,
         })
-
-        // console.log(list,"list")
         return { list, count }
     } catch (error) {
         console.log(error)
@@ -118,7 +116,6 @@ export async function getAuctionProductbyTag(tagInput: string) {
         if (!output) {
             notFound();
         }
-        // console.log(output)
         return output;
     } catch (error) {
         console.log(error);

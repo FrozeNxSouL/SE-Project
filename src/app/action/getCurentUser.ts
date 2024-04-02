@@ -1,4 +1,5 @@
 import { getCurrentSession } from "@/lib/getCurrentSession";
+import { signOut } from "next-auth/react";
 import prisma from "@/lib/db/prisma";
 // Inside an async function or an API route
 export default async function getCurrentUser() {
@@ -11,13 +12,17 @@ export default async function getCurrentUser() {
                     email : session?.user?.email,
                 },
             })
-            // console.log("Current User:", currentUser);
+            if (session?.user.role == "deleted") {
+                localStorage.clear()
+                await signOut({
+                callbackUrl: '/' // Redirect to the login page after logout
+                })
+                return null;
+            }
             return {
                 ...currentUser
             };
         } else {
-            // No user logged in
-            // console.log("No user logged in.");
             return null;
         }
     } catch (error) {

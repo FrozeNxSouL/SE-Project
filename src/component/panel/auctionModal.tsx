@@ -16,7 +16,6 @@ export default function AuctionModal(props: any) {
 
     const openModal = () => {
         setIsModalOpen(true);
-        console.log(isModalOpen)
     };
 
     const closeModal = () => {

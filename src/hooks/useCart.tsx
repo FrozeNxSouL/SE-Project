@@ -1,5 +1,7 @@
 "use client"
+import { getProductById } from "@/app/admin/fetch";
 import { CartProductType } from "@/app/product/[productId]/productInfo";
+import { useSession } from "next-auth/react";
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import {toast} from 'react-hot-toast'
 
@@ -26,6 +28,7 @@ export const CartContextProvider = (props: Props) =>{
     const [cartTotalAmount, setCartTotalAmount] = useState(1)
     const [cartProducts, setCartProducts] = useState<CartProductType[] | null>(null);
     const [paymentIntent, setPaymentIntent] = useState<string | null>(null)
+    const session = useSession();
 
     useEffect(()=>{
         const cartItems: any = localStorage.getItem('eShopCartItems')
@@ -60,22 +63,26 @@ export const CartContextProvider = (props: Props) =>{
         getTotals();
     }, [cartProducts])
     
-    const handleAddProductToCart = useCallback((product: CartProductType)=>{
-        setCartProducts((prev)=>{
-            let updatedCart;
-
-            if(prev){
-                updatedCart = [...prev, product]
-            }else{
-                updatedCart = [product]
+    const handleAddProductToCart = useCallback(async (product: CartProductType) => {
+        try {
+            const fetchedProduct = await getProductById(product.id);
+            
+            if (fetchedProduct && session.data?.user.id !== fetchedProduct) {
+                setCartProducts((prev) => {
+                    const updatedCart = prev ? [...prev, product] : [product];
+    
+                    toast.success('Product added to cart');
+                    localStorage.setItem('eShopCartItems', JSON.stringify(updatedCart));
+                    return updatedCart;
+                });
+            } else {
+                toast.error('You cannot add your own product to the cart');
             }
-
-            toast.success('Product added to cart');
-            localStorage.setItem('eShopCartItems',JSON.stringify(updatedCart))
-            return updatedCart;
-        })
-    }, []);
-
+        } catch (error) {
+            console.error('Error adding product to cart:', error);
+            toast.error('Failed to add product to cart');
+        }
+    }, [session.data?.user.id]);
     const handleRemoveProductFromCart = useCallback((
         product: CartProductType
     ) =>{

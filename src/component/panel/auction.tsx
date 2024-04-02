@@ -72,41 +72,7 @@ export const stringSpliter = (A: auction, index: number) => {
 
 export default function AuctionProducts(props: any) {
     const products = props.data
-    // const [auction, setAuction] = useState<auction[]>([]);
     const [loading, setLoading] = useState(true);
-
-    // const request: requestAuctions = {
-    //     quantity: props.quantity,
-    // }
-
-    // if (props.data) {
-    //     request.tag = props.data
-    // }
-
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         try {
-    //             const response = await getAuctions(request)
-    //             const newData = response.list.map(item => ({
-    //                 id: item.product.id,
-    //                 title: item.product.name,
-    //                 image: item.product.imageUrl[0],
-    //                 price: item.currentBid,
-    //                 targetTime: (item.updatedAt),
-    //                 countdown: "",
-    //             }));
-
-    //             console.log(newData);
-    //             setAuction(newData);
-    //         } catch (error) {
-    //             console.error('Error fetching data:', error);
-    //         } finally {
-    //             setLoading(false);
-    //         }
-    //     };
-
-    //     fetchData();
-    // }, []);
 
     const [auction, setAuction] = useState<auction[]>(() => {
         const res: auction[] = [];

@@ -21,6 +21,37 @@ export async function getManage() {
     }
 }
 
+export async function getProductById(productId: string) {
+    try {
+        const product = await prisma.product.findUnique({
+            where: {
+                id: productId
+            }
+        });
+        return product?.userId;
+    } catch (error) {
+        console.error('Error fetching product:', error);
+        throw error;
+    }
+}
+
+export const getAddressByUserId = async (userId: string) => {
+    try {
+      // Query the database to find addresses associated with the user ID
+      const addresses = await prisma.transaction.findMany({
+        where: {
+          userId: userId,
+        },
+      });
+  
+      return addresses[0];
+    } catch (error) {
+      // Handle errors, such as database errors
+      console.error('Error fetching addresses:', error);
+      throw error;
+    }
+  };
+
 export async function changeTax(newtax: number) {
     try {
         const list = await prisma.management.update({
@@ -71,7 +102,6 @@ export async function updateOwnerScore(itemId: string, newRating: number) {
                 score: newRating
             }
         });
-        console.log(product1)
         
         if (!product) {
             throw new Error(`Product with ID ${itemId} not found`);
@@ -217,7 +247,7 @@ export async function deleteUser(userid: string) {
     })
 }
 
-export async function statusReport(reportid: string, userid: string) {
+export async function statusReport(reportid: string) {
     await prisma.report.update({
         where: {
             id: reportid
@@ -226,13 +256,4 @@ export async function statusReport(reportid: string, userid: string) {
             reportStatus: "0"
         }
     })
-    await prisma.user.update({
-        where: {
-            id: userid
-        },
-        data: {
-            role: "deleted"
-        }
-    })
-
 }
