@@ -3,7 +3,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { changeTax, deleteProduct, deleteTag, deleteUser, editTag, statusReport, tagAdd } from "./fetch";
 import { useEffect, useState } from "react"
 import admin from "./page";
-interface deleteButtonProps { userid: string, username: string ,props:any,product:any}
+interface deleteButtonProps { userid: string, username: string, props: any, product: any }
 interface editTagProps { catid: string, catname: string, caturl: string }
 interface addtagProps { adminid: string }
 interface searchButtonProps { search: string }
@@ -95,13 +95,13 @@ export function SearchButton({ search }: searchButtonProps) {
     );
 }
 
-export function DeleteButton({ userid, username,props,product }: deleteButtonProps) {
+export function DeleteButton({ userid, username, props, product }: deleteButtonProps) {
     const [showModal, setShowModal] = useState<boolean>(false);
     const router = useRouter()
     const handleToggle = () => {
         setShowModal((prev) => !prev)
     };
-    const del=(userid :string,props :any,product:any)=>{
+    const del = (userid: string, props: any, product: any) => {
         deleteUser(userid)
         props.map((rep: any, index: any) => (
             statusReport(rep.id)
@@ -120,7 +120,7 @@ export function DeleteButton({ userid, username,props,product }: deleteButtonPro
                 <div className="modal-action">
                     <button onClick={() => {
                         // deleteUser(userid)
-                        del(userid,props,product)
+                        del(userid, props, product)
                         handleToggle()
                         router.refresh()
                     }} className="btn btn-success text-white rounded-lg mr-4">Confirm</button>
@@ -168,9 +168,9 @@ export function DeatailReport(props: any) {
                             <div className="my-3 p-10 flex flex-row overflow-x-scroll">
                                 {rep.reportPicture.map((sec: string, index3: number) => (
                                     // <a href={sec} target="_blank">
-                                        <img key={index3} src={sec} alt={`Report Picture ${index3}`} className="object-cover min-w-full h-72" />
+                                    <img key={index3} src={sec} alt={`Report Picture ${index3}`} className="object-cover min-w-full h-72" />
                                     // </a>
-                    
+
                                 ))}
                             </div>
                             {/* <div className="flex flex-no-wrap overflow-x-auto mb-3 mt-3">
@@ -182,7 +182,7 @@ export function DeatailReport(props: any) {
                             </div> */}
                             <h3 className="font-bold text-lg my-2">Description</h3>
                             <div className="w-full min-h-32 bg-gray-200 text-wrap p-5">
-                             <h4>{rep.reportDescription}</h4>
+                                <h4>{rep.reportDescription}</h4>
                             </div>
                             <div className="flex flex-col w-full">
                                 <div className="divider divider-primary"></div>
