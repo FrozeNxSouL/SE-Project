@@ -35,6 +35,23 @@ export async function getProductById(productId: string) {
     }
 }
 
+export const getAddressByUserId = async (userId: string) => {
+    try {
+      // Query the database to find addresses associated with the user ID
+      const addresses = await prisma.transaction.findMany({
+        where: {
+          userId: userId,
+        },
+      });
+  
+      return addresses[0];
+    } catch (error) {
+      // Handle errors, such as database errors
+      console.error('Error fetching addresses:', error);
+      throw error;
+    }
+  };
+
 export async function changeTax(newtax: number) {
     try {
         const list = await prisma.management.update({
