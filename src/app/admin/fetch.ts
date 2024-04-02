@@ -135,6 +135,7 @@ export async function updateProductsTransaction(paymentIntentId: string, items: 
                     id: item.productId
                 },
                 data: {
+                    status:"finished",
                     transactionId: transactionId
                 }
             });

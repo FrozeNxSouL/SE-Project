@@ -12,7 +12,7 @@ interface OrderDetailsProps {
 
 const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
   return (
-    <div className="max-w-[1150px] m-auto flex flex-col gap-2">
+    <div className="max-w-[1150px] m-auto flex flex-col gap-2 justify-center">
       <div className="mt-8">
         <h1 className="font-bold text-2xl">Order Details</h1>
       </div>
@@ -25,10 +25,10 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
         <div>Payment status:</div>
         <div>
           {order.status === "pending" ? (
-            <h1 className="bg-red-600 text-slate-50">pending</h1>
+            <h1 className="badge bg-red-600 text-slate-50">Pending</h1>
             
           ) : order.status === "complete" ? (
-            <h1 className="bg-green-500 text-slate-50">completed</h1>
+            <h1 className="badge bg-green-500 text-slate-50">Completed</h1>
             
           ) : (
             <></>
@@ -36,7 +36,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
         </div>
       </div>
       <div>Date: {moment(order.create_transaction_date).format('MMMM Do YYYY, h:mm:ss a')}</div>
-      <div>
+      <div className="flex flex-col w-5/6">
         <h2 className="font-semibold mt-4 mb-2">Products ordered</h2>
         <div className="grid grid-cols-5 text-xs gap-4 pb-2 items-center">
         <div className="col-span-2 justify-self-start flex gap-2 md:gap-4">

@@ -25,7 +25,7 @@ export default function SellerClient() {
             </div>
             {(option == "1") && (
 
-                <div className="card card-side bg-slate-700 shadow-xl w-4/5 h-44">
+                <div className="card card-side bg-accent-content shadow-xl w-4/5 h-44">
                     <figure><img src="https://daisyui.com/images/stock/photo-1635805737707-575885ab0820.jpg" alt="Movie" /></figure>
                     <div className="flex flex-row w-full">
                         <div className="card-body w-2/5">
