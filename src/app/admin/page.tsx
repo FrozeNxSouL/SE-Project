@@ -12,9 +12,9 @@ export default async function admin({ searchParams }: { searchParams: { search?:
 
   const session = await getCurrentUser();
 
-  // if (!admin || !session || session.role !== "manager") {
-  //   return (<div>poon</div>)
-  // }
+  if (!admin || !session || session.role !== "manager") {
+    return (<div>poon</div>)
+  }
   if (!admin) {
     return (<div>server gay</div>)
   }
