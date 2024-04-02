@@ -19,6 +19,7 @@ export default function SearchComponent({ tagList }: SearchComponentProps) {
   const [min, setMin] = useState(0);
   const [max, setMax] = useState(0);
   const [sort, setSort] = useState("asc");
+  const [loading, setLoading] = useState(false);
 
   const searchParams = useSearchParams();
   const searchKey = searchParams?.get("keyword");
@@ -32,6 +33,7 @@ export default function SearchComponent({ tagList }: SearchComponentProps) {
   }, [searchKey, sort, currentPage, tag, status]);
 
   const applyFilters = async () => {
+    setLoading(true);
     const request: requestProducts = {
       keyword: (searchKey == "") ? null : searchKey,
       quantity: 20,
@@ -51,6 +53,8 @@ export default function SearchComponent({ tagList }: SearchComponentProps) {
       setMaxPage(Math.ceil(res.count / 21));
     } catch (error) {
       console.log(error)
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -172,7 +176,8 @@ export default function SearchComponent({ tagList }: SearchComponentProps) {
               }
             </>
           ))}
-          {products.length === 0 && (
+          {loading && <span className="loading loading-bars loading-lg"></span>}
+          {(products.length === 0 && !loading) && (
             <span className="text-xl font-bold">The product list is empty</span>
           )}
         </div>
