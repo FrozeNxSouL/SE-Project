@@ -10,10 +10,8 @@ interface ReportDetailsProps {
 }
 
 const Report: React.FC<ReportDetailsProps> = async({ params }: ReportDetailsProps) => {
-    console.log(params.reportproductId)
     // const userId = await getCreatorUserId(params.reportproductId);
     const userId = params.reportproductId
-    console.log(userId)
     return (
         <div className="p-8">
             <Container>
