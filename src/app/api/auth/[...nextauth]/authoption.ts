@@ -76,6 +76,7 @@ export const authOption: NextAuthOptions = {
                 picture: user.picture,
                 score: user.score,
                 role: user.role,
+                address: user.address,
                 // Add other properties here as needed
             };
     

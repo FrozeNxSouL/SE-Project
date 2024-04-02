@@ -1,4 +1,4 @@
-import { Role } from "@prisma/client";
+import { Address, Role } from "@prisma/client";
 import { DefaultSession, DefaultUser } from "next-auth";
 import { JWT, DefaultJWT } from "next-auth/jwt";
 
@@ -12,6 +12,7 @@ declare module "next-auth" {
       picture: string
       score: Float
       role: string
+      address: string[]
     } & DefaultSession["user"]
   }
 

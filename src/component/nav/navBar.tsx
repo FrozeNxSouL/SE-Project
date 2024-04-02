@@ -37,7 +37,7 @@ export default async function NavBar() {
                         ))}
                     </ul>
                 </div>
-                <Link href="/" className=" btn btn-ghost text-base">
+                <Link href="/search" className=" btn btn-ghost text-base">
                     <span className="material-icons">shopping_bag</span>
                     <span>Buy</span>
                 </Link>
@@ -45,7 +45,7 @@ export default async function NavBar() {
                     <span className="material-icons">shopping_bag</span>
                     <span>Sell</span>
                 </Link>
-                <Link href="/shop" className=" btn btn-ghost text-base">
+                <Link href="/search" className=" btn btn-ghost text-base">
                     <span className="material-icons">gavel</span>
                     <span>Auction</span>
                 </Link>
