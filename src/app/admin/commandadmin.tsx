@@ -1,9 +1,9 @@
 "use client"
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { changeTax, deleteTag, deleteUser, editTag, statusReport, tagAdd } from "./fetch";
+import { changeTax, deleteProduct, deleteTag, deleteUser, editTag, statusReport, tagAdd } from "./fetch";
 import { useEffect, useState } from "react"
 import admin from "./page";
-interface deleteButtonProps { userid: string, username: string ,props:any}
+interface deleteButtonProps { userid: string, username: string ,props:any,product:any}
 interface editTagProps { catid: string, catname: string, caturl: string }
 interface addtagProps { adminid: string }
 interface searchButtonProps { search: string }
@@ -95,16 +95,19 @@ export function SearchButton({ search }: searchButtonProps) {
     );
 }
 
-export function DeleteButton({ userid, username,props }: deleteButtonProps) {
+export function DeleteButton({ userid, username,props,product }: deleteButtonProps) {
     const [showModal, setShowModal] = useState<boolean>(false);
     const router = useRouter()
     const handleToggle = () => {
         setShowModal((prev) => !prev)
     };
-    const del=(userid :string,props :any)=>{
+    const del=(userid :string,props :any,product:any)=>{
         deleteUser(userid)
         props.map((rep: any, index: any) => (
             statusReport(rep.id)
+        ))
+        product.map((rep: any, index: any) => (
+            deleteProduct(rep.id)
         ))
     }
     return (
@@ -117,7 +120,7 @@ export function DeleteButton({ userid, username,props }: deleteButtonProps) {
                 <div className="modal-action">
                     <button onClick={() => {
                         // deleteUser(userid)
-                        del(userid,props)
+                        del(userid,props,product)
                         handleToggle()
                         router.refresh()
                     }} className="btn btn-success text-white rounded-lg mr-4">Confirm</button>

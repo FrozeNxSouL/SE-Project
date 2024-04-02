@@ -213,7 +213,8 @@ export async function getUser(usersearch: string) {
         const list = await prisma.user.findMany({
             include: {
                 // report: true,
-                report: { where: { reportStatus: "1" } }
+                report: { where: { reportStatus: "1" } },
+                product: {where: { status: "sell"}}
             },
             where: {
                 AND: [
@@ -246,7 +247,16 @@ export async function deleteUser(userid: string) {
         }
     })
 }
-
+export async function deleteProduct(productid: string) {
+    await prisma.product.update({
+        where: {
+            id: productid
+        },
+        data: {
+            status: "expired"
+        }
+    })
+}
 export async function statusReport(reportid: string) {
     await prisma.report.update({
         where: {
