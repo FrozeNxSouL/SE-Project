@@ -246,7 +246,7 @@ export async function deleteUser(userid: string) {
     })
 }
 
-export async function statusReport(reportid: string, userid: string) {
+export async function statusReport(reportid: string) {
     await prisma.report.update({
         where: {
             id: reportid
@@ -255,13 +255,4 @@ export async function statusReport(reportid: string, userid: string) {
             reportStatus: "0"
         }
     })
-    await prisma.user.update({
-        where: {
-            id: userid
-        },
-        data: {
-            role: "deleted"
-        }
-    })
-
 }
