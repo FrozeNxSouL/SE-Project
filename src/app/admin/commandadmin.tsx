@@ -154,7 +154,6 @@ export function DeatailReport(props: any) {
             ))
         }
     }
-    console.log(props.data)
     return (
         <>
             <button onClick={handleToggle} className="btn btn-ghost btn-xs">
