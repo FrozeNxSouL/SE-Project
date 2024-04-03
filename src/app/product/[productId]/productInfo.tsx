@@ -65,8 +65,8 @@ export default function ProductInfo({ productDetails }: any) {
           <h1 className="text-xl mb-3 text-wrap break-words">
             {productDetails?.name}
           </h1>
-          <div className="flex bg-base-200 p-5 w-fit justify-center">
-            <h2 className="font-sans font-bold text-2xl text-primary">฿ {productDetails.price}</h2>
+          <div className="flex bg-base-200 p-3 w-fit justify-center px-16">
+            <h2 className="font-sans font-semibold text-2xl text-primary">฿ {productDetails.price}</h2>
           </div>
         </div>
 
