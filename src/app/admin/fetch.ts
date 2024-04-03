@@ -217,6 +217,55 @@ export async function changeTax(newtax: number) {
     }
 }
 
+export async function updateCashInWallet(userId: string, cash: number): Promise<void> {
+    try {
+        // Find the user by userId and update the cash in their wallet
+        await prisma.user.update({
+            where: {
+                id: userId,
+            },
+            data: {
+                wallet: {
+                    update: {
+                        cash: {
+                            increment: cash, // Increment the cash by the provided amount
+                        },
+                    },
+                },
+            },
+        });
+    } catch (error) {
+        console.error('Error updating cash in wallet:', error);
+        throw new Error('Failed to update cash in wallet');
+    }
+}
+
+export async function fetchCashInWallet(userId: string): Promise<number | null> {
+    try {
+      const user = await prisma.user.findUnique({
+        where: {
+          id: userId,
+        },
+        select: {
+          wallet: {
+            select: {
+              cash: true,
+            },
+          },
+        },
+      });
+  
+      if (user && user.wallet) {
+        return user.wallet.cash;
+      } else {
+        return null; // Return null if user or wallet not found
+      }
+    } catch (error) {
+      console.error('Error fetching cash in wallet:', error);
+      throw new Error('Failed to fetch cash in wallet');
+    }
+  }
+
 export async function isScored(itemId: string): Promise<boolean> {
     try {
         // Find the product by itemId
@@ -319,7 +368,8 @@ export async function updateProductsInTransaction(transacId: string): Promise<vo
                     id: product.id
                 },
                 data: {
-                    transactionId: transactionId
+                    transactionId: transactionId,
+                    status: "finished,"
                 }
             });
         }
@@ -405,12 +455,14 @@ export async function getUser(usersearch: string) {
     try {
         const list = await prisma.user.findMany({
             include: {
+                // report: true,
                 report: { where: { reportStatus: "1" } },
                 product: {where: { status: "sell"}}
             },
             where: {
                 AND: [
                     { name: { contains: usersearch } },
+                    // { report: { some: {} } }
                     {
                         report: {
                             some: {

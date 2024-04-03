@@ -22,8 +22,8 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
   clientSecret,
   handleSetPaymentSuccess,
 }) => {
-  const { cartTotalAmount, handleClearCart, handleSetPaymentIntent , cartItems } =
-    useCart();  
+  const { cartTotalAmount, handleClearCart, handleSetPaymentIntent, cartItems } =
+    useCart();
   const stripe = useStripe();
   const elements = useElements();
   const [isLoading, setIsLoading] = useState(false);
@@ -74,7 +74,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
         elements,
         redirect: "if_required",
       })
-      .then(async(result) => {
+      .then(async (result) => {
         if (!result.error) {
           toast.success("Checkout Success");
 
@@ -101,12 +101,12 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
           defaultValues: {
             name: session.data?.user.name,
             address: {
-              line1: '354 Oyster Point Blvd',
-              line2: '',
-              city: 'South San Francisco',
-              state: 'CA',
-              postal_code: '94080',
-              country: 'US',
+              line1: session.data?.user.address[0],
+              line2: session.data?.user.address[1],
+              city: session.data?.user.address[2],
+              state: session.data?.user.address[3],
+              postal_code: session.data?.user.address[4],
+              country: 'TH',
             },
           },
         }}
@@ -119,7 +119,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
       <Button
         label={isLoading ? "Processing" : "Pay now"}
         disabled={isLoading || !stripe || !elements}
-        onClick={() => {}}
+        onClick={() => { }}
       />
     </form>
   );
