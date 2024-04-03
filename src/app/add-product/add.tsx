@@ -4,15 +4,15 @@ import { redirect } from "next/navigation";
 import { getCurrentSession } from "@/lib/getCurrentSession";
 import { Product, Auction } from "@prisma/client";
 
-async function addProduct(formData: Product, time: string | null) {
+async function addProduct(formData: Product, time: string | null) {    
     const session = await getCurrentSession();
     if (!session) {
         redirect("/auth/login");
     }
     const byUser = session?.user?.id;
 
-    if (!formData.name || !formData.description || formData.imageUrl.length === 0 || !formData.price || formData.price <= 0 || !formData.tag || !formData.status) {
-        throw Error("Missing required fields or price <= 0, maybe forgot to upload");
+    if (!formData.name || !formData.description || formData.imageUrl.length === 0 || !formData.price || formData.price == 0 || !formData.tag || !formData.status) {
+        throw new Error("Missing required fields or price = 0");
     }
 
     if (formData.name.length > 100) {
@@ -25,11 +25,8 @@ async function addProduct(formData: Product, time: string | null) {
     if (formData.imageUrl.length > 5) {
         throw new Error("Cannot upload more than 5 images");
     }
-
-    const currentTime = new Date();
-    const input = new Date(time || "").getTime()
-
-    if ((formData.status == "auction" && !time) || (formData.status == "auction" && (input - currentTime.getTime() <= 0))) {
+    
+    if (formData.status == "auction" && !time) {
         throw Error("The auction product need time to expire");
     }
 

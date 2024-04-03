@@ -3,14 +3,14 @@
 import { useState, useEffect } from 'react';
 import { auction } from '../variables';
 import { useRouter } from "next/navigation"
-import allUpdateData, { functions } from "@/app/auction/[auctionId]/page";
+import allUpdateData from "@/app/auction/[auctionId]/page";
 import { getAuctions, requestAuctions } from '@/api/action/fetch';
 
 export const timeFormater = (item: auction) => {
     let day = stringSpliter(item, 0), range;
     let output: string = ""
     if (day == "Ended") {
-        output = "Ended"
+        allUpdateData({ params: { auctionId: item.id } }); // Pass an object with the correct structure
     } else {
         for (let i = 0; i < 4; i++) {
             if (stringSpliter(item, i) != "0") {
@@ -27,12 +27,10 @@ export const timeFormater = (item: auction) => {
                         break;
                 }
                 break;
-            } else if (i == 3) {
-                output = "Ended"
             }
         }
+        return output
     }
-    return output
 }
 
 export const calculateTime = (targetTime: number, index: number, auction: auction[]) => {
@@ -57,7 +55,6 @@ export const calculateTime = (targetTime: number, index: number, auction: auctio
         newAuction[index].countdown = `${days},${hours},${minutes},${seconds}`
     } else {
         newAuction[index].countdown = "Ended"
-        functions.allUpdateData(auction[index].id)
     }
     return newAuction
 }
@@ -66,11 +63,10 @@ export const stringSpliter = (A: auction, index: number) => {
     const str = A.countdown;
     const delimiter = ',';
     const substrings = str.split(delimiter);
-
-    if ((str == "Ended" && index == 0) || str != "Ended") {
+    if (str == "Ended" && index == 0 || str != "Ended") {
         return substrings[index];
     } else {
-        return ;
+        return ""
     }
 }
 
