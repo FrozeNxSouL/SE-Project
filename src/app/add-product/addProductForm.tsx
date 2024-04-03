@@ -166,7 +166,7 @@ function AddProductForm(props: any) {
                 <textarea name="description" className="textarea textarea-bordered w-full h-40" maxLength={600} placeholder="Product description" onChange={handleDescription} required></textarea>
                 <label className="input input-bordered flex items-center gap-2">
                     Price
-                    <input required name="price" type="number" step={0.01} className="grow bg-transparent text-right" onChange={handlePrice} />
+                    <input required name="price" type="number" step={0.5} className="grow bg-transparent text-right" onChange={handlePrice} />
                     <kbd className="kbd kbd-sm">฿</kbd>
                 </label>
                 <div className="flex flex-row gap-3 items-center">

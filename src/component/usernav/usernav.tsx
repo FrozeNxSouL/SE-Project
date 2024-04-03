@@ -10,6 +10,7 @@ export default function UserNav() {
                 <ul>
                     <li><Link href="/user/editProfile">Edit profile</Link></li>
                     <li><Link href="/user/address">Address</Link></li>
+                    <li><Link href="/user/wallet-add">Wallet</Link></li>
                     <li><Link href="/user/changePassword">Change password</Link></li>
                 </ul>
                 </details>
