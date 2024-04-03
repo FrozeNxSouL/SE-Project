@@ -37,14 +37,14 @@ export default async function product({ params }: { params: { productId: string 
                     <div className="flex flex-col justify-center">
                         <h1 className="font-bold text-lg">{productDetails.User?.name}</h1>
                         <span className="opacity-80 font-light">
-                            {productDetails.User?.phone}
+                            {productDetails.User?.phone || "-"}
                         </span>
                     </div>
                     <div className="divider lg:divider-horizontal"></div>
-                    <div>
-                        <p>call with {productDetails.User?.phone}</p>
-                        <p>joined for {productDetails.User?.email} </p>
-                        <p>score {productDetails.User?.score}</p>
+                    <div className="flex flex-col justify-center">
+                        <p><span className="font-bold">Tel. </span> {productDetails.User?.phone || "-"}</p>
+                        <p><span className="font-bold">Email </span> {productDetails.User?.email || "-"} </p>
+                        {/* <p>Score {productDetails.User?.score}</p> */}
                     </div>
                     <div className="divider lg:divider-horizontal"></div>
                 </div>

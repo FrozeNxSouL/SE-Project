@@ -56,7 +56,7 @@ export async function signup(signUpData: signUpForm) {
                 phone: "",
                 score: 0,
                 role : "user",
-                picture: "https://mpics.mgronline.com/pics/Images/557000005527401.JPEG",
+                picture: "https://static.vecteezy.com/system/resources/previews/009/292/244/original/default-avatar-icon-of-social-media-user-vector.jpg",
             }
         })
 
@@ -70,5 +70,4 @@ export async function signup(signUpData: signUpForm) {
     } catch (e){
         throw new Error("Prisma error")
     }
-    redirect("/auth/login");
 }

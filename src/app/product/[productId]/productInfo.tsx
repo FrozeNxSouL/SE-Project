@@ -65,8 +65,8 @@ export default function ProductInfo({ productDetails }: any) {
           <h1 className="text-xl mb-3 text-wrap break-words">
             {productDetails?.name}
           </h1>
-          <div className="bg-base-200 p-3">
-            <h2 className="text-2xl text-primary">฿{productDetails.price}</h2>
+          <div className="flex bg-base-200 p-5 w-fit justify-center">
+            <h2 className="font-sans font-bold text-2xl text-primary">฿ {productDetails.price}</h2>
           </div>
         </div>
 
@@ -94,7 +94,7 @@ export default function ProductInfo({ productDetails }: any) {
               <MdCheckCircle className="text-teal-400" size={20} />
               <span>Product added to cart</span>
             </p>
-            <div className="max-w-[300px]">
+            <div className="w-full">
               <Button label="View Cart" outline onClick={() => {
                 router.push('/cart');
               }} />
