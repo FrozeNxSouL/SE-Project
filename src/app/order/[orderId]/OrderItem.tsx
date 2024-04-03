@@ -58,27 +58,29 @@ const OrderItem: React.FC<OrderItemProps> = ({ item }) => {
                 {[...Array(5)].map((star, index) => {
                     const currentRating = index + 1;
                     return (
-                        <label key={index}>
-                            <input
-                                type="radio"
-                                name="rating"
-                                value={currentRating}
-                                className="hidden"
-                            />
-                            <FaStar
-                                className="star cursor-pointer"
-                                key={index}
-                                size={20}
-                                color={currentRating <= (hover || rating) ? "#ffc107" : "#e4e5e9"}
-                                onMouseEnter={() => setHover(currentRating)}
-                                onMouseLeave={() => setHover(0)}
-                                onClick={() => {
-                                    handleSetRating(currentRating)
-                                    
-                                }}
-                                style={{ pointerEvents: isItemScored ? "none" : "auto" }}
-                            />
-                        </label>
+                        <div key={index}>
+                            <label >
+                                <input
+                                    type="radio"
+                                    name="rating"
+                                    value={currentRating}
+                                    className="hidden"
+                                />
+                                <FaStar
+                                    className="star cursor-pointer"
+                                    key={index}
+                                    size={20}
+                                    color={currentRating <= (hover || rating) ? "#ffc107" : "#e4e5e9"}
+                                    onMouseEnter={() => setHover(currentRating)}
+                                    onMouseLeave={() => setHover(0)}
+                                    onClick={() => {
+                                        handleSetRating(currentRating)
+                                        
+                                    }}
+                                    style={{ pointerEvents: isItemScored ? "none" : "auto" }}
+                                />
+                            </label>
+                        </div>
                     );
                 })}
             </div>

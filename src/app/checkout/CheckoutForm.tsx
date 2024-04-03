@@ -101,12 +101,12 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
           defaultValues: {
             name: session.data?.user.name,
             address: {
-              line1: '354 Oyster Point Blvd',
-              line2: '',
-              city: 'South San Francisco',
-              state: 'CA',
-              postal_code: '94080',
-              country: 'US',
+              line1: session.data?.user.address[0],
+              line2: session.data?.user.address[1],
+              city: session.data?.user.address[2],
+              state: session.data?.user.address[3],
+              postal_code: session.data?.user.address[4],
+              country: 'TH',
             },
           },
         }}

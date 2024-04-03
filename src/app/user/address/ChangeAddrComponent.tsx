@@ -25,6 +25,7 @@ export default function ChangeAddr() {
                 state: session?.user?.address[3] || "State",
                 postal: session?.user?.address[4] || "Postal code"
             });
+            console.log(address)
         }
       }, [sessionStatus]);
 

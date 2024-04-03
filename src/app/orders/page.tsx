@@ -3,7 +3,6 @@ import OrdersClient from "./OrderClient";
 import getCurrentUser from "@/app/action/getCurentUser";
 import NullData from "@/component/NullData";
 import getOrdersByUserId from "../action/getOrdersByUserId";
-import { getProductByTransactionId } from "@/api/action/fetch";
 
 const Orders = async () => {
 
