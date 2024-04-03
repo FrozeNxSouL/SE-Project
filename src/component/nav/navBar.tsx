@@ -11,9 +11,9 @@ export default async function NavBar() {
     const category = await getCategory();
     return (
         <div className="drop-shadow-md">
-            <div className="navbar bg-base-100">
+            <div className="navbar bg-accent">
                 <div className="navbar-start">
-                    <a href="/" className="btn btn-ghost text-xl">{webName}</a>
+                    <a href="/" className="btn btn-ghost text-xl text-base-100">{webName}</a>
                 </div>
                 <div className="navbar-center hidden lg:flex w-1/3">
                     <SearchBox></SearchBox>
@@ -25,11 +25,11 @@ export default async function NavBar() {
                     <UserProfile />
                 </div>
             </div>
-            <div className="navbar bg-base-100 flex justify-center gap-3">
+            <div className="navbar flex justify-center gap-3 bg-accent">
                 <div className="dropdown dropdown-hover">
                     <div tabIndex={0} className="btn m-1 btn-ghost text-base">
-                        <span className="material-icons">sell</span>
-                        <span>Category</span>
+                        <span className="material-icons text-base-100">sell</span>
+                        <span className="text-base-100">Category</span>
                     </div>
                     <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
                         {category.map((value, idx) => (
@@ -38,17 +38,17 @@ export default async function NavBar() {
                     </ul>
                 </div>
                 <Link href="/search" className=" btn btn-ghost text-base">
-                    <span className="material-icons">shopping_bag</span>
-                    <span>Buy</span>
+                    <span className="material-icons text-base-100">shopping_bag</span>
+                    <span className="text-base-100">Buy/Auction</span>
                 </Link>
                 <Link href="/add-product" className=" btn btn-ghost text-base">
-                    <span className="material-icons">shopping_bag</span>
-                    <span>Sell</span>
+                    <span className="material-icons text-base-100">storefront</span>
+                    <span className="text-base-100">Sell</span>
                 </Link>
-                <Link href="/search" className=" btn btn-ghost text-base">
+                {/* <Link href="/search" className=" btn btn-ghost text-base">
                     <span className="material-icons">gavel</span>
                     <span>Auction</span>
-                </Link>
+                </Link> */}
             </div>
         </div>
 

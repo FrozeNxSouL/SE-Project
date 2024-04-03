@@ -25,8 +25,11 @@ async function addProduct(formData: Product, time: string | null) {
     if (formData.imageUrl.length > 5) {
         throw new Error("Cannot upload more than 5 images");
     }
-    
-    if (formData.status == "auction" && !time) {
+
+    const currentTime = new Date();
+    const input = new Date(time || "").getTime()
+
+    if ((formData.status == "auction" && !time) || (formData.status == "auction" && (input - currentTime.getTime() <= 0))) {
         throw Error("The auction product need time to expire");
     }
 

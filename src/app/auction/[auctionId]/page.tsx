@@ -1,8 +1,9 @@
 import ProductInfo from "./auctionInfo";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { getAuctionDetail, getUserDetail, updateExpiredStatus } from "@/api/action/fetch";
 import { webName } from "@/component/variables";
 import Viewshop from "@/component/panel/viewshop";
+import { revalidatePath } from "next/cache";
 
 export interface auctionObject {
     id: string;
@@ -26,7 +27,8 @@ const functions: FunctionIndexSignature = {
     },
 };
 
-export default async function payment({ params }: { params: { auctionId: string } }) {
+
+export default async function Payment({ params }: { params: { auctionId: string} }) {
     const output = await getAuctionDetail(params.auctionId);
     const user = await getUserDetail(output?.auction.bidderId || "");
     if (!output) {
