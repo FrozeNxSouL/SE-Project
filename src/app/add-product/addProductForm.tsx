@@ -74,7 +74,7 @@ function AddProductForm(props: any) {
             status: (auction) ? "auction" : "sell",
             tag: [category],
             transactionId: null,
-            userId: null,
+            userId: "",
             score: 0
         }
         try {

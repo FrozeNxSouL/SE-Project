@@ -22,8 +22,8 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
   clientSecret,
   handleSetPaymentSuccess,
 }) => {
-  const { cartTotalAmount, handleClearCart, handleSetPaymentIntent , cartItems } =
-    useCart();  
+  const { cartTotalAmount, handleClearCart, handleSetPaymentIntent, cartItems } =
+    useCart();
   const stripe = useStripe();
   const elements = useElements();
   const [isLoading, setIsLoading] = useState(false);
@@ -74,7 +74,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
         elements,
         redirect: "if_required",
       })
-      .then(async(result) => {
+      .then(async (result) => {
         if (!result.error) {
           toast.success("Checkout Success");
 
@@ -119,7 +119,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
       <Button
         label={isLoading ? "Processing" : "Pay now"}
         disabled={isLoading || !stripe || !elements}
-        onClick={() => {}}
+        onClick={() => { }}
       />
     </form>
   );
