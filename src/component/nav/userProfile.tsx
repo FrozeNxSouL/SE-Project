@@ -28,6 +28,7 @@ function UserProfile() {
                     <li><a href="/user">Account</a></li>
                     <li><a href="/user/mystore">My Store</a></li>
                     <li><a href="/orders">My Purchase</a></li>
+                    <li><a href="/wallet-add">My Wallet</a></li>
                     <div className="divider"></div>
                     {session.data.user?.role == "manager" && (
                         <li><a href="/admin">Admin</a></li>

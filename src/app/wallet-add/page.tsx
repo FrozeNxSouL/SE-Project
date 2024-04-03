@@ -41,7 +41,7 @@ export default function Page() {
       <div className="flex flex-col gap-4">
         <div className="avatar">
           <div className="w-24 rounded-full flex-auto">
-            <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+            <img src={session?.user.picture } />
           </div>
         </div>
         <label className="input input-bordered flex items-center gap-2 justify-center">
