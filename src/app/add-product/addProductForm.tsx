@@ -1,9 +1,7 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import addProduct from "./add";
-import FormSubmitButton from "@/component/nav/FormSubmitButton";
 import { Product } from "@prisma/client";
-import getCategory from "../action/getCategory";
 
 
 function AddProductForm(props: any) {
@@ -19,6 +17,7 @@ function AddProductForm(props: any) {
     const [productImage, setProductImage] = useState<string[]>([]);
     const [error, setError] = useState<string | null>(null);
     const imageFieldRef = useRef<HTMLInputElement>(null);
+    const [onLoading, setOnloading] = useState<boolean>(false);
 
 
     const handleName = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -64,7 +63,8 @@ function AddProductForm(props: any) {
         const arr: string[] = productImage.filter((img, index) => index !== idx);
         setProductImage(arr)
     }
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
+        setOnloading(true);
         const newProduct: Product = {
             id: "",
             name,
@@ -78,51 +78,13 @@ function AddProductForm(props: any) {
             score: 0
         }
         try {
-            addProduct(newProduct, time);
+            await addProduct(newProduct, time);
         } catch (e: any) {
             setError(e.message);
+        }finally {
+            setOnloading(false);
         }
         
-    }
-    const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const files = event.target.files; // Get the selected files
-        try {
-            applyImage(files);
-        } catch (e: any) {
-            setError(e.message);
-        }
-    };
-
-    const applyImage = (files: FileList | null) => {
-        if (files) {
-            if (files.length > 5) {
-                throw new Error("Can't upload image more than 5");
-            }
-            const newFileDataUrls: string[] = [];
-            const readers: FileReader[] = [];
-            let fileSum = 0;
-            for (let i = 0; i < files.length; i++) {
-                fileSum += files[i].size;
-                // console.log(files[i].size)
-                const reader = new FileReader();
-                readers.push(reader);
-                reader.onload = (e) => {
-                    if (e.target) {
-                        const dataUrl = e.target.result as string;
-                        newFileDataUrls.push(dataUrl);
-
-                        if (newFileDataUrls.length === files.length) {
-                            setProductImage(newFileDataUrls);
-                        }
-                    }
-                };
-                reader.readAsDataURL(files[i]); // Read the file as a data URL
-            }
-            if (fileSum > 800000) {
-                throw new Error("All image size could not exceed 800kb");
-            }
-            // console.log(fileSum);
-        }
     }
 
     return (
@@ -134,10 +96,11 @@ function AddProductForm(props: any) {
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="stroke-info shrink-0 w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                         <span>{error}</span>
                         <div>
-                            <button className="btn btn-error btn-sm" onClick={() => { setError(null) }}><span className="material-icons">close</span></button>
+                            <button className="btn btn-error btn-sm" onClick={() => { setError(null)}}><span className="material-icons">close</span></button>
                         </div>
                     </div>
                 )}
+                
                 <div className="divider text-xl font-bold">Create new product</div>
                 <div className="flex flex-wrap justify-center gap-3">
                 {productImage.map((image, index) => (
@@ -191,7 +154,11 @@ function AddProductForm(props: any) {
                         )}
                     </div>
                 </div>
-                <button className="btn btn-primary btn-block" onClick={handleSubmit}>Add Product</button>
+                <button className="btn btn-primary btn-block" disabled={onLoading} onClick={handleSubmit}>
+                    {(!onLoading) ? <>Add Product</> : 
+                    <span className="loading loading-bars loading-md"></span>
+}
+                </button>
             </div>
         </div>
     );
