@@ -131,7 +131,7 @@ export const CartContextProvider = (props: Props) => {
         // transactionID,
     };
 
-    console.log(value);
+    // console.log(value);
 
     // console.log(value,"value");
     return <CartContext.Provider value={value} {...props} />

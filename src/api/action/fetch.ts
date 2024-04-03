@@ -335,7 +335,6 @@ export async function updateExpiredStatus(productId: string) {
                     status: "expired",
                 },
             });
-
         } else {
             const updatedRecord = await prisma.product.update({
                 where: { id: productId },

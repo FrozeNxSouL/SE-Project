@@ -21,7 +21,7 @@ interface FunctionIndexSignature {
     [x: string]: (productId: string) => Promise<void>;
 }
 
-const functions: FunctionIndexSignature = {
+export const functions: FunctionIndexSignature = {
     allUpdateData: async (productId: string) => {
         await updateExpiredStatus(productId);
     },
@@ -54,14 +54,14 @@ export default async function Payment({ params }: { params: { auctionId: string}
                     <div className="flex flex-col justify-center">
                         <h1 className="font-bold text-lg">{output.auction.product.User?.name}</h1>
                         <span className="opacity-80 font-light">
-                            {output.auction.product.User?.phone}
+                            {output.auction.product.User?.phone||"-"}
                         </span>
                     </div>
                     <div className="divider lg:divider-horizontal"></div>
-                    <div>
-                        <p>call with {output.auction.product.User?.phone}</p>
-                        <p>joined for {output.auction.product.User?.email} </p>
-                        <p>score {output.auction.product.User?.score}</p>
+                    <div className="flex flex-col justify-center">
+                        <p><span className="font-bold">Tel. </span> {output.auction.product.User?.phone||"-"}</p>
+                        <p><span className="font-bold">Email </span> {output.auction.product.User?.email||"-"} </p>
+                        {/* <p>Score {output.auction.product.User?.score}</p> */}
                     </div>
                     <div className="divider lg:divider-horizontal"></div>
                 </div>

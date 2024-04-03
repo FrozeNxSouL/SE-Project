@@ -11,8 +11,8 @@ async function addProduct(formData: Product, time: string | null) {
     }
     const byUser = session?.user?.id;
 
-    if (!formData.name || !formData.description || formData.imageUrl.length === 0 || !formData.price || formData.price == 0 || !formData.tag || !formData.status) {
-        throw Error("Missing required fields or price = 0");
+    if (!formData.name || !formData.description || formData.imageUrl.length === 0 || !formData.price || formData.price <= 0 || !formData.tag || !formData.status) {
+        throw Error("Missing required fields or price <= 0, maybe forgot to upload");
     }
 
     if (formData.name.length > 100) {
