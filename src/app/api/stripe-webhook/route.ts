@@ -1,26 +1,23 @@
 import { buffer } from "micro"
 import { NextApiRequest, NextApiResponse } from "next"
+import { NextRequest, NextResponse } from "next/server"
 import Stripe from "stripe"
 
-export const config = {
-    api: {
-        bodyParser: false
-    }
-}
+
 
 const stripe = new Stripe(process.env.STRIPE_TEST_SECRET_KEY as string, {
     apiVersion: '2023-10-16'
 })
 
-export default async function handler(
-    req: NextApiRequest,
-    res: NextApiResponse
+export async function POST(
+    req: Request,
+    res: Response
 ){
-    const buf = await buffer(req)
-    const sig = req.headers['stripe-signature']
+    const buf = await req.text();
+    const sig = req.headers.get("Stripe-Signature");
 
     if(!sig){
-        return res.status(400).send("Missing the stripe signature")
+        return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
     }
 
     let event: Stripe.Event
@@ -30,7 +27,8 @@ export default async function handler(
             buf, sig, process.env.STRIPE_WEBHOOK_SECRET!
         );
     }catch(err){
-        return res.status(400).send("Webhook error" + err)
+        
+        return NextResponse.json("Webhook error" + err, { status: 400 });
     }
 
     switch(event.type){
@@ -48,5 +46,5 @@ export default async function handler(
                 console.log('Unhandled event type:' + event.type)
     }
 
-    res.json({received: true});
+    return NextResponse.json({received: true});
 }

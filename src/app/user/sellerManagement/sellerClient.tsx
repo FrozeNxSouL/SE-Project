@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import Order from "./order";
 import Managed from "./managed";
 import Completed from "./completed";
-import { updateProductStatus } from "@/api/action/fetch";
+import { updateProductStatus } from "@/app/action/fetch";
 import { useRouter } from "next/navigation";
 
 export default function SellerClient(props: any) {

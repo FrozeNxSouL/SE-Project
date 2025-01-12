@@ -90,7 +90,7 @@ const CartClient = () => {
         <div className="text-sm flex flex-col gap-1 items-start">
           <div className="flex justify-between w-full text-base font-semibold">
             <span>Subtotal</span>
-            {tax != null && <span>{formatPrice(cartTotalAmount*tax + cartTotalAmount)}</span>}
+            {tax != null && <span>{formatPrice(cartTotalAmount*(tax/100) + cartTotalAmount)}</span>}
           </div>
           <p className="text-slate-500">
             Taxes and shipping calculate at checkout

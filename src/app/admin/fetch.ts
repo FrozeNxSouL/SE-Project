@@ -30,6 +30,7 @@ export async function getManage() {
 }
 
 export async function scanForTrans(itemId: string) {
+    console.log(itemId)
     try {
         // Find the transaction containing the item with the given itemId
         const transaction = await prisma.transaction.findFirst({
@@ -345,6 +346,7 @@ export async function updateOwnerScore(itemId: string, newRating: number) {
 export async function updateProductsInTransaction(transacId: string): Promise<void> {
     try {
         // Step 1: Find the transaction with the provided paymentIntentId
+        
         const transaction = await prisma.transaction.findFirst({
             where: {
                 id: transacId,
@@ -353,6 +355,7 @@ export async function updateProductsInTransaction(transacId: string): Promise<vo
                 product: true // Include associated products
             }
         });
+        console.log(transaction)
 
         if (!transaction) {
             throw new Error;

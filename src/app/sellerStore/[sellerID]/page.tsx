@@ -1,5 +1,5 @@
 
-import { productFromSeller } from "@/api/action/fetch";
+import { productFromSeller } from "@/app/action/fetch";
 import { notFound } from "next/navigation";
 
 interface IParams {

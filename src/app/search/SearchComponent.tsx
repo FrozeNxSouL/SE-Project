@@ -2,7 +2,7 @@
 "use client"
 import { Product, Category } from "@prisma/client";
 import { useEffect, useState } from "react";
-import { requestProducts, getProducts } from "@/api/action/fetch";
+import { requestProducts, getProducts } from "@/app/action/fetch";
 import { useRouter, useSearchParams } from "next/navigation";
 
 interface SearchComponentProps {

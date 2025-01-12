@@ -17,7 +17,7 @@ const stripe = new Stripe(process.env.STRIPE_TEST_SECRET_KEY as string,
 const calculateOrderAmount = async (items: CartProductType[]) => {
     const tax1 = await getManage();
     const totalPrice = items.reduce((acc, item) => {
-        const itemTotal = item.price * item.quantity * tax1!.tax + item.price;
+        const itemTotal = ((item.price * item.quantity) * (tax1!.tax/100)) + item.price;
 
         return acc + itemTotal
     }, 0);
@@ -52,11 +52,15 @@ export async function POST(request: Request) {
             const updated_intent = await stripe.paymentIntents.update(
                 payment_intent_id, { amount: total }
             );
+            // console.log(payment_intent_id, updated_intent)
+            
             //update the order
-            const [existing_order, update_order] = await Promise.all([
-                prisma.transaction.findFirst({
-                    where: { paymentIntentId: payment_intent_id }
-                }),
+            const peefill =  await prisma.transaction.findFirst({where: {paymentIntentId: payment_intent_id}})
+            console.log("transaction_findFirst ", peefill)
+            const [existing_order] = await Promise.all([
+                // prisma.transaction.findFirst({
+                //     where: { paymentIntentId: payment_intent_id }
+                // }),
 
                 prisma.transaction.update({
                     where: {
@@ -85,12 +89,20 @@ export async function POST(request: Request) {
             currency: "thb",
             automatic_payment_methods: { enabled: true },
         })
-
+        
         //create the order
         orderData.paymentIntentId = paymentIntent.id
 
         const trans = await prisma.transaction.create({
-            data: orderData
+            data: {
+                user: { connect: { id: currentUser.user.id } },
+                totalPrice: total / 100,
+                currency: 'thb',
+                status: "pending",
+                deliveryStatus: "pending",
+                paymentIntentId: paymentIntent.id,
+                products: items
+            }
         })
 
         // handleSetTransactionID(trans.id);

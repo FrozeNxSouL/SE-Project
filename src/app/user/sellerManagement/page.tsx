@@ -1,6 +1,6 @@
 import { getCurrentSession } from "@/lib/getCurrentSession"
 import SellerClient from "./sellerClient"
-import { getCompletedProduct, getOrderProduct, getPendingProduct } from "@/api/action/fetch";
+import { getCompletedProduct, getOrderProduct, getPendingProduct } from "@/app/action/fetch";
 
 export default async function Sell() {
   const session = await getCurrentSession()

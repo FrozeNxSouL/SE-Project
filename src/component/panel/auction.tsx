@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react';
 import { auction } from '../variables';
 import { useRouter } from "next/navigation"
-import allUpdateData, { functions } from "@/app/auction/[auctionId]/page";
-import { getAuctions, requestAuctions } from '@/api/action/fetch';
+import allUpdateData from "@/app/auction/[auctionId]/page";
+import { getAuctions, requestAuctions } from '@/app/action/fetch';
 
 export const timeFormater = (item: auction) => {
     let day = stringSpliter(item, 0), range;
@@ -57,7 +57,7 @@ export const calculateTime = (targetTime: number, index: number, auction: auctio
         newAuction[index].countdown = `${days},${hours},${minutes},${seconds}`
     } else {
         newAuction[index].countdown = "Ended"
-        functions.allUpdateData(auction[index].id)
+        // functions.allUpdateData(auction[index].id)
     }
     return newAuction
 }

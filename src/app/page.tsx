@@ -1,5 +1,5 @@
 import React from 'react'
-import { getAuctionProduct } from '@/api/action/fetch';
+import { getAuctionProduct } from '@/app/action/fetch';
 import LatestProducts from '@/component/panel/latestProduct';
 import AuctionProducts from '@/component/panel/auction';
 import getCategory from './action/getCategory';

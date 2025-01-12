@@ -1,6 +1,7 @@
 "use client";
 import React, { useRef, useState } from "react";
 import addProduct from "./add";
+import Image from 'next/image'
 import { Product } from "@prisma/client";
 
 
@@ -108,7 +109,7 @@ function AddProductForm(props: any) {
                         <button className="btn btn-error size-32 opacity-0 hover:opacity-70 absolute active:ring ring-opacity-100 ring-error" onClick={() => handleRemoveImage(index)}>
                             <span className="material-icons">delete</span>
                         </button>
-                        <img className="object-cover size-full rounded-lg" src={image} />
+                        <img alt="Picture of the author" className="object-cover size-full rounded-lg" src={image} />
                     </div>
                 ))}
                 </div>

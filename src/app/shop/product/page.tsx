@@ -2,7 +2,7 @@
 "use client"
 import { Product } from "@prisma/client";
 import { useEffect, useState } from "react";
-import { requestProducts, getProducts } from "@/api/action/fetch";
+import { requestProducts, getProducts } from "@/app/action/fetch";
 import { useRouter } from "next/navigation";
 
 export default function Shop() {

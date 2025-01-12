@@ -1,6 +1,6 @@
 import ProductInfo from "./auctionInfo";
 import { notFound, redirect } from "next/navigation";
-import { getAuctionDetail, getUserDetail, updateExpiredStatus } from "@/api/action/fetch";
+import { getAuctionDetail, getUserDetail, updateExpiredStatus } from "@/app/action/fetch";
 import { webName } from "@/component/variables";
 import Viewshop from "@/component/panel/viewshop";
 import { revalidatePath } from "next/cache";
@@ -21,11 +21,11 @@ interface FunctionIndexSignature {
     [x: string]: (productId: string) => Promise<void>;
 }
 
-export const functions: FunctionIndexSignature = {
-    allUpdateData: async (productId: string) => {
-        await updateExpiredStatus(productId);
-    },
-};
+// export const functions: FunctionIndexSignature = {
+//     allUpdateData: async (productId: string) => {
+//         await updateExpiredStatus(productId);
+//     },
+// };
 
 
 export default async function Payment({ params }: { params: { auctionId: string} }) {

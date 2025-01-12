@@ -18,6 +18,7 @@ interface CheckoutFormProps {
   handleSetPaymentSuccess: (value: boolean) => void;
 }
 
+
 const CheckoutForm: React.FC<CheckoutFormProps> = ({
   clientSecret,
   handleSetPaymentSuccess,
@@ -30,7 +31,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
   const [tax, setTax] = useState<number | null>(null);
   const session = useSession();
   const formattedPrice =
-    tax != null ? formatPrice(cartTotalAmount * tax + cartTotalAmount) : null;
+    tax != null ? formatPrice(cartTotalAmount * (tax/100) + cartTotalAmount) : null;
 
   useEffect(() => {
     const fetchTax = async () => {

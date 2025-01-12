@@ -1,5 +1,5 @@
 "use client"
-import { getProductbyTag, getProducts, requestProducts } from "@/api/action/fetch";
+import { getProductbyTag, getProducts, requestProducts } from "@/app/action/fetch";
 import { Product } from "@prisma/client";
 import Link from "next/link"
 import { useRouter } from "next/navigation"

@@ -1,6 +1,6 @@
 import React from 'react'
 import Link from "next/link";
-import { getProducts, getAuctionProduct, getProductbyTag, getAuctionProductbyTag } from '@/api/action/fetch';
+import { getProducts, getAuctionProduct, getProductbyTag, getAuctionProductbyTag } from '@/app/action/fetch';
 import Category from '@/component/panel/category';
 import LatestProducts from '@/component/panel/latestProduct';
 import AuctionProducts from '@/component/panel/auction';

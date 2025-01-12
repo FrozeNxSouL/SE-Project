@@ -1,6 +1,6 @@
 "use client";
 
-import { getUserandWallet, updateNewBid } from "@/api/action/fetch";
+import { getUserandWallet, updateNewBid } from "@/app/action/fetch";
 import { useSession } from "next-auth/react";
 import { revalidatePath } from "next/cache";
 import { useRouter } from "next/navigation";

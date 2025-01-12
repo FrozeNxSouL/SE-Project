@@ -11,7 +11,7 @@ import ProductCarousel from "@/app/product/[productId]/carousel";
 import { auction } from "@/component/variables";
 import { calculateTime, stringSpliter } from "@/component/panel/auction";
 import CountdownTimer from "@/component/panel/countdown";
-import { getUserDetail } from "@/api/action/fetch";
+import { getUserDetail } from "@/app/action/fetch";
 import AuctionModal from "@/component/panel/auctionModal";
 
 interface auctionProps {

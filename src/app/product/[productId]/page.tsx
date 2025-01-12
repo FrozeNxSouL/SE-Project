@@ -1,6 +1,6 @@
 import ProductInfo from "./productInfo";
 import { notFound } from "next/navigation";
-import { getProductDetail } from "@/api/action/fetch";
+import { getProductDetail } from "@/app/action/fetch";
 import { webName } from "@/component/variables";
 import Viewshop from "@/component/panel/viewshop";
 
